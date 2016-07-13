@@ -5,7 +5,7 @@ header-img: img/home-bg.jpg
 email: hykami313@gmail.com
 description: "我的成长"
 keyword: ""
-url: "http://hy_vip.me"              # your host, for absolute URL
+url: "http://hyyy.me"              # your host, for absolute URL
 baseurl: "/blog"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
@@ -62,7 +62,7 @@ duoshuo_share: true                     # set to false if you want to use Commen
 ba_track_id: 4cc1f2d8f3067386cc5cdb626a202900
 # Google Analytics
 ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: hy_vip.me
+ga_domain: hyyy.me
 
 
 
@@ -83,7 +83,7 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 friends: [
     {
         title: "Yuan's Blog",
-        href: "http://hy_vip.me"
+        href: "http://hyyy.me"
     },{
         title: "Foo",
         href: "#"
