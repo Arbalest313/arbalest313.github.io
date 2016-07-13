@@ -12,15 +12,15 @@ tags:
     - 翻译
 ---
 
-> “It's on. ”
+> “It's oooooooooooonnnnnnnnn. ”
 
 
-##如何运用HealthKit的睡眠分析 Swift
->作者：[ANUSHK MITTAL](http://www.appcoda.com/author/anushkmittal/) 
->06/18/2016
->[原文](http://www.appcoda.com/sleep-analysis-healthkit/)
->
->翻译于7/10/2016, live with less share with more, [黄源](http://hyyy.me)
+## 如何运用HealthKit的睡眠分析 Swift
+> 作者：[ANUSHK MITTAL](http://www.appcoda.com/author/anushkmittal/) 
+> 06/18/2016
+> [原文](http://www.appcoda.com/sleep-analysis-healthkit/)
+> 
+> 翻译于7/10/2016, live with less share with more, [黄源](http://hyyy.me)
 
 今天，睡眠革命正在掀起一道旋风。 人们从没像今天这样关心他们睡眠的时间与睡眠的数据，并以数据作为自己睡眠状态的趋势标识。而这种分析通过硬件与软件的发展已经达到了一个新的高度。
 
@@ -28,15 +28,15 @@ Apple通过新的科技来获取用户个人的健康信息，并且安全的的
 
 这篇文章将带你快速进入与了解HealthKit，并且将展示你如何搭建一个简单的App来分析用户的睡眠数据。
 
-#简介
+# 简介
 如果你想创建一个与健康数据有关的iPhone App或者Watch App，HealthKit将会是你的得力助手。HealthKit的设计之初就是为了管理大量不同的数据。它整合来自不同数据源的数据，根据用户不同的行为表现。开发者同样可以获取独立单个数据源的数据，然后再自己管理整合数据。这些数据不仅仅可以用在身体，健康，营养等检测上，还可以用在睡眠质量的检测上。
 
 在接下来的文章中，我将会展示如何使用HealthKit框架来保存与获取睡眠分析数据在iOS里。同样这些方也可以被运用在watchOS里。
->请注意，以下分享是建立在Swfit 2.0与Xcode7.0以上的
+> 请注意，以下分享是建立在Swfit 2.0与Xcode7.0以上的
 
 在开始之前，请下载已经建立好的[初始项目](https://github.com/appcoda/SleepAnalysis/blob/master/SleepAnalysisStarter.zip?raw=true). 我已经为你创建好了用户界面和一些基础的函数。 当你运行初始项目时，请按下Start按钮，你会看见一个UI计时器用来展示时间的变化。
 
-#运用HealthKit
+# 运用HealthKit
 我们的目标是在用户点击 Start与 Stop 按钮时，分析与存储用户的睡眠分析数据。在开始使用HealthKit之前， 你必须在App Bundle里面申明你需要使用HealthKit。 在你的项目里面，找到target->Capabilities->HealthKit,设置为ON。
 
 ![](http://www.appcoda.com/wp-content/uploads/2016/05/HealthKit-allow-1024x640.png)
@@ -148,7 +148,7 @@ func saveSleepAnalysis() {
 
 当我们需要保存睡眠数据时，我们可以调用这个方法。
 
-#读取分析数据
+# 读取分析数据
 为了获取睡眠分析数据，我们需要先创建查询语句。首先你要使用`HKCategoryTypeIdentifierSleepAnalysis`标识来获取到相对应的`HKObjectType`类。然后你可以使用`startDate`与`endDate`来获取对应时间段内的数据。同事你还需要创建`sortDescriptor`来排序将会得到的对应查询结果。
 
 你的获取睡眠数据的代码也许会是这样的：
@@ -192,10 +192,10 @@ func retrieveSleepAnalysis() {
 
 这段代码借助询问HealthKit来获取所有睡眠分析数据，并且以降序的形式排序。接着打印出每一个查询结果的开始时间，结束时间与相应的样品类型（躺在床上或睡眠状态）。同时我还设置了只展示30个查询结果的限制。你可以使用`predicate`函数来设置你想要的开始与结束时间。
 
-#测试
+# 测试
 对于这个项目， 我使用`NSTimer`来显示我们按下Start按钮之后的时间。`NSDate`会被创建当我们点击Start与Stop按钮的时候，并用来标识时间段。在`stop`函数里，你可以调用`saveSleepAnalysis()`与`retrieveSleepAnalysis()`来获取与存储睡眠数据。
 
-```swfit
+``` swfit
 @IBAction func stop(sender: AnyObject) {
     endTime = NSDate()
     saveSleepAnalysis()
@@ -209,7 +209,7 @@ func retrieveSleepAnalysis() {
 ![](http://www.appcoda.com/wp-content/uploads/2016/06/sleep-analysis-test-1024x725.png)
 ![](http://www.appcoda.com/wp-content/uploads/2016/06/sleep-analysis-test-1240x878.png)
 
-#一些建议
+# 一些建议
 HealthKit是被设计来给开发者提供一个高效的平台，它让开发者简单的分享与获取用户数据并且排除任何可能的重复与不可靠的数据。苹果的审核非常明确的标识，使用HealthKit但不给任何明确提示的App将会被拒绝发布。
 
 任何写入虚假或者不正确数据的健康类型的App将会被拒绝。这代表着， 你不能像这篇文章一样很粗略或者简单的计算你的睡眠数据。你应该使用内置的感应数据来读取或者操作任何参数来避免任何计算失误。
