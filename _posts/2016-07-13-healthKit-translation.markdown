@@ -4,13 +4,16 @@ title:      "如何运用HealthKit的睡眠分析"
 subtitle:   "Swift"
 date:       2016-07-10
 author:     "yuan"
-header-img: "img/post-bg-js-version.jpg"
+header-img: "img/bg/20160713-sleep-analysis-bg.jpg"
 tags:
     - Swift
     - iOS
     - HealthKit
     - 翻译
 ---
+
+> “It's on. ”
+
 
 ##如何运用HealthKit的睡眠分析 Swift
 >作者：[ANUSHK MITTAL](http://www.appcoda.com/author/anushkmittal/) 
