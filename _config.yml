@@ -6,7 +6,7 @@ email: hykami313@gmail.com
 description: "我的成长"
 keyword: ""
 url: "http://hyyy.me"              # your host, for absolute URL
-baseurl: "/blog"         # for example, '/blog' if your blog hosted on 'host/blog'
+baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
