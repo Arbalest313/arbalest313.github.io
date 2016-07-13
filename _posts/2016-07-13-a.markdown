@@ -1,12 +1,12 @@
 ---
 layout:     post
-title:      "如何运用HealthKit的睡眠分析 Swift"
-subtitle:   ""
+title:      "如何运用HealthKit的睡眠分析"
+subtitle:   "Swift"
 date:       2016-07-10
 author:     "yuan"
 header-img: "img/post-bg-js-version.jpg"
 tags:
-    - 前端开发
+    - Swift
     - iOS
     - HealthKit
     - 翻译
@@ -16,8 +16,14 @@ tags:
 >作者：[ANUSHK MITTAL](http://www.appcoda.com/author/anushkmittal/) 
 >06/18/2016
 >[原文](http://www.appcoda.com/sleep-analysis-healthkit/)
->>翻译于7/10/2016, live with less share with more, 黄源
-今天，睡眠革命正在掀起一道旋风。 人们从没像今天这样关心他们睡眠的时间与睡眠的数据，并以数据作为自己睡眠状态的趋势标识。而这种分析通过硬件与软件的发展已经达到了一个新的高度。Apple通过新的科技来获取用户个人的健康信息，并且安全的的储存在了内置的Health App里面。 开发者不仅可以通过HealthKit来搭建健康类的App，开发者还可以获取关于用户的睡眠分析数据。这篇文章将带你快速进入与了解HealthKit，并且将展示你如何搭建一个简单的App来分析用户的睡眠数据。
+>
+>翻译于7/10/2016, live with less share with more, 黄源
+
+今天，睡眠革命正在掀起一道旋风。 人们从没像今天这样关心他们睡眠的时间与睡眠的数据，并以数据作为自己睡眠状态的趋势标识。而这种分析通过硬件与软件的发展已经达到了一个新的高度。
+
+Apple通过新的科技来获取用户个人的健康信息，并且安全的的储存在了内置的Health App里面。 开发者不仅可以通过HealthKit来搭建健康类的App，开发者还可以获取关于用户的睡眠分析数据。
+
+这篇文章将带你快速进入与了解HealthKit，并且将展示你如何搭建一个简单的App来分析用户的睡眠数据。
 
 #简介
 如果你想创建一个与健康数据有关的iPhone App或者Watch App，HealthKit将会是你的得力助手。HealthKit的设计之初就是为了管理大量不同的数据。它整合来自不同数据源的数据，根据用户不同的行为表现。开发者同样可以获取独立单个数据源的数据，然后再自己管理整合数据。这些数据不仅仅可以用在身体，健康，营养等检测上，还可以用在睡眠质量的检测上。
