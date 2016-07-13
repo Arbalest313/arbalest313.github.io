@@ -17,7 +17,7 @@ tags:
 >06/18/2016
 >[原文](http://www.appcoda.com/sleep-analysis-healthkit/)
 >
->翻译于7/10/2016, live with less share with more, 黄源
+>翻译于7/10/2016, live with less share with more, [黄源](http://hyyy.me)
 
 今天，睡眠革命正在掀起一道旋风。 人们从没像今天这样关心他们睡眠的时间与睡眠的数据，并以数据作为自己睡眠状态的趋势标识。而这种分析通过硬件与软件的发展已经达到了一个新的高度。
 
