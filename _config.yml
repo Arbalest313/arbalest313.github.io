@@ -1,5 +1,5 @@
 # Site settings
-title: Yuan'ss Blog
+title: Yuan's Blog
 SEOTitle:  我的成长| Yuan's Blog
 header-img: img/home-bg.jpg
 email: hykami313@gmail.com
@@ -68,7 +68,7 @@ ga_domain: hyyy.me
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "写写代码，聊聊设计，看看产品。世界那么大，你总会爱上他。"
+sidebar-about-description: "写写代码，聊聊设计，看看产品。世界那么大，你总会爱上他"
 sidebar-avatar:/img/avatar-yuan2.jpg     # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
