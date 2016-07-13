@@ -43,7 +43,11 @@ gems: [jekyll-paginate]
 markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
+  hard_wrap: false
 
+gems:
+   - jekyll-coffeescript
+   - jekyll-paginate
 
 
 # Disqus settings
