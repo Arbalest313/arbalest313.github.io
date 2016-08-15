@@ -18,9 +18,14 @@ tags:
 
 如果你经常使用格瓦拉，我想你也许就会注意到，格瓦拉的首页就有着这么一个有意思的视差滚动视图。让我们来尝试实现它吧。
 
-<center>![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/Gewala.gif?raw=true)</center>
+<center>
+![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/Gewala.gif?raw=true)
+</center>
+
 ## 思考与观察
-<center>![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/Gewala-Slow.gif?raw=true)</center>
+<center>
+![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/Gewala-Slow.gif?raw=true)
+</center>
 
 
 在滑动`scrollView`时，仔细观察，你会发现在这个视差里面包含了两组动画
@@ -169,7 +174,9 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 
 ```
 就可以大完成一个简单的视差滚动视图了。看一下效果：
-<center>![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true)</center>
+<center>
+![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true)
+</center>
 完整的代码可以在[这里](https://github.com/Arbalest313/HYRollingBanner)下载。
 
 但是这是你会发现，当你滑动你的视图时，视差滚动视图并没有像格瓦拉那样有如丝般顺滑的感觉。格瓦拉到底做了什么呢，你可以不妨思考一下？[下一篇，将优化我们的体验，带来如丝般的顺滑体验]()
