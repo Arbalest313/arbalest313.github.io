@@ -106,6 +106,7 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 }
 
 ```
+
 ## 实现
 
 此外，为了能让这个视图循环滚动，我们还需要监听滚动时`UIScrollView`的`contentOffset.x`。在监听过程中，我们可以根据`self.portion`来调整每个视图的移动速度，以此来达到一个滚动视差的效果
