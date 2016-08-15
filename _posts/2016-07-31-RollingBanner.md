@@ -59,7 +59,8 @@ _leftImage.frame = CGRectMake(self.bounds.size.width * (1- self.portion), 0, 0, 
 _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, self.bounds.size.width, self.bounds.size.height);
 [self insertSubview:self.rightImage belowSubview:self.midContainter];
 ```
-##初始化设置
+
+## 初始化设置
 知道我们需要那个View，下面就是对一我们的ScrollView和它的视图进行初始化的设置了：
 
 ```obj-c
@@ -105,7 +106,7 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 }
 
 ```
-##实现
+## 实现
 
 此外，为了能让这个视图循环滚动，我们还需要监听滚动时`UIScrollView`的`contentOffset.x`。在监听过程中，我们可以根据`self.portion`来调整每个视图的移动速度，以此来达到一个滚动视差的效果
 
