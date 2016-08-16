@@ -5,12 +5,12 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 16 Aug 2016 13:59:21 +0800</pubDate>
-    <lastBuildDate>Tue, 16 Aug 2016 13:59:21 +0800</lastBuildDate>
+    <pubDate>Tue, 16 Aug 2016 14:33:18 +0800</pubDate>
+    <lastBuildDate>Tue, 16 Aug 2016 14:33:18 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>ScrollView 视差滚动的轮播图</title>
+        <title>iOS/UIScrollView 视差滚动轮播图</title>
         <description>&lt;h2 id=&quot;section&quot;&gt;前言&lt;/h2&gt;
 &lt;p&gt;在绝大多数的APP中，产品经理都会要求有一个轮播图来展示重要的图片与信息。而大多数的轮播图都是比较僵硬的Side By Side的滑动动画。如何让这一个枯燥的UI组件变得有趣，并且有丝滑办的感觉呢？我想滚动视差会是一个不错的选择。&lt;/p&gt;
 
