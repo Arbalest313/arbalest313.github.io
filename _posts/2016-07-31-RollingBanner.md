@@ -40,7 +40,7 @@ tags:
 @property (nonatomic, strong)UIImageView * leftImage;
 @property (nonatomic, strong)UIImageView * rightImage;
 ```
-其中，midImage是加载在midContainer上的，以产生第一组动画。而midContainer、leftImage、rightImage这三个视图有着不同的，层次之间的图层关系，中间图层（midContainer）总是处于另外两个图层的上方，同时三个图层的在ScrollView的位置些许的重叠， 这里我们使用一个`portion`来统一标识重叠的比例
+其中，midImage是加载在midContainer上的，以产生第一组动画。而`midContainer、leftImage、rightImage`这三个视图有着不同的，层次之间的图层关系，中间图层（midContainer）总是处于另外两个图层的上方，同时三个图层的在`ScrollView`中的位置些许的重叠， 这里我们使用一个`portion`来统一标识重叠的比例
 
 ```obj-c
 //中间视图与它的图片
@@ -61,7 +61,7 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 ```
 
 ## 初始化设置
-知道我们需要那个View，下面就是对一我们的ScrollView和它的视图进行初始化的设置了：
+知道我们需要那个View，下面就是对一我们的`ScrollView`和它的视图进行初始化的设置了：
 
 ```obj-c
 //初始化设置
@@ -134,7 +134,7 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
     view.frame = frame;
 }
 ```
-这行代码做了的功能：
+这几行代码的意义：
 
 1. 记录`scrollview` 相对于初始位置的移动距离moveX
 2. 使`leftimage` 与 `rightImage`移动的速率与滑动的移动速率moveX保持一个差值。
@@ -142,9 +142,9 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 4. 如果当前的moveX已经已经是一张图片的宽度时，调起`completedHandler()`
 4. 记录本次的moveX距离到lastMoveX里，以方便下一次使用。
 
-> 由于RunTime的缘故，ScrollView 的contentoffset不会记录的非常准确。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，`completedHandler()`只被调起一次。
+> 由于RunLoop的缘故，`ScrollView`代理对的`contentoffset`记录的不会非常准确。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，`completedHandler()`只被调起一次。
 
-在`completedHandler()`里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是letfImage还是RightImage,我们需要把这张图片重新赋值到midContainer的midImage上面，并根据这个图片的`index`计算出新的leftImage与rightImage，并欺骗用户，把scrollView的offset重新设置为初始值(显示中间视图)：
+在`completedHandler()`里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是`letfImage`还是`rightImage`,我们需要把这张图片重新赋值到`midContainer`的`midImage`上面，并根据这个图片的`index`计算出新的`leftImage与rightImage`，并欺骗用户，把`scrollView`的`offset`重新设置为初始值(显示中间视图)：
 
 ```obj-c
 //重新计算letimage, midImage,rightImage的index
@@ -170,7 +170,7 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 ```
 做完这些，在设置ScrollView的`pagingEnabled `属性为`YES`
 
-```
+```objc
     self.pagingEnabled = YES;
 
 ```
