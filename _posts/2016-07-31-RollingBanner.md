@@ -169,7 +169,7 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 ```objc
     self.pagingEnabled = YES;
 ```
-就可以大完成一个简单的视差滚动视图了。看一下效果：
+就可以大致完成一个简单的视差滚动视图了。看一下效果：
 ![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true)
 
 完整的代码可以在[这里](https://github.com/Arbalest313/HYRollingBanner)下载。

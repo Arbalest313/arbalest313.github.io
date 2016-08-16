@@ -5,8 +5,8 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 16 Aug 2016 13:56:59 +0800</pubDate>
-    <lastBuildDate>Tue, 16 Aug 2016 13:56:59 +0800</lastBuildDate>
+    <pubDate>Tue, 16 Aug 2016 13:59:21 +0800</pubDate>
+    <lastBuildDate>Tue, 16 Aug 2016 13:59:21 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -170,7 +170,7 @@
 &lt;div class=&quot;language-objc highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pagingEnabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;YES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;就可以大完成一个简单的视差滚动视图了。看一下效果：
+&lt;p&gt;就可以大致完成一个简单的视差滚动视图了。看一下效果：
 &lt;img src=&quot;https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;完整的代码可以在&lt;a href=&quot;https://github.com/Arbalest313/HYRollingBanner&quot;&gt;这里&lt;/a&gt;下载。&lt;/p&gt;
