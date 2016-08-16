@@ -114,9 +114,9 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 ```objc
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat moveX = scrollView.contentOffset.x - self.bounds.size.width;
-	[self adjsutSubViews:moveX];
-	if (fabs(moveX) >= self.bounds.size.width && fabs(self.lastMoveX) < self.bounds.size.width) {
-        [self completedHandler];
+    [self adjsutSubViews:moveX];
+    if (fabs(moveX) >= self.bounds.size.width && fabs(self.lastMoveX) < self.bounds.size.width) {
+    	[self completedHandler];
     }
     self.lastMoveX = moveX;
 }
