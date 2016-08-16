@@ -5,8 +5,8 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 16 Aug 2016 16:12:35 +0800</pubDate>
-    <lastBuildDate>Tue, 16 Aug 2016 16:12:35 +0800</lastBuildDate>
+    <pubDate>Tue, 16 Aug 2016 16:20:52 +0800</pubDate>
+    <lastBuildDate>Tue, 16 Aug 2016 16:20:52 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -56,7 +56,9 @@
 &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;insertSubview&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rightImage&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;belowSubview&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;midContainter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://hyyy.me/img/posts/RollingBanner/GewalaBanner.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;格瓦拉的实际视图结构:
+&lt;img src=&quot;https://github.com/Arbalest313/arbalest313.github.io/blob/master/img/posts/RollingBanner/GewalaBanner.jpg?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section-2&quot;&gt;初始化设置&lt;/h2&gt;
 &lt;p&gt;知道我们需要哪些Views，下面就是对一我们的&lt;code class=&quot;highlighter-rouge&quot;&gt;ScrollView&lt;/code&gt;和它的视图进行初始化的设置了：&lt;/p&gt;

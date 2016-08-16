@@ -59,7 +59,9 @@ _leftImage.frame = CGRectMake(self.bounds.size.width * (1- self.portion), 0, 0, 
 _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, self.bounds.size.width, self.bounds.size.height);
 [self insertSubview:self.rightImage belowSubview:self.midContainter];
 ```
-![](http://hyyy.me/img/posts/RollingBanner/GewalaBanner.jpg)
+
+格瓦拉的实际视图结构:
+![](https://github.com/Arbalest313/arbalest313.github.io/blob/master/img/posts/RollingBanner/GewalaBanner.jpg?raw=true)
 
 ## 初始化设置
 知道我们需要哪些Views，下面就是对一我们的`ScrollView`和它的视图进行初始化的设置了：
