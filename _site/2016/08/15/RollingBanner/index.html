@@ -175,7 +175,7 @@
                 post-container">
 
 				<h2 id="section">前言</h2>
-<p>在绝大多数的APP中，产品经理都会要求有一个轮播图来展示重要的图片与信息。而大多数的轮播图都是比较僵硬的Side By Side的滑动动画。如何让这一个枯燥的UI组件变得有趣，并且有丝滑办的感觉呢？我想滚动视差会是一个不错的选择。</p>
+<p>在绝大多数的APP中，产品经理都会要求有一个轮播图来展示重要的图片与信息。而大多数的轮播图都是比较僵硬的Side By Side的滑动动画。如何让这一个枯燥的UI组件变得有趣，并且有丝滑般的感觉呢？我想滚动视差会是一个不错的选择。</p>
 
 <p>如果你经常使用格瓦拉，我想你也许就会注意到，格瓦拉的首页就有着这么一个有意思的视差滚动视图。让我们来尝试实现它吧。</p>
 
@@ -212,7 +212,7 @@
 
 <span class="c1">//左侧视图
 </span><span class="n">_leftImage</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
-<span class="p">[</span><span class="n">self</span> <span class="nf">insertSubview</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">leftImage</span> <span class="nf">belowSubview</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">midImage</span><span class="p">];</span>
+<span class="p">[</span><span class="n">self</span> <span class="nf">insertSubview</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">leftImage</span> <span class="nf">belowSubview</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">midContainter</span><span class="p">];</span>
 
 <span class="c1">//右侧视图
 </span><span class="n">_rightImage</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>

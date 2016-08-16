@@ -14,7 +14,7 @@ tags:
 ---
 
 ## 前言
-在绝大多数的APP中，产品经理都会要求有一个轮播图来展示重要的图片与信息。而大多数的轮播图都是比较僵硬的Side By Side的滑动动画。如何让这一个枯燥的UI组件变得有趣，并且有丝滑办的感觉呢？我想滚动视差会是一个不错的选择。
+在绝大多数的APP中，产品经理都会要求有一个轮播图来展示重要的图片与信息。而大多数的轮播图都是比较僵硬的Side By Side的滑动动画。如何让这一个枯燥的UI组件变得有趣，并且有丝滑般的感觉呢？我想滚动视差会是一个不错的选择。
 
 如果你经常使用格瓦拉，我想你也许就会注意到，格瓦拉的首页就有着这么一个有意思的视差滚动视图。让我们来尝试实现它吧。
 
@@ -53,7 +53,7 @@ _midImage.frame = self.midContainter.bounds;
 
 //左侧视图
 _leftImage.frame = CGRectMake(self.bounds.size.width * (1- self.portion), 0, 0, self.bounds.size.width, self.bounds.size.height);
-[self insertSubview:self.leftImage belowSubview:self.midImage];
+[self insertSubview:self.leftImage belowSubview:self.midContainter];
 
 //右侧视图
 _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, self.bounds.size.width, self.bounds.size.height);
