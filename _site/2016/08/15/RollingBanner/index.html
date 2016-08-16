@@ -188,149 +188,149 @@
 <p>在滑动<code class="highlighter-rouge">scrollView</code>时，仔细观察，你会发现在这个视差里面包含了两组动画</p>
 
 <ul>
-  <li>面当你向右滑动时，中间视图会跟随你的手指一起向右移动，但中间视图里面的图片则会朝左边的方向移动。 你向左滑动是则相反。</li>
+  <li>每当你向右滑动时，中间视图会跟随你的手指一起向右移动，但中间视图里面的图片则会朝左边的方向移动。 你向左滑动是则相反。</li>
   <li>每当你向右滑动时，中间视图会跟随你的手指一起向右滑动，而左边的视图却朝向相反的方向移动。你向左滑动是则相反，右边的视图却朝向相反的方向移动</li>
 </ul>
 
-<p>这时，我想你就应该想到它并不是像大多数的滚动试图一样，不使用N(你需要显示的图片数)+2个视图扑在<code class="highlighter-rouge">UIScrollView上</code>来实现, 而是使用了4个主要的视图:</p>
+<p>这时，我想你就应该想到，它并不是像大多数的滚动试图一样。不是使用N(你需要显示的图片数)+2个视图扑在<code class="highlighter-rouge">UIScrollView上</code>来实现, 而是使用了4个主要的视图:</p>
 
-<pre><code class="language-obj-c">@property (nonatomic, strong)UIView      * midContainter;
-@property (nonatomic, strong)UIImageView * midImage;
-@property (nonatomic, strong)UIImageView * leftImage;
-@property (nonatomic, strong)UIImageView * rightImage;
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span><span class="n">UIView</span>      <span class="o">*</span> <span class="n">midContainter</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span><span class="n">UIImageView</span> <span class="o">*</span> <span class="n">midImage</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span><span class="n">UIImageView</span> <span class="o">*</span> <span class="n">leftImage</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span><span class="n">UIImageView</span> <span class="o">*</span> <span class="n">rightImage</span><span class="p">;</span>
 </code></pre>
-<p>其中，midImage是加载在midContainer上的，以产生第一组动画。而<code class="highlighter-rouge">midContainer、leftImage、rightImage</code>这三个视图有着不同的，层次之间的图层关系，中间图层（midContainer）总是处于另外两个图层的上方，同时三个图层的在<code class="highlighter-rouge">ScrollView</code>中的位置些许的重叠， 这里我们使用一个<code class="highlighter-rouge">portion</code>来统一标识重叠的比例</p>
+</div>
+<p>其中，<code class="highlighter-rouge">midImage</code>是加载在<code class="highlighter-rouge">midContainer</code>上的，以产生第一组动画。而<code class="highlighter-rouge">midContainer、leftImage、rightImage</code>这三个视图有着不同的，层次之间的图层关系，中间图层<code class="highlighter-rouge">midContainer</code>总是处于另外两个图层的上方，同时三个图层的在<code class="highlighter-rouge">ScrollView</code>中的位置些许的重叠， 这里我们使用一个<code class="highlighter-rouge">portion</code>来统一标识重叠的比例</p>
 
-<pre><code class="language-obj-c">//中间视图与它的图片
-_midContainter.frame = CGRectMake(self.bounds.size.width, 0, self.bounds.size.width, self.bounds.size.height);
-_midContainter.clipsToBounds = YES;//超出bounds rect的视图讲不会显示
-[self addSubview:_midContainter];
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="c1">//中间视图与它的图片
+</span><span class="n">_midContainter</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+<span class="n">_midContainter</span><span class="p">.</span><span class="n">clipsToBounds</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span><span class="c1">//超出bounds rect的视图讲不会显示
+</span><span class="p">[</span><span class="n">self</span> <span class="nf">addSubview</span><span class="p">:</span><span class="n">_midContainter</span><span class="p">];</span>
 
-_midImage.frame = self.midContainter.bounds;
-[self.midContainter addSubview:_midImage];
+<span class="n">_midImage</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">midContainter</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+<span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">midContainter</span> <span class="nf">addSubview</span><span class="p">:</span><span class="n">_midImage</span><span class="p">];</span>
 
-//左侧视图
-_leftImage.frame = CGRectMake(self.bounds.size.width * (1- self.portion), 0, 0, self.bounds.size.width, self.bounds.size.height);
-[self insertSubview:self.leftImage belowSubview:self.midImage];
+<span class="c1">//左侧视图
+</span><span class="n">_leftImage</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+<span class="p">[</span><span class="n">self</span> <span class="nf">insertSubview</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">leftImage</span> <span class="nf">belowSubview</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">midImage</span><span class="p">];</span>
 
-//右侧视图
-_rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, self.bounds.size.width, self.bounds.size.height);
-[self insertSubview:self.rightImage belowSubview:self.midContainter];
+<span class="c1">//右侧视图
+</span><span class="n">_rightImage</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+<span class="p">[</span><span class="n">self</span> <span class="nf">insertSubview</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">rightImage</span> <span class="nf">belowSubview</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">midContainter</span><span class="p">];</span>
 </code></pre>
+</div>
 
 <h2 id="section-2">初始化设置</h2>
-<p>知道我们需要那个View，下面就是对一我们的<code class="highlighter-rouge">ScrollView</code>和它的视图进行初始化的设置了：</p>
+<p>知道我们需要哪些Views，下面就是对一我们的<code class="highlighter-rouge">ScrollView</code>和它的视图进行初始化的设置了：</p>
 
-<pre><code class="language-obj-c">//初始化设置
-- (void)setup{
-    self.contentSize = CGSizeMake(self.bounds.size.width*3, 0);
-    self.contentOffset = CGPointMake(self.bounds.size.width, 0);
-    self.portion = 0.6f;
-    self.pagingEnabled = NO;
-    self.showsVerticalScrollIndicator = NO;
-    self.showsHorizontalScrollIndicator = NO;
-    self.bounces = NO;
-    self.layer.masksToBounds = YES;
-}
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="c1">//初始化设置
+</span><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">setup</span><span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">contentSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">contentOffset</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">portion</span> <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">pagingEnabled</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">showsVerticalScrollIndicator</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">showsHorizontalScrollIndicator</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">bounces</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">masksToBounds</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+<span class="p">}</span>
 
-//根据currentIndex重置srollView为最开始状态。
-- (void)resetSubViews {
-    self.midImage.image = self.sourceArr[self.pageControl.currentPage];
-    self.midImage.tag = self.pageControl.currentPage;
-    self.midImage.frame = self.midContainter.bounds;
+<span class="c1">//根据currentIndex重置srollView为最开始状态。
+</span><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">resetSubViews</span> <span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">midImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">sourceArr</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="nf">currentPage</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">midImage</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">midImage</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">midContainter</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
     
-    NSInteger leftIndex = self.pageControl.currentPage - 1;
-    if (leftIndex &lt; 0) {
-        leftIndex = self.sourceArr.count - 1;
-    }
-    self.leftImage.image = self.sourceArr[leftIndex];
-    self.leftImage.tag = leftIndex;
-    self.leftImage.frame = CGRectMake(self.bounds.size.width * (1- self.portion), 0, 0, self.bounds.size.width, self.bounds.size.height);
+    <span class="n">NSInteger</span> <span class="n">leftIndex</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">leftIndex</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">leftIndex</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">sourceArr</span><span class="p">.</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">leftImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">sourceArr</span><span class="p">[</span><span class="nf">leftIndex</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">leftImage</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">leftIndex</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">leftImage</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
     
-    NSInteger rightIndex = self.pageControl.currentPage + 1;
-    if (rightIndex &gt;= self.sourceArr.count) {
-        rightIndex = 0;
-    }
-    self.rightImage.image = self.sourceArr[rightIndex];
-    self.rightImage.tag = rightIndex;
-    self.rightImage.frame = CGRectMake(self.bounds.size.width * (1 +  self.portion), 0, self.bounds.size.width, self.bounds.size.height);
+    <span class="n">NSInteger</span> <span class="n">rightIndex</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rightIndex</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">sourceArr</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">rightIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">rightImage</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">sourceArr</span><span class="p">[</span><span class="nf">rightIndex</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">rightImage</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">rightIndex</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">rightImage</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span>  <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
     
-    [self bringSubviewToFront:self.midContainter];
-    [self sendSubviewToBack:self.leftImage];
-    [self sendSubviewToBack:self.rightImage];
-    [self setContentOffset:CGPointMake(self.bounds.size.width, 0) animated:NO];    
-    self.currentIndex = self.pageControl.currentPage;
-}
+    <span class="p">[</span><span class="n">self</span> <span class="nf">bringSubviewToFront</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">midContainter</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nf">sendSubviewToBack</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">leftImage</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nf">sendSubviewToBack</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">rightImage</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nf">setContentOffset</span><span class="p">:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="nf">animated</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>    
+    <span class="n">self</span><span class="p">.</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span><span class="p">;</span>
+<span class="p">}</span>
 
 </code></pre>
+</div>
 
 <h2 id="section-3">实现</h2>
 
 <p>此外，为了能让这个视图循环滚动，我们还需要监听滚动时<code class="highlighter-rouge">UIScrollView</code>的<code class="highlighter-rouge">contentOffset.x</code>。在监听过程中，我们可以根据<code class="highlighter-rouge">self.portion</code>来调整每个视图的移动速度，以此来达到一个滚动视差的效果</p>
 
-<pre><code class="language-obj-c">- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat moveX = scrollView.contentOffset.x - self.bounds.size.width;
-	[self adjsutSubViews:moveX];
-	if (fabs(moveX) &gt;= self.bounds.size.width &amp;&amp; fabs(self.lastMoveX) &lt; self.bounds.size.width) {
-        [self completedHandler];
-    }
-    self.lastMoveX = moveX;
-}
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">scrollViewDidScroll</span><span class="p">:(</span><span class="n">UIScrollView</span> <span class="o">*</span><span class="p">)</span><span class="nv">scrollView</span> <span class="p">{</span>
+    <span class="n">CGFloat</span> <span class="n">moveX</span> <span class="o">=</span> <span class="n">scrollView</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+	<span class="p">[</span><span class="n">self</span> <span class="nf">adjsutSubViews</span><span class="p">:</span><span class="n">moveX</span><span class="p">];</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">moveX</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">&amp;&amp;</span> <span class="n">fabs</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">lastMoveX</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nf">completedHandler</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">lastMoveX</span> <span class="o">=</span> <span class="n">moveX</span><span class="p">;</span>
+<span class="p">}</span>
 
-- (void)adjustSubViews:(CGFloat)moveX{
-    [self move:self.midImage from:0 byX:moveX * (1 - self.portion)];
-    [self move:self.leftImage from:self.bounds.size.width * (1- self.portion) byX:moveX * (1- self.portion)];
-    [self move:self.rightImage from:self.bounds.size.width * (1 + self.portion) byX:(moveX) *  (1 - self.portion)];
-}
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">adjustSubViews</span><span class="p">:(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">moveX</span><span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nf">move</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">midImage</span> <span class="nf">from</span><span class="p">:</span><span class="mi">0</span> <span class="n">byX</span><span class="o">:</span><span class="n">moveX</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">)];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nf">move</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">leftImage</span> <span class="nf">from</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">)</span> <span class="n">byX</span><span class="o">:</span><span class="n">moveX</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">)];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nf">move</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">rightImage</span> <span class="nf">from</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">)</span> <span class="n">byX</span><span class="o">:</span><span class="p">(</span><span class="n">moveX</span><span class="p">)</span> <span class="o">*</span>  <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">portion</span><span class="p">)];</span>
+<span class="p">}</span>
 
-#pragma mark - tools
-- (void)move:(UIView *)view from:(CGFloat)start byX:(CGFloat)x {
-    CGRect frame = view.frame;
-    frame.origin.x = x + start;
-    view.frame = frame;
-}
+<span class="cp">#pragma mark - tools
+</span><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">move</span><span class="p">:(</span><span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">view</span> <span class="nf">from</span><span class="p">:(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">start</span> <span class="nf">byX</span><span class="p">:(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">x</span> <span class="p">{</span>
+    <span class="n">CGRect</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">;</span>
+    <span class="n">frame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">start</span><span class="p">;</span>
+    <span class="n">view</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre>
+</div>
 <p>这几行代码的意义：</p>
 
 <ol>
-  <li>记录<code class="highlighter-rouge">scrollview</code> 相对于初始位置的移动距离moveX</li>
-  <li>使<code class="highlighter-rouge">leftimage</code> 与 <code class="highlighter-rouge">rightImage</code>移动的速率与滑动的移动速率moveX保持一个差值。</li>
+  <li>记录<code class="highlighter-rouge">scrollview</code> 相对于初始位置的移动距离<code class="highlighter-rouge">moveX</code></li>
+  <li>使<code class="highlighter-rouge">leftimage</code> 与 <code class="highlighter-rouge">rightImage</code>移动的速率与滑动距离<code class="highlighter-rouge">moveX</code>保持一个差值。</li>
   <li>使<code class="highlighter-rouge">midImage</code>与他的父视图<code class="highlighter-rouge">midContainer</code>的移动速率保持不一致。注意我们这里移动的是<code class="highlighter-rouge">midContainer</code>里的图片而不是<code class="highlighter-rouge">midContainer</code></li>
-  <li>如果当前的moveX已经已经是一张图片的宽度时，调起<code class="highlighter-rouge">completedHandler()</code></li>
-  <li>记录本次的moveX距离到lastMoveX里，以方便下一次使用。</li>
+  <li>如果当前的<code class="highlighter-rouge">moveX</code>已经已经是一张图片的宽度时，调起<code class="highlighter-rouge">completedHandler()</code></li>
+  <li>记录本次的<code class="highlighter-rouge">moveX</code>距离到<code class="highlighter-rouge">lastMoveX</code>里，以方便下一次使用。</li>
 </ol>
 
 <blockquote>
-  <p>由于RunLoop的缘故，<code class="highlighter-rouge">ScrollView</code>代理对的<code class="highlighter-rouge">contentoffset</code>记录的不会非常准确。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，<code class="highlighter-rouge">completedHandler()</code>只被调起一次。</p>
+  <p>由于RunLoop的缘故，<code class="highlighter-rouge">ScrollView</code>代理对<code class="highlighter-rouge">contentoffset</code>记录的不会非常准确。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，<code class="highlighter-rouge">completedHandler()</code>只被调起一次。不然可能会重复调用<code class="highlighter-rouge">completedHandler()</code></p>
 </blockquote>
 
-<p>在<code class="highlighter-rouge">completedHandler()</code>里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是<code class="highlighter-rouge">letfImage</code>还是<code class="highlighter-rouge">rightImage</code>,我们需要把这张图片重新赋值到<code class="highlighter-rouge">midContainer</code>的<code class="highlighter-rouge">midImage</code>上面，并根据这个图片的<code class="highlighter-rouge">index</code>计算出新的<code class="highlighter-rouge">leftImage与rightImage</code>，并欺骗用户，把<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">offset</code>重新设置为初始值(显示中间视图)：</p>
+<p>在<code class="highlighter-rouge">completedHandler()</code>里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是<code class="highlighter-rouge">letfImage</code>还是<code class="highlighter-rouge">rightImage</code>,我们需要把这张图片重新赋值到<code class="highlighter-rouge">midContainer</code>的<code class="highlighter-rouge">midImage</code>上面，并根据这个图片的<code class="highlighter-rouge">index</code>计算出新的<code class="highlighter-rouge">leftImage</code>与<code class="highlighter-rouge">rightImage</code>，并欺骗用户。调用<code class="highlighter-rouge">resetSubViews()</code>,把<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">offset</code>重新设置为初始值(显示中间视图)：</p>
 
-<pre><code class="language-obj-c">//重新计算letimage, midImage,rightImage的index
-- (void)completedHandler{
-    CGFloat moveX = self.contentOffset.x - self.bounds.size.width;
-    if (fabs(moveX) &gt;= self.bounds.size.width) {
-        
-        if (moveX &gt; 0 &amp;&amp; self.pageControl.currentPage + 1 &lt; self.sourceArr.count) {
-            self.pageControl.currentPage++;
-        }else if (moveX &gt;0 &amp;&amp; self.pageControl.currentPage +1 == self.sourceArr.count){
-            self.pageControl.currentPage = 0;
-        }
-        else if (self.pageControl.currentPage &gt;= 1){
-            self.pageControl.currentPage--;
-        }else if (self.pageControl.currentPage == 0 &amp;&amp; moveX &lt; 0)
-        {
-            self.pageControl.currentPage = self.sourceArr.count - 1;
-        }
-        [self resetSubViews];
-    }
-
-}
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="c1">//重新计算letimage, midImage,rightImage的index
+</span><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">completedHandler</span><span class="p">{</span>
+    <span class="n">CGFloat</span> <span class="n">moveX</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">moveX</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">moveX</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">sourceArr</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">moveX</span> <span class="o">&gt;</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">sourceArr</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">){</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">moveX</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">sourceArr</span><span class="p">.</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nf">resetSubViews</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre>
+</div>
 <p>做完这些，在设置ScrollView的<code class="highlighter-rouge">pagingEnabled </code>属性为<code class="highlighter-rouge">YES</code></p>
 
 <div class="language-objc highlighter-rouge"><pre class="highlight"><code>    <span class="n">self</span><span class="p">.</span><span class="n">pagingEnabled</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
-
 </code></pre>
 </div>
 <p>就可以大完成一个简单的视差滚动视图了。看一下效果：

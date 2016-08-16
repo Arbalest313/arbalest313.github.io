@@ -29,20 +29,20 @@ tags:
 
 在滑动`scrollView`时，仔细观察，你会发现在这个视差里面包含了两组动画
 
-* 面当你向右滑动时，中间视图会跟随你的手指一起向右移动，但中间视图里面的图片则会朝左边的方向移动。 你向左滑动是则相反。
+* 每当你向右滑动时，中间视图会跟随你的手指一起向右移动，但中间视图里面的图片则会朝左边的方向移动。 你向左滑动是则相反。
 * 每当你向右滑动时，中间视图会跟随你的手指一起向右滑动，而左边的视图却朝向相反的方向移动。你向左滑动是则相反，右边的视图却朝向相反的方向移动
 
-这时，我想你就应该想到它并不是像大多数的滚动试图一样，不使用N(你需要显示的图片数)+2个视图扑在`UIScrollView上`来实现, 而是使用了4个主要的视图:
+这时，我想你就应该想到，它并不是像大多数的滚动试图一样。不是使用N(你需要显示的图片数)+2个视图扑在`UIScrollView上`来实现, 而是使用了4个主要的视图:
 
-```obj-c
+```objc
 @property (nonatomic, strong)UIView      * midContainter;
 @property (nonatomic, strong)UIImageView * midImage;
 @property (nonatomic, strong)UIImageView * leftImage;
 @property (nonatomic, strong)UIImageView * rightImage;
 ```
-其中，midImage是加载在midContainer上的，以产生第一组动画。而`midContainer、leftImage、rightImage`这三个视图有着不同的，层次之间的图层关系，中间图层（midContainer）总是处于另外两个图层的上方，同时三个图层的在`ScrollView`中的位置些许的重叠， 这里我们使用一个`portion`来统一标识重叠的比例
+其中，`midImage`是加载在`midContainer`上的，以产生第一组动画。而`midContainer、leftImage、rightImage`这三个视图有着不同的，层次之间的图层关系，中间图层`midContainer`总是处于另外两个图层的上方，同时三个图层的在`ScrollView`中的位置些许的重叠， 这里我们使用一个`portion`来统一标识重叠的比例
 
-```obj-c
+```objc
 //中间视图与它的图片
 _midContainter.frame = CGRectMake(self.bounds.size.width, 0, self.bounds.size.width, self.bounds.size.height);
 _midContainter.clipsToBounds = YES;//超出bounds rect的视图讲不会显示
@@ -61,9 +61,9 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 ```
 
 ## 初始化设置
-知道我们需要那个View，下面就是对一我们的`ScrollView`和它的视图进行初始化的设置了：
+知道我们需要哪些Views，下面就是对一我们的`ScrollView`和它的视图进行初始化的设置了：
 
-```obj-c
+```objc
 //初始化设置
 - (void)setup{
     self.contentSize = CGSizeMake(self.bounds.size.width*3, 0);
@@ -111,7 +111,7 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 
 此外，为了能让这个视图循环滚动，我们还需要监听滚动时`UIScrollView`的`contentOffset.x`。在监听过程中，我们可以根据`self.portion`来调整每个视图的移动速度，以此来达到一个滚动视差的效果
 
-```obj-c
+```objc
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat moveX = scrollView.contentOffset.x - self.bounds.size.width;
 	[self adjsutSubViews:moveX];
@@ -136,43 +136,38 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 ```
 这几行代码的意义：
 
-1. 记录`scrollview` 相对于初始位置的移动距离moveX
-2. 使`leftimage` 与 `rightImage`移动的速率与滑动的移动速率moveX保持一个差值。
+1. 记录`scrollview` 相对于初始位置的移动距离`moveX`
+2. 使`leftimage` 与 `rightImage`移动的速率与滑动距离`moveX`保持一个差值。
 3. 使`midImage`与他的父视图`midContainer`的移动速率保持不一致。注意我们这里移动的是`midContainer`里的图片而不是`midContainer`
-4. 如果当前的moveX已经已经是一张图片的宽度时，调起`completedHandler()`
-4. 记录本次的moveX距离到lastMoveX里，以方便下一次使用。
+4. 如果当前的`moveX`已经已经是一张图片的宽度时，调起`completedHandler()`
+4. 记录本次的`moveX`距离到`lastMoveX`里，以方便下一次使用。
 
-> 由于RunLoop的缘故，`ScrollView`代理对的`contentoffset`记录的不会非常准确。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，`completedHandler()`只被调起一次。
+> 由于RunLoop的缘故，`ScrollView`代理对`contentoffset`记录的不会非常准确。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，`completedHandler()`只被调起一次。不然可能会重复调用`completedHandler()`
 
-在`completedHandler()`里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是`letfImage`还是`rightImage`,我们需要把这张图片重新赋值到`midContainer`的`midImage`上面，并根据这个图片的`index`计算出新的`leftImage与rightImage`，并欺骗用户，把`scrollView`的`offset`重新设置为初始值(显示中间视图)：
+在`completedHandler()`里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是`letfImage`还是`rightImage`,我们需要把这张图片重新赋值到`midContainer`的`midImage`上面，并根据这个图片的`index`计算出新的`leftImage`与`rightImage`，并欺骗用户。调用`resetSubViews()`,把`scrollView`的`offset`重新设置为初始值(显示中间视图)：
 
-```obj-c
+```objc
 //重新计算letimage, midImage,rightImage的index
 - (void)completedHandler{
     CGFloat moveX = self.contentOffset.x - self.bounds.size.width;
     if (fabs(moveX) >= self.bounds.size.width) {
-        
         if (moveX > 0 && self.pageControl.currentPage + 1 < self.sourceArr.count) {
             self.pageControl.currentPage++;
-        }else if (moveX >0 && self.pageControl.currentPage +1 == self.sourceArr.count){
+        } else if (moveX >0 && self.pageControl.currentPage +1 == self.sourceArr.count) {
             self.pageControl.currentPage = 0;
-        }
-        else if (self.pageControl.currentPage >= 1){
+        } else if (self.pageControl.currentPage >= 1){
             self.pageControl.currentPage--;
-        }else if (self.pageControl.currentPage == 0 && moveX < 0)
-        {
+        } else if (self.pageControl.currentPage == 0 && moveX < 0) {
             self.pageControl.currentPage = self.sourceArr.count - 1;
         }
         [self resetSubViews];
     }
-
 }
 ```
 做完这些，在设置ScrollView的`pagingEnabled `属性为`YES`
 
 ```objc
     self.pagingEnabled = YES;
-
 ```
 就可以大完成一个简单的视差滚动视图了。看一下效果：
 ![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true)
