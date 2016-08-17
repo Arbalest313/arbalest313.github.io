@@ -5,8 +5,8 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 17 Aug 2016 17:10:01 +0800</pubDate>
-    <lastBuildDate>Wed, 17 Aug 2016 17:10:01 +0800</lastBuildDate>
+    <pubDate>Wed, 17 Aug 2016 17:13:27 +0800</pubDate>
+    <lastBuildDate>Wed, 17 Aug 2016 17:13:27 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -106,11 +106,11 @@
 &lt;/div&gt;
 &lt;p&gt;到这里，我们使用targetContentOffset来实现Paging的效果就结束了。 我们来看一下效果对比：&lt;/p&gt;
 
-&lt;p&gt;targetContentOffset
-&lt;img src=&quot;https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBTargetX-C.gif?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;PageEnabled
-&lt;img src=&quot;https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;center&gt;targetContentOffset&lt;/center&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBTargetX-C.gif?raw=true&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+&lt;center&gt;pageEnable&lt;/center&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;GIF可能不是很明显，如果你&lt;a href=&quot;https://github.com/Arbalest313/HYRollingBanner&quot;&gt;下载了项目&lt;/a&gt;，运行起来。你将会看到非常明显的差异&lt;/p&gt;
 

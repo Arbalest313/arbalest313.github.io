@@ -105,10 +105,10 @@ tags:
 ```
 到这里，我们使用targetContentOffset来实现Paging的效果就结束了。 我们来看一下效果对比：
 
-targetContentOffset
+<center>targetContentOffset</center>
 ![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBTargetX-C.gif?raw=true)
-
-PageEnabled
+<br>
+<center>pageEnable</center>
 ![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true)
 
 GIF可能不是很明显，如果你[下载了项目](https://github.com/Arbalest313/HYRollingBanner)，运行起来。你将会看到非常明显的差异
