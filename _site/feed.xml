@@ -5,8 +5,8 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 17 Aug 2016 17:13:27 +0800</pubDate>
-    <lastBuildDate>Wed, 17 Aug 2016 17:13:27 +0800</lastBuildDate>
+    <pubDate>Wed, 17 Aug 2016 20:38:11 +0800</pubDate>
+    <lastBuildDate>Wed, 17 Aug 2016 20:38:11 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -70,7 +70,7 @@
 &lt;/div&gt;
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;注意&lt;/code&gt;在这里我们做了一些优化，当滑动被判断为cancel时，我们并没有直接把其实位置&lt;code class=&quot;highlighter-rouge&quot;&gt;self.bounds.size.width &lt;/code&gt;赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;targetContentOffset-&amp;gt;x&lt;/code&gt;。那是因为，经常我们的滑动的时候会伴随加速度&lt;code class=&quot;highlighter-rouge&quot;&gt;velocity.x&lt;/code&gt;。当&lt;code class=&quot;highlighter-rouge&quot;&gt;targetContentOffset-&amp;gt;x&lt;/code&gt;与&lt;code class=&quot;highlighter-rouge&quot;&gt;scrollView&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset.x&lt;/code&gt;非常相近，又伴随加速度&lt;code class=&quot;highlighter-rouge&quot;&gt;velocity.x&lt;/code&gt;时，cancel的滑动动画的持续时间就会非常短。这带来的滑动体验非常不好。&lt;/p&gt;
 
-&lt;p&gt;在这里，我们放弃修改&lt;code class=&quot;highlighter-rouge&quot;&gt;targetContentOffset-&amp;gt;x&lt;/code&gt;为起始值，转而直接把他赋值为当前的contentOffset.x，这样滑动手势所带来的velocity.x就不会影响到cancel的滑动动画;同时我们再使用系统自带的方法来完成这个cancel的结束动画&lt;/p&gt;
+&lt;p&gt;在这里，我们放弃修改&lt;code class=&quot;highlighter-rouge&quot;&gt;targetContentOffset-&amp;gt;x&lt;/code&gt;为起始值，转而直接把他赋值为当前的&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset.x&lt;/code&gt;，这样滑动手势所带来的&lt;code class=&quot;highlighter-rouge&quot;&gt;velocity.x&lt;/code&gt;就不会影响到cancel的滑动动画;同时我们再使用系统自带的方法来完成这个cancel的结束动画&lt;/p&gt;
 
 &lt;div class=&quot;language-objc highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setContentOffset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CGPointMake&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;targetX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;targetContentOffset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;animated&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;YES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; 
 &lt;/code&gt;&lt;/pre&gt;
@@ -80,7 +80,7 @@
 &lt;p&gt;如果你注意观察，你会发现：当我们修改&lt;code class=&quot;highlighter-rouge&quot;&gt;scrollView&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;targetContentOffset&lt;/code&gt;时，&lt;code class=&quot;highlighter-rouge&quot;&gt;scrollView&lt;/code&gt;会有一次准确的&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset&lt;/code&gt;等于&lt;code class=&quot;highlighter-rouge&quot;&gt;targetContentOffset&lt;/code&gt;的回调&lt;code class=&quot;highlighter-rouge&quot;&gt;-scrollViewDidScroll:&lt;/code&gt;。我们暂时把这个回调叫作&lt;code class=&quot;highlighter-rouge&quot;&gt;准确回调&lt;/code&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;由于RunLoop的原故，在代理方法&lt;code class=&quot;highlighter-rouge&quot;&gt;-(void)scrollViewDidScroll:&lt;/code&gt;中对于scrollVewi的contentOffset非常不精确。所以我们很可能拿到和我们所期望值不一样的&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset&lt;/code&gt;&lt;/p&gt;
+  &lt;p&gt;由于RunLoop的原故，在代理方法&lt;code class=&quot;highlighter-rouge&quot;&gt;-(void)scrollViewDidScroll:&lt;/code&gt;中对于&lt;code class=&quot;highlighter-rouge&quot;&gt;scrollView&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset&lt;/code&gt;监听非常不精确。所以我们很可能拿到和我们所期望值不一样的&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;如果我们在最接近&lt;code class=&quot;highlighter-rouge&quot;&gt;准确回调&lt;/code&gt;的回调里修改了&lt;code class=&quot;highlighter-rouge&quot;&gt;scrollView&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset&lt;/code&gt;，ie: 设置&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset.x&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;self.bounds.size.width&lt;/code&gt;，同时紧接着在&lt;code class=&quot;highlighter-rouge&quot;&gt;准确回掉&lt;/code&gt;里又把&lt;code class=&quot;highlighter-rouge&quot;&gt;contentOffset.x&lt;/code&gt;设置为其它值。 那么&lt;code class=&quot;highlighter-rouge&quot;&gt;-(void)scrollViewDidScroll:&lt;/code&gt;里面对于视图位置的修改可能就会出现错误。因此我们需要加一些处理：&lt;/p&gt;
@@ -104,7 +104,7 @@
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;到这里，我们使用targetContentOffset来实现Paging的效果就结束了。 我们来看一下效果对比：&lt;/p&gt;
+&lt;p&gt;到这里，我们使用&lt;code class=&quot;highlighter-rouge&quot;&gt;targetContentOffset&lt;/code&gt;来实现Paging的效果就结束了。 我们来看一下效果对比：&lt;/p&gt;
 
 &lt;center&gt;targetContentOffset&lt;/center&gt;
 &lt;p&gt;&lt;img src=&quot;https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBTargetX-C.gif?raw=true&quot; alt=&quot;&quot; /&gt;

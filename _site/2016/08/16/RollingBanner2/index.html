@@ -233,7 +233,7 @@
 </div>
 <p><code class="highlighter-rouge">注意</code>在这里我们做了一些优化，当滑动被判断为cancel时，我们并没有直接把其实位置<code class="highlighter-rouge">self.bounds.size.width </code>赋值给<code class="highlighter-rouge">targetContentOffset-&gt;x</code>。那是因为，经常我们的滑动的时候会伴随加速度<code class="highlighter-rouge">velocity.x</code>。当<code class="highlighter-rouge">targetContentOffset-&gt;x</code>与<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">contentOffset.x</code>非常相近，又伴随加速度<code class="highlighter-rouge">velocity.x</code>时，cancel的滑动动画的持续时间就会非常短。这带来的滑动体验非常不好。</p>
 
-<p>在这里，我们放弃修改<code class="highlighter-rouge">targetContentOffset-&gt;x</code>为起始值，转而直接把他赋值为当前的contentOffset.x，这样滑动手势所带来的velocity.x就不会影响到cancel的滑动动画;同时我们再使用系统自带的方法来完成这个cancel的结束动画</p>
+<p>在这里，我们放弃修改<code class="highlighter-rouge">targetContentOffset-&gt;x</code>为起始值，转而直接把他赋值为当前的<code class="highlighter-rouge">contentOffset.x</code>，这样滑动手势所带来的<code class="highlighter-rouge">velocity.x</code>就不会影响到cancel的滑动动画;同时我们再使用系统自带的方法来完成这个cancel的结束动画</p>
 
 <div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="n">self</span> <span class="nf">setContentOffset</span><span class="p">:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="n">targetX</span><span class="p">,</span> <span class="n">targetContentOffset</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">)</span> <span class="nf">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">]</span> 
 </code></pre>
@@ -243,7 +243,7 @@
 <p>如果你注意观察，你会发现：当我们修改<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">targetContentOffset</code>时，<code class="highlighter-rouge">scrollView</code>会有一次准确的<code class="highlighter-rouge">contentOffset</code>等于<code class="highlighter-rouge">targetContentOffset</code>的回调<code class="highlighter-rouge">-scrollViewDidScroll:</code>。我们暂时把这个回调叫作<code class="highlighter-rouge">准确回调</code></p>
 
 <blockquote>
-  <p>由于RunLoop的原故，在代理方法<code class="highlighter-rouge">-(void)scrollViewDidScroll:</code>中对于scrollVewi的contentOffset非常不精确。所以我们很可能拿到和我们所期望值不一样的<code class="highlighter-rouge">contentOffset</code></p>
+  <p>由于RunLoop的原故，在代理方法<code class="highlighter-rouge">-(void)scrollViewDidScroll:</code>中对于<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">contentOffset</code>监听非常不精确。所以我们很可能拿到和我们所期望值不一样的<code class="highlighter-rouge">contentOffset</code></p>
 </blockquote>
 
 <p>如果我们在最接近<code class="highlighter-rouge">准确回调</code>的回调里修改了<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">contentOffset</code>，ie: 设置<code class="highlighter-rouge">contentOffset.x</code>为<code class="highlighter-rouge">self.bounds.size.width</code>，同时紧接着在<code class="highlighter-rouge">准确回掉</code>里又把<code class="highlighter-rouge">contentOffset.x</code>设置为其它值。 那么<code class="highlighter-rouge">-(void)scrollViewDidScroll:</code>里面对于视图位置的修改可能就会出现错误。因此我们需要加一些处理：</p>
@@ -267,7 +267,7 @@
 <span class="p">}</span>
 </code></pre>
 </div>
-<p>到这里，我们使用targetContentOffset来实现Paging的效果就结束了。 我们来看一下效果对比：</p>
+<p>到这里，我们使用<code class="highlighter-rouge">targetContentOffset</code>来实现Paging的效果就结束了。 我们来看一下效果对比：</p>
 
 <center>targetContentOffset</center>
 <p><img src="https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBTargetX-C.gif?raw=true" alt="" />

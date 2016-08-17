@@ -71,7 +71,7 @@ tags:
 ```
 `注意`在这里我们做了一些优化，当滑动被判断为cancel时，我们并没有直接把其实位置`self.bounds.size.width `赋值给`targetContentOffset->x`。那是因为，经常我们的滑动的时候会伴随加速度`velocity.x`。当`targetContentOffset->x`与`scrollView`的`contentOffset.x`非常相近，又伴随加速度`velocity.x`时，cancel的滑动动画的持续时间就会非常短。这带来的滑动体验非常不好。
 
-在这里，我们放弃修改`targetContentOffset->x`为起始值，转而直接把他赋值为当前的contentOffset.x，这样滑动手势所带来的velocity.x就不会影响到cancel的滑动动画;同时我们再使用系统自带的方法来完成这个cancel的结束动画
+在这里，我们放弃修改`targetContentOffset->x`为起始值，转而直接把他赋值为当前的`contentOffset.x`，这样滑动手势所带来的`velocity.x`就不会影响到cancel的滑动动画;同时我们再使用系统自带的方法来完成这个cancel的结束动画
 
 ```objc
 [self setContentOffset:CGPointMake(targetX, targetContentOffset->y) animated:YES] 
@@ -80,7 +80,7 @@ tags:
 ## RunLoop 与 targetContentOffset
 如果你注意观察，你会发现：当我们修改`scrollView`的`targetContentOffset`时，`scrollView`会有一次准确的`contentOffset`等于`targetContentOffset`的回调`-scrollViewDidScroll:`。我们暂时把这个回调叫作`准确回调`
 
-> 由于RunLoop的原故，在代理方法`-(void)scrollViewDidScroll:`中对于scrollVewi的contentOffset非常不精确。所以我们很可能拿到和我们所期望值不一样的`contentOffset`
+> 由于RunLoop的原故，在代理方法`-(void)scrollViewDidScroll:`中对于`scrollView`的`contentOffset`监听非常不精确。所以我们很可能拿到和我们所期望值不一样的`contentOffset`
 
 如果我们在最接近`准确回调`的回调里修改了`scrollView`的`contentOffset`，ie: 设置`contentOffset.x`为`self.bounds.size.width`，同时紧接着在`准确回掉`里又把`contentOffset.x`设置为其它值。 那么`-(void)scrollViewDidScroll:`里面对于视图位置的修改可能就会出现错误。因此我们需要加一些处理：
 
@@ -103,7 +103,7 @@ tags:
     self.lastMoveX = moveX;
 }
 ```
-到这里，我们使用targetContentOffset来实现Paging的效果就结束了。 我们来看一下效果对比：
+到这里，我们使用`targetContentOffset`来实现Paging的效果就结束了。 我们来看一下效果对比：
 
 <center>targetContentOffset</center>
 ![](https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBTargetX-C.gif?raw=true)
