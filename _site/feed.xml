@@ -5,8 +5,8 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 17 Aug 2016 21:14:26 +0800</pubDate>
-    <lastBuildDate>Wed, 17 Aug 2016 21:14:26 +0800</lastBuildDate>
+    <pubDate>Wed, 17 Aug 2016 22:00:22 +0800</pubDate>
+    <lastBuildDate>Wed, 17 Aug 2016 22:00:22 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -316,7 +316,7 @@
 
 &lt;p&gt;完整的代码可以在&lt;a href=&quot;https://github.com/Arbalest313/HYRollingBanner&quot;&gt;这里&lt;/a&gt;下载。&lt;/p&gt;
 
-&lt;p&gt;但是这是你会发现，当你滑动你的视图时，视差滚动视图并没有像格瓦拉那样有如丝般顺滑的感觉。格瓦拉到底做了什么呢，你可以不妨思考一下？&lt;a href=&quot;&quot;&gt;下一篇，将优化我们的体验，带来如丝般的顺滑体验&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;但是这是你会发现，当你滑动你的视图时，视差滚动视图并没有像格瓦拉那样有如丝般顺滑的感觉。格瓦拉到底做了什么呢，你可以不妨思考一下？&lt;a href=&quot;&quot;&gt;下一篇，将优化滑动动画，带来如丝般的顺滑感觉&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 15 Aug 2016 00:00:00 +0800</pubDate>
         <link>http://hyyy.me/2016/08/15/RollingBanner/</link>
