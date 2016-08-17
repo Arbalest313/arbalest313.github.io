@@ -145,7 +145,7 @@ _rightImage.frame = CGRectMake(self.bounds.size.width * (1 + self.portion), 0, s
 4. 如果当前的`moveX`已经已经是一张图片的宽度时，调起`completedHandler()`
 4. 记录本次的`moveX`距离到`lastMoveX`里，以方便下一次使用。
 
-> 由于RunLoop的缘故，`ScrollView`代理对`contentoffset`记录的不会非常准确。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，`completedHandler()`只被调起一次。不然可能会重复调用`completedHandler()`
+> 由于RunLoop的缘故，`ScrollView`代理对`contentoffset`记录的会非常不精确。`scrollViewDidScroll()`可能会重复调用`completedHandler()`。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，`completedHandler()`只被调起一次。当`lastMoveX`已经大于一张图片宽度时，说明`completedHandler()`已被调用，不需要再重复调用。
 
 在`completedHandler()`里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是`letfImage`还是`rightImage`,我们需要把这张图片重新赋值到`midContainer`的`midImage`上面，并根据这个图片的`index`计算出新的`leftImage`与`rightImage`，并欺骗用户。调用`resetSubViews()`,把`scrollView`的`offset`重新设置为初始值(显示中间视图)：
 

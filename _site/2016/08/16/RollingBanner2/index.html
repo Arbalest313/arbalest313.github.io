@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="我的成长">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>UIScrollView视差滑动轮播图（二） 优化 - 我的成长| Yuan's Blog</title>
+
+    <link rel="canonical" href="http://hyyy.me/2016/08/16/RollingBanner2/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Yuan's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/bg/20160815-RollingBanner-Paging.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/bg/20160815-RollingBanner-Paging.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#Objective-C" title="Objective-C">Objective-C</a>
+                        
+                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
+                        
+                        <a class="tag" href="/tags/#UIKit" title="UIKit">UIKit</a>
+                        
+                        <a class="tag" href="/tags/#UIScrollView" title="UIScrollView">UIScrollView</a>
+                        
+                        <a class="tag" href="/tags/#UX" title="UX">UX</a>
+                        
+                    </div>
+                    <h1>UIScrollView视差滑动轮播图（二） 优化</h1>
+                    
+                    
+                    <h2 class="subheading">仿格瓦拉 Parallax Rolling Banner iOS</h2>
+                    
+                    <span class="meta">Posted by yuan on August 16, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h2 id="section">前言</h2>
+<p>在<a href="http://hyyy.me/2016/08/15/RollingBanner/">上一篇</a>中，我们实现了一个视差滚动的轮播图，但是它是由通过设置<code class="highlighter-rouge">UIScrollView</code>的<code class="highlighter-rouge">pageEnable</code>的属性来实现的。 然而你会发现他并没有像格瓦拉的滚动视图那样丝滑，减速动画阻尼巨大
+格瓦拉的滚动视图：
+<img src="https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/Gewala.gif?raw=true" alt="" /></p>
+
+<h2 id="section-1">优化思路</h2>
+<p>既然系统提供的分页方式不能满足我们，那么我们如何自己实现一个paging的效果呢？答案就在Apple的官方文档里面，在查阅<code class="highlighter-rouge">UIScrollView</code>的代理后，我们可以发现里面有这样一个代理方法：</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="c1">//scrollView	The scroll-view object where the user ended the touch..
+//velocity	The velocity of the scroll view (in points) at the moment the touch was released.
+//targetContentOffset	The expected offset when the scrolling action decelerates to a stop.
+//Your application can change the value of the targetContentOffset parameter to adjust where the scrollview finishes its scrolling animation.
+</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">scrollViewWillEndDragging</span><span class="p">:(</span><span class="n">UIScrollView</span> <span class="o">*</span><span class="p">)</span><span class="nv">scrollView</span>
+                     <span class="nf">withVelocity</span><span class="p">:(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nv">velocity</span>
+              <span class="nf">targetContentOffset</span><span class="p">:(</span><span class="n">inout</span> <span class="n">CGPoint</span> <span class="o">*</span><span class="p">)</span><span class="nv">targetContentOffset</span>
+</code></pre>
+</div>
+<p>在这个方法中有一个<code class="highlighter-rouge">targetContentOffset</code>的参数，文档里指出，我们可以通过修改这个参数，来改变<code class="highlighter-rouge">scrollView</code>在滑动动画结束时的位置。 Bingo， 这就是我们想要的！通过修改<code class="highlighter-rouge">targetContentOffset</code>直接修改目标offset为整数页位置</p>
+
+<h2 id="section-2">实现</h2>
+<p>我们所需要的paging：</p>
+
+<ul>
+  <li>设置滑动阻尼，当滑动没有达到滑动阻尼位置时，标记这次滑动为<code class="highlighter-rouge">cancel</code>，并修改<code class="highlighter-rouge">targetContentOffset.x</code>为起始位置 <code class="highlighter-rouge">self.bounds.size.width</code></li>
+  <li>当已经超过滑动阻尼时， 标记这次滑动为<code class="highlighter-rouge">complete</code>,并通过滑动方向计算相应的<code class="highlighter-rouge">targetContentOffset.x</code>结束位置为 <code class="highlighter-rouge">0</code>或者 <code class="highlighter-rouge">self.bounds.size.width * 2</code></li>
+</ul>
+
+<p>核心代码：</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nf">targetOffsetForMoveX</span><span class="p">:(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">moveX</span> <span class="nf">velocity</span><span class="p">:(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">velocity</span><span class="p">{</span>
+    <span class="n">BOOL</span> <span class="n">complete</span> <span class="o">=</span> <span class="n">fabs</span><span class="p">(</span><span class="n">moveX</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">0</span><span class="p">.</span><span class="mi">3</span> <span class="o">||</span>
+                    <span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">velocity</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">fabs</span><span class="p">(</span><span class="n">moveX</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">0</span><span class="p">.</span><span class="mi">1</span> <span class="p">)?</span> <span class="nb">YES</span> <span class="p">:</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="n">BOOL</span> <span class="n">leftDirection</span> <span class="o">=</span> <span class="n">moveX</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">?</span> <span class="nb">YES</span> <span class="p">:</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">complete</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">leftDirection</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//right Direction
+</span>    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span><span class="c1">//cancel
+</span>    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">scrollViewWillEndDragging</span><span class="p">:(</span><span class="n">UIScrollView</span> <span class="o">*</span><span class="p">)</span><span class="nv">scrollView</span> <span class="nf">withVelocity</span><span class="p">:(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nv">velocity</span> <span class="nf">targetContentOffset</span><span class="p">:(</span><span class="n">inout</span> <span class="n">CGPoint</span> <span class="o">*</span><span class="p">)</span><span class="nv">targetContentOffset</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">pagingEnabled</span><span class="p">)</span><span class="k">return</span><span class="p">;</span>
+    <span class="n">CGFloat</span> <span class="n">moveX</span> <span class="o">=</span> <span class="n">scrollView</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+    <span class="n">CGFloat</span> <span class="n">targetX</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">targetOffsetForMoveX</span><span class="p">:</span><span class="n">moveX</span> <span class="nf">velocity</span><span class="p">:</span><span class="n">velocity</span><span class="p">.</span><span class="n">x</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">targetX</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="p">{</span><span class="c1">//cancel
+</span>        <span class="n">targetContentOffset</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">scrollView</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nf">setContentOffset</span><span class="p">:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="n">targetX</span><span class="p">,</span> <span class="n">targetContentOffset</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">)</span> <span class="nf">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="c1">//complete
+</span>        <span class="n">targetContentOffset</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">targetX</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p><code class="highlighter-rouge">注意</code>在这里我们做了一些优化，当滑动被判断为cancel时，我们并没有直接把其实位置<code class="highlighter-rouge">self.bounds.size.width </code>赋值给<code class="highlighter-rouge">targetContentOffset-&gt;x</code>。那是因为，经常我们的滑动的时候会伴随加速度<code class="highlighter-rouge">velocity.x</code>。当<code class="highlighter-rouge">targetContentOffset-&gt;x</code>与<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">contentOffset.x</code>非常相近，又伴随加速度<code class="highlighter-rouge">velocity.x</code>时，cancel的滑动动画的持续时间就会非常短。这带来的滑动体验非常不好。</p>
+
+<p>在这里，我们放弃修改<code class="highlighter-rouge">targetContentOffset-&gt;x</code>为起始值，转而直接把他赋值为当前的contentOffset.x，这样滑动手势所带来的velocity.x就不会影响到cancel的滑动动画;同时我们再使用系统自带的方法来完成这个cancel的结束动画</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="n">self</span> <span class="nf">setContentOffset</span><span class="p">:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="n">targetX</span><span class="p">,</span> <span class="n">targetContentOffset</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">)</span> <span class="nf">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">]</span> 
+</code></pre>
+</div>
+
+<h2 id="runloop--targetcontentoffset">RunLoop 与 targetContentOffset</h2>
+<p>如果你注意观察，你会发现：当我们修改<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">targetContentOffset</code>时，<code class="highlighter-rouge">scrollView</code>会有一次准确的<code class="highlighter-rouge">contentOffset</code>等于<code class="highlighter-rouge">targetContentOffset</code>的回调<code class="highlighter-rouge">-scrollViewDidScroll:</code>。我们暂时把这个回调叫作<code class="highlighter-rouge">准确回调</code></p>
+
+<blockquote>
+  <p>由于RunLoop的原故，在代理方法<code class="highlighter-rouge">-(void)scrollViewDidScroll:</code>中对于scrollVewi的contentOffset非常不精确。所以我们很可能拿到和我们所期望值不一样的<code class="highlighter-rouge">contentOffset</code></p>
+</blockquote>
+
+<p>如果我们在最接近<code class="highlighter-rouge">准确回调</code>的回调里修改了<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">contentOffset</code>，ie: 设置<code class="highlighter-rouge">contentOffset.x</code>为<code class="highlighter-rouge">self.bounds.size.width</code>，同时紧接着在<code class="highlighter-rouge">准确回掉</code>里又把<code class="highlighter-rouge">contentOffset.x</code>设置为其它值。 那么<code class="highlighter-rouge">-(void)scrollViewDidScroll:</code>里面对于视图位置的修改可能就会出现错误。因此我们需要加一些处理：</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">scrollViewDidScroll</span><span class="p">:(</span><span class="n">UIScrollView</span> <span class="o">*</span><span class="p">)</span><span class="nv">scrollView</span> <span class="p">{</span>
+    <span class="n">CGFloat</span> <span class="n">moveX</span> <span class="o">=</span> <span class="n">scrollView</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">lastMoveX</span><span class="p">)</span><span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//prevent method scrollViewWillEndDragging: withVelocity: targetContentOffset: reload the image postion, 
+</span>        <span class="c1">//so we reset scrollview to init postion and return,
+</span>        <span class="p">[</span><span class="n">self</span> <span class="nf">resetSubViews</span><span class="p">];</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">lastMoveX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="p">[</span><span class="n">self</span> <span class="nf">adjustSubViews</span><span class="p">:</span><span class="n">moveX</span><span class="p">];</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">moveX</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nf">completedHandler</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">lastMoveX</span> <span class="o">=</span> <span class="n">moveX</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>到这里，我们使用targetContentOffset来实现Paging的效果就结束了。 我们来看一下效果对比：</p>
+
+<p>targetContentOffset
+<img src="https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBTargetX-C.gif?raw=true" alt="" /></p>
+
+<p>PageEnabled
+<img src="https://github.com/Arbalest313/gitRecord/blob/master/RollingBanner/RBPagingC.gif?raw=true" alt="" /></p>
+
+<p>GIF可能不是很明显，如果你<a href="https://github.com/Arbalest313/HYRollingBanner">下载了项目</a>，运行起来。你将会看到非常明显的差异</p>
+
+<h2 id="section-3">总结</h2>
+<p>当你同时在<code class="highlighter-rouge">-(void)scrollViewDidScroll:</code>与<code class="highlighter-rouge">- (void)scrollViewWillEndDragging:withVelocity:targetContentOffset:</code>里面对<code class="highlighter-rouge">contentOffset</code>做修改时你需要格外小心。因为RunLoop的原故,<code class="highlighter-rouge">contentOffset </code>检测是十分不精确的.在你修改<code class="highlighter-rouge">contentOffset</code>时，<code class="highlighter-rouge">-(void)scrollViewDidScroll:</code>会被反复调起。</p>
+
+<p>使用pageEnable实现分页，你将会失去：</p>
+
+<ul>
+  <li>如丝般的顺滑</li>
+  <li>只能以frame size为单位翻页，减速阻尼巨大，减速过程不超过一页</li>
+  <li>不能自由控制动画complete与cancel的的滑动比例</li>
+</ul>
+
+<p>使用<code class="highlighter-rouge">targetContentOffset</code>实现Paging，减速过程流畅。并且可以实现一屏多页的效果。大家可以自行发挥。</p>
+
+<p>想体验<a href="https://github.com/Arbalest313/HYRollingBanner">如丝般顺滑请戳这里</a></p>
+
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2016/08/16/RollingBanner2"
+                    data-title="UIScrollView视差滑动轮播图（二） 优化"
+                    data-url="http://hyyy.me/2016/08/16/RollingBanner2/"
+                    data-images="http://hyyy.me/img/bg/20160815-RollingBanner-Paging.jpg"
+                    data-content="前言
+在上一篇中，我们实现了一个视差滚动的轮播图，但是它是由通过设置UIScrollView的pageEnable的属性来实现的。 然而你会发现他并没有像... | 我的成长| Yuan's Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/08/15/RollingBanner/" data-toggle="tooltip" data-placement="top" title="UIScrollView视差滑动轮播图">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2016/08/16/RollingBanner2"
+                        data-title="UIScrollView视差滑动轮播图（二） 优化"
+                        data-url="http://hyyy.me/2016/08/16/RollingBanner2/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+                				<a href="/tags/#iOS" title="iOS" rel="4">
+                                    iOS
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#前端开发" title="前端开发" rel="3">
+                                    前端开发
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#JavaScript" title="JavaScript" rel="3">
+                                    JavaScript
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#翻译" title="翻译" rel="2">
+                                    翻译
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#Objective-C" title="Objective-C" rel="2">
+                                    Objective-C
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UIKit" title="UIKit" rel="2">
+                                    UIKit
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UIScrollView" title="UIScrollView" rel="2">
+                                    UIScrollView
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UX" title="UX" rel="2">
+                                    UX
+                                </a>
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://hyyy.me">Yuan's Blog</a></li>
+                    
+                        <li><a href="http://zhoulingyu.com/">小鱼周凌宇</a></li>
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'hyyy';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/qingd120t@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/5452295038">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/arbalest313">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Yuan's Blog 2016
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-82531112-1';
+    var _gaDomain = 'hyyy.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'e6e8a05da61ccb5abdc137919e660c90';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

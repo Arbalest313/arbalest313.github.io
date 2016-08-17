@@ -308,7 +308,7 @@
 </ol>
 
 <blockquote>
-  <p>由于RunLoop的缘故，<code class="highlighter-rouge">ScrollView</code>代理对<code class="highlighter-rouge">contentoffset</code>记录的不会非常准确。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，<code class="highlighter-rouge">completedHandler()</code>只被调起一次。不然可能会重复调用<code class="highlighter-rouge">completedHandler()</code></p>
+  <p>由于RunLoop的缘故，<code class="highlighter-rouge">ScrollView</code>代理对<code class="highlighter-rouge">contentoffset</code>记录的会非常不精确。<code class="highlighter-rouge">scrollViewDidScroll()</code>可能会重复调用<code class="highlighter-rouge">completedHandler()</code>。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，<code class="highlighter-rouge">completedHandler()</code>只被调起一次。当<code class="highlighter-rouge">lastMoveX</code>已经大于一张图片宽度时，说明<code class="highlighter-rouge">completedHandler()</code>已被调用，不需要再重复调用。</p>
 </blockquote>
 
 <p>在<code class="highlighter-rouge">completedHandler()</code>里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是<code class="highlighter-rouge">letfImage</code>还是<code class="highlighter-rouge">rightImage</code>,我们需要把这张图片重新赋值到<code class="highlighter-rouge">midContainer</code>的<code class="highlighter-rouge">midImage</code>上面，并根据这个图片的<code class="highlighter-rouge">index</code>计算出新的<code class="highlighter-rouge">leftImage</code>与<code class="highlighter-rouge">rightImage</code>，并欺骗用户。调用<code class="highlighter-rouge">resetSubViews()</code>,把<code class="highlighter-rouge">scrollView</code>的<code class="highlighter-rouge">offset</code>重新设置为初始值(显示中间视图)：</p>
@@ -380,6 +380,10 @@
                     </li>
                     
                     
+                    <li class="next">
+                        <a href="/2016/08/16/RollingBanner2/" data-toggle="tooltip" data-placement="top" title="UIScrollView视差滑动轮播图（二） 优化">Next Post &rarr;</a>
+                    </li>
+                    
                 </ul>
 
 
@@ -415,7 +419,7 @@
                             
         				
                             
-                				<a href="/tags/#iOS" title="iOS" rel="3">
+                				<a href="/tags/#iOS" title="iOS" rel="4">
                                     iOS
                                 </a>
                             
@@ -449,11 +453,27 @@
                             
         				
                             
-        				
+                				<a href="/tags/#Objective-C" title="Objective-C" rel="2">
+                                    Objective-C
+                                </a>
                             
         				
                             
+                				<a href="/tags/#UIKit" title="UIKit" rel="2">
+                                    UIKit
+                                </a>
+                            
         				
+                            
+                				<a href="/tags/#UIScrollView" title="UIScrollView" rel="2">
+                                    UIScrollView
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UX" title="UX" rel="2">
+                                    UX
+                                </a>
                             
         				
         			</div>
