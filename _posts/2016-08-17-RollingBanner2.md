@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "UIScrollView视差滑动轮播图（二） 优化"
-subtitle:   "仿格瓦拉 Parallax Rolling Banner iOS"
+subtitle:   "iOS仿格瓦拉 轮播图 Parallax Rolling Banner"
 date:       2016-08-16
 author:     "yuan"
 header-img: "img/bg/20160815-RollingBanner-Paging.jpg"
