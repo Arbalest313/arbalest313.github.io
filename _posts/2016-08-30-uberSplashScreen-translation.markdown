@@ -531,6 +531,7 @@ private func startAnimatingWithBeginTime(beginTime: NSTimeInterval) {
 这段代码计算每个子图层所需要的偏差矢量，然后带入到动画调用中。
 
 运行查看一下：
+
 ![](/img/posts/UberSplash/Grid-3.gif)
 
 酷炫！？最后一步，是让用户有一种代入感！我们可以在动画开始之前做一个拉伸的效果！
