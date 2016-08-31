@@ -16,32 +16,32 @@ tags:
  >
  > 翻译: [yuan](http://hyyy.me) 2016/08/30
  
-经常在App启动时，App会疯狂的向服务器请求一些必要的数据用来启动程序。这个时候，开屏动画需要扮演一个重要的角色：在等待程序启动时，不让用户感到乏味。
+经常App需要一些必要的数据用来启动程序。这时App就会向服务器发起请求并等待这些数据的返回。这个时候，开屏动画就需要扮演一个重要的角色：在等待程序完全启动时，不让用户感到乏味。
 
-16年的上半年，[Uber决定重新设立品牌形象](http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/)。其中就包含了一个重新设计的炫酷的开屏动画。
+16年的上半年，[Uber决定重新设立品牌形象与Logo](http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/)。其中就包含了一个重新设计的炫酷的开屏动画。
 
-这篇文章将会尝试复现一个与Uber开屏动画非常相近的效果。其中可能会用`CALayers`与`CAAnimations`的一些类。这篇文章将会更侧重实现，其中包含的一些动画的概念，可以在点击订阅[ Marin Todorov’s Intermediate iOS Animation video series.](https://www.raywenderlich.com/u/icanzilb)
+这篇文章将会尝试复现一个与Uber开屏动画非常相近的效果。其中会用到`CALayers`与`CAAnimations`相关一些类。这篇文章将会更侧重实现，其中包含的一些动画的概念，可以在点击订阅[ Marin Todorov’s Intermediate iOS Animation video series.](https://www.raywenderlich.com/u/icanzilb)来了解详情。
 
 ## 初始
 
 在这篇文章中你将会用到非常多的动画，你可能需要一个已经创建好`CALayer`的[起始项目](https://cdn2.raywenderlich.com/wp-content/uploads/2016/06/Fuber-starter.zip)
 
-这个项目被命名为`Fuber`，Fuber是一个共享出行理念的App。用户可以发起一个[平衡车](https://en.wikipedia.org/wiki/Segway_PT)需求给平衡车司机，同时要求司机把你从一个地方送到另外一个地方。`Fuber`正在快速的增长并且已经渗入了60多个国家。 但`Fuber`遭遇到了一些当地政府与平衡车工会的抵制。
+这个项目被命名为`Fuber`，Fuber是一个共享出行理念的App。用户可以发起一个[平衡车](https://en.wikipedia.org/wiki/Segway_PT)分享需求给平衡车司机，同时要求司机把你从一个地方送到另外一个地方。`Fuber`正在快速的增长并且已经渗入了60多个国家。 但`Fuber`遭遇到了一些当地政府与平衡车工会的抵制。
 
 ![](/img/posts/UberSplash/fuber_logo.png)
 
-在这篇文章的结束， 你将会实现一个这样开屏动画:
+在这篇文章的结束， 你将会实现一个这样的开屏动画:
 
 ![](/img/posts/UberSplash/Fuber-Animation.gif)
 
 尝试运行的起始项目
 
-项目最开始会调起`RootContainerViewController`。同时`RootContainerViewController `调起子控制器`SplashViewController`。`RootContainerViewController`会一直展示开屏动画直到App已经准备好启动。这就像我们的App在与服务器进行数据请求交互时一样。在这次的项目里，开屏动画将会有自己的结束逻辑。
+项目最开始会调起`RootContainerViewController`。同时`RootContainerViewController `调起子控制器`SplashViewController`。`RootContainerViewController`会一直展示开屏动画直到App已经准备好启动。这就像我们的App在与服务器进行数据请求时的交互一样。在这次的项目里，开屏动画将会有自己的结束逻辑。
 
 `RootContainerViewController`主要实现了两个方法 `showSplashViewController()`与`showSplashViewControllerNoPing()`。为了方便观察，我们将会使用`showSplashViewControllerNoPing()`来创建一个无限循环的开屏动画。在完成这篇教程后，你可以尝试使用`showSplashViewController()`来模拟真实的API请求。
 
 ## 开屏动画视图与图层结构
-`SplashViewController`的视图包含了两个子视图。第一个子视图包含了`TileGridView`波浪形网视图的背景。这个网状视图其实是一个网格式的布局类似`UICollectionView`，每一个网格里包含了一个`TileView`。另外一个子视图是`AnimatedULogoView `,一个‘U'形的动画层。
+`SplashViewController`的视图包含了两个子视图。第一个子视图包含了一个`TileGridView`波浪形网视图的背景。这个网状视图其实是一个网格式的布局，类似`UICollectionView`，每一个网格里包含了一个`TileView`。另外一个子视图是`AnimatedULogoView `,一个‘U'形的动画层。
 
 ![](/img/posts/UberSplash/Fuber-View-Hierarchy-1.png)
 
@@ -58,7 +58,7 @@ tags:
 
 现在你已经知道你所需要的组合视图结构，可以去尝试让他们动起来了。
 
-## 实现圆圈的动画
+## 圆圈动画
 
 为了方便观察动画的效果，我们可以把其他不需要的图层注释掉。在`AnimatedULogoView.swift `文件里找到`init(frame:)`方法，把除了`circleLayer `的其他的三个图层全部注释掉。之后我们再慢慢一步一步把他们还原回来。代码：
 
@@ -199,7 +199,7 @@ override init(frame: CGRect) {
                                NSValue(CATransform3D: CATransform3DMakeScale(0.15, 0.15, 1.0))]
 
 ```
-就像`circleLayer`的动画一样，这里你也会在z轴上旋转他，并改变他的大小。 但是在这个视图里面， 你先把他缩到小原比例的25%，再马上把他回放到原来的尺寸。最后再把他缩小到原比例15%大小。
+就像`circleLayer`的动画一样，这里你也会在z轴上旋转他，并改变他的大小。 但是在这个视图里面， 你先把他缩小到原比例的25%，再马上把他回放到原来的尺寸。最后再把他缩小到原比例的15%大小。
 
 把这两组动画放进`CAAnimationGroup`里面赋值给`lineLayer`:
 
