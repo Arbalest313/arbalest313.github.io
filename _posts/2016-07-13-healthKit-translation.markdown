@@ -214,7 +214,7 @@ HealthKit是被设计来给开发者提供一个高效的平台，它让开发�
 > 06/18/2016
 > [原文](http://www.appcoda.com/sleep-analysis-healthkit/)
 > 
-> 翻译于7/10/2016, live with less share with more, [黄源](http://hyyy.me)
+> 翻译于7/10/2016, [yuan](http://hyyy.me)
 
 
 

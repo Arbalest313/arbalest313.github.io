@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="我的成长">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>一步步实现优步开屏动画 - 我的成长| Yuan's Blog</title>
+
+    <link rel="canonical" href="http://hyyy.me/2016/08/30/uberSplashScreen-translation/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Yuan's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/bg/20160830-UberSplashScreen2.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/bg/20160830-UberSplashScreen2.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
+                        
+                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
+                        
+                        <a class="tag" href="/tags/#CoreAnimation" title="CoreAnimation">CoreAnimation</a>
+                        
+                        <a class="tag" href="/tags/#UX" title="UX">UX</a>
+                        
+                        <a class="tag" href="/tags/#翻译" title="翻译">翻译</a>
+                        
+                    </div>
+                    <h1>一步步实现优步开屏动画</h1>
+                    
+                    
+                    <h2 class="subheading">iOS Swift Uber 优步 Logo 翻译 </h2>
+                    
+                    <span class="meta">Posted by yuan on August 30, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<blockquote>
+  <p>原作者：<a href="https://www.raywenderlich.com/u/lolgrep">Derek Selander</a> 2016/08/01 <a href="https://www.raywenderlich.com/133224/how-to-create-an-uber-splash-screen">原文</a></p>
+
+  <p>翻译: <a href="http://hyyy.me">yuan</a> 2016/08/30</p>
+</blockquote>
+
+<p>经常在App启动时，App会疯狂的向服务器请求一些必要的数据用来启动程序。这个时候，开屏动画需要扮演一个重要的角色：在等待程序启动时，不让用户感到乏味。</p>
+
+<p>16年的上半年，<a href="http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/">Uber决定重新设立品牌形象</a>。其中就包含了一个重新设计的炫酷的开屏动画。</p>
+
+<p>这篇文章将会尝试复现一个与Uber开屏动画非常相近的效果。其中可能会用<code class="highlighter-rouge">CALayers</code>与<code class="highlighter-rouge">CAAnimations</code>的一些类。这篇文章将会更侧重实现，其中包含的一些动画的概念，可以在点击订阅<a href="https://www.raywenderlich.com/u/icanzilb"> Marin Todorov’s Intermediate iOS Animation video series.</a></p>
+
+<h2 id="section">初始</h2>
+
+<p>在这篇文章中你将会用到非常多的动画，你可能需要一个已经创建好<code class="highlighter-rouge">CALayer</code>的<a href="https://cdn2.raywenderlich.com/wp-content/uploads/2016/06/Fuber-starter.zip">起始项目</a></p>
+
+<p>这个项目被命名为<code class="highlighter-rouge">Fuber</code>，Fuber是一个共享出行理念的App。用户可以发起一个<a href="https://en.wikipedia.org/wiki/Segway_PT">平衡车</a>需求给平衡车司机，同时要求司机把你从一个地方送到另外一个地方。<code class="highlighter-rouge">Fuber</code>正在快速的增长并且已经渗入了60多个国家。 但<code class="highlighter-rouge">Fuber</code>遭遇到了一些当地政府与平衡车工会的抵制。</p>
+
+<p><img src="/img/posts/UberSplash/fuber_logo.png" alt="" /></p>
+
+<p>在这篇文章的结束， 你将会实现一个这样开屏动画:</p>
+
+<p><img src="/img/posts/UberSplash/Fuber-Animation.gif" alt="" /></p>
+
+<p>尝试运行的起始项目</p>
+
+<p>项目最开始会调起<code class="highlighter-rouge">RootContainerViewController</code>。同时<code class="highlighter-rouge">RootContainerViewController </code>调起子控制器<code class="highlighter-rouge">SplashViewController</code>。<code class="highlighter-rouge">RootContainerViewController</code>会一直展示开屏动画直到App已经准备好启动。这就像我们的App在与服务器进行数据请求交互时一样。在这次的项目里，开屏动画将会有自己的结束逻辑。</p>
+
+<p><code class="highlighter-rouge">RootContainerViewController</code>主要实现了两个方法 <code class="highlighter-rouge">showSplashViewController()</code>与<code class="highlighter-rouge">showSplashViewControllerNoPing()</code>。为了方便观察，我们将会使用<code class="highlighter-rouge">showSplashViewControllerNoPing()</code>来创建一个无限循环的开屏动画。在完成这篇教程后，你可以尝试使用<code class="highlighter-rouge">showSplashViewController()</code>来模拟真实的API请求。</p>
+
+<h2 id="section-1">开屏动画视图与图层结构</h2>
+<p><code class="highlighter-rouge">SplashViewController</code>的视图包含了两个子视图。第一个子视图包含了<code class="highlighter-rouge">TileGridView</code>波浪形网视图的背景。这个网状视图其实是一个网格式的布局类似<code class="highlighter-rouge">UICollectionView</code>，每一个网格里包含了一个<code class="highlighter-rouge">TileView</code>。另外一个子视图是<code class="highlighter-rouge">AnimatedULogoView </code>,一个‘U’形的动画层。</p>
+
+<p><img src="/img/posts/UberSplash/Fuber-View-Hierarchy-1.png" alt="" /></p>
+
+<p><code class="highlighter-rouge">AnimatedULogoView</code>包含了4个<code class="highlighter-rouge">CAShapeLayer</code>:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">circleLayer</code>代表的是‘U’形的圆形的背景</li>
+  <li><code class="highlighter-rouge">lineLayer</code>是一条直线，从<code class="highlighter-rouge">circleLayer</code>的中间延伸到边缘</li>
+  <li><code class="highlighter-rouge">squareLayer</code>一个位于<code class="highlighter-rouge">circleLayer</code>中间的正方形</li>
+  <li><code class="highlighter-rouge">maskLayer</code>用于遮盖子视图。用来组合其他视图，简单的实现一个遮盖子视图的效果</li>
+</ul>
+
+<p>这些图层组合起来， 将会是Fuber的‘U’</p>
+
+<p><img src="/img/posts/UberSplash/RiderIconView.gif" alt="" /></p>
+
+<p>现在你已经知道你所需要的组合视图结构，可以去尝试让他们动起来了。</p>
+
+<h2 id="section-2">实现圆圈的动画</h2>
+
+<p>为了方便观察动画的效果，我们可以把其他不需要的图层注释掉。在<code class="highlighter-rouge">AnimatedULogoView.swift </code>文件里找到<code class="highlighter-rouge">init(frame:)</code>方法，把除了<code class="highlighter-rouge">circleLayer </code>的其他的三个图层全部注释掉。之后我们再慢慢一步一步把他们还原回来。代码：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="k">override</span> <span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="n">frame</span><span class="p">)</span>
+ 
+  <span class="n">circleLayer</span> <span class="o">=</span> <span class="nf">generateCircleLayer</span><span class="p">()</span>
+  <span class="n">lineLayer</span> <span class="o">=</span> <span class="nf">generateLineLayer</span><span class="p">()</span>
+  <span class="n">squareLayer</span> <span class="o">=</span> <span class="nf">generateSquareLayer</span><span class="p">()</span>
+  <span class="n">maskLayer</span> <span class="o">=</span> <span class="nf">generateMaskLayer</span><span class="p">()</span>
+ 
+<span class="c1">//  layer.mask = maskLayer</span>
+  <span class="n">layer</span><span class="o">.</span><span class="nf">addSublayer</span><span class="p">(</span><span class="n">circleLayer</span><span class="p">)</span>
+<span class="c1">//  layer.addSublayer(lineLayer)</span>
+<span class="c1">//  layer.addSublayer(squareLayer)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>在<code class="highlighter-rouge">generateCircleLayer()</code>里创建圆形，使用了<code class="highlighter-rouge">CAShapeLayer</code>并且再创建了一个<code class="highlighter-rouge">UIBezierPath</code>：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="n">layer</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="kt">UIBezierPath</span><span class="p">(</span><span class="nv">arcCenter</span><span class="p">:</span> <span class="kt">CGPointZero</span><span class="p">,</span> <span class="nv">radius</span><span class="p">:</span> <span class="n">radius</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="nv">startAngle</span><span class="p">:</span> <span class="o">-</span><span class="kt">CGFloat</span><span class="p">(</span><span class="kt">M_PI_2</span><span class="p">),</span> <span class="nv">endAngle</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="mf">3*</span><span class="kt">M_PI_2</span><span class="p">),</span> <span class="nv">clockwise</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span><span class="o">.</span><span class="kt">CGPath</span>
+</code></pre>
+</div>
+<p>如果你使用0为起始角度，贝塞尔曲线将会从时钟的3点位置开始。为了从时钟的12点位置开始，把起始角度为<code class="highlighter-rouge">-M_PI_2</code>，-90度。并且设置你的结束角度为<code class="highlighter-rouge">3*M_PI_2</code>，270度，再次回到时钟的12点位置。这样你就会有一个闭合圆圈。注意，这里你想连动的是<code class="highlighter-rouge">stroke</code>属性，所以你使用<code class="highlighter-rouge">radius</code>值作为<code class="highlighter-rouge">lineWidth</code>的值。</p>
+
+<p>这个<code class="highlighter-rouge">circleLayer</code>的动画需要组合3个组<code class="highlighter-rouge">CAAnimation</code>：一个<code class="highlighter-rouge">CAKeyframeAnimation</code>动画关联<code class="highlighter-rouge">strokeEnd</code>、一个<code class="highlighter-rouge">CABasicAnimation</code>动画关联<code class="highlighter-rouge">transform</code>与<code class="highlighter-rouge">CAAnimationGroup</code>组合前两个动画到一起。</p>
+
+<p>定位到<code class="highlighter-rouge"> animateCircleLayer() </code>方法，然后添加下面的代码</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="c1">// strokeEnd</span>
+  <span class="k">let</span> <span class="nv">strokeEndAnimation</span> <span class="o">=</span> <span class="kt">CAKeyframeAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"strokeEnd"</span><span class="p">)</span>
+  <span class="n">strokeEndAnimation</span><span class="o">.</span><span class="n">timingFunction</span> <span class="o">=</span> <span class="n">strokeEndTimingFunction</span>
+  <span class="n">strokeEndAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span> <span class="o">-</span> <span class="n">kAnimationDurationDelay</span>
+  <span class="n">strokeEndAnimation</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+  <span class="n">strokeEndAnimation</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+</code></pre>
+</div>
+<p>设置动画的<code class="highlighter-rouge">values</code>属性为0.0到1.0，标识从起始角度开始一路绘制到圆的结束角度。类似一个顺时针动画。当这个动画的关键字<code class="highlighter-rouge">strokeEnd</code>的值慢慢增加，线的宽度也会慢慢增加，这个圆就会被慢慢填充。如果这时，你把<code class="highlighter-rouge">values</code>改成从0.0到0.5，只有一个半圆会被显示出来。 这是因为绘制路径<code class="highlighter-rouge">strokeEnd</code>停止在了半程0.5</p>
+
+<p>添加<code class="highlighter-rouge">transform</code>动画</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="c1">// transform</span>
+  <span class="k">let</span> <span class="nv">transformAnimation</span> <span class="o">=</span> <span class="kt">CABasicAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"transform"</span><span class="p">)</span>
+  <span class="n">transformAnimation</span><span class="o">.</span><span class="n">timingFunction</span> <span class="o">=</span> <span class="n">strokeEndTimingFunction</span>
+  <span class="n">transformAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span> <span class="o">-</span> <span class="n">kAnimationDurationDelay</span>
+ 
+  <span class="k">var</span> <span class="nv">startingTransform</span> <span class="o">=</span> <span class="kt">CATransform3DMakeRotation</span><span class="p">(</span><span class="o">-</span><span class="kt">CGFloat</span><span class="p">(</span><span class="kt">M_PI_4</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="n">startingTransform</span> <span class="o">=</span> <span class="kt">CATransform3DScale</span><span class="p">(</span><span class="n">startingTransform</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="n">transformAnimation</span><span class="o">.</span><span class="n">fromValue</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CATransform3D</span><span class="p">:</span> <span class="n">startingTransform</span><span class="p">)</span>
+  <span class="n">transformAnimation</span><span class="o">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CATransform3D</span><span class="p">:</span> <span class="kt">CATransform3DIdentity</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>这组动画包含了等比放大缩小与z轴的旋转。<code class="highlighter-rouge">circleLayer</code>图层慢慢变大，同时伴随顺时针45度的旋转。这个旋转的动画需要与<code class="highlighter-rouge">lineLayer</code>的旋转动画保持一直。</p>
+
+<p>最后，添加一个<code class="highlighter-rouge">CAAnimationGroup</code>。这个动画包含了上面的两组动画，这样我们就只需要添加一个动画在<code class="highlighter-rouge">circleLayer</code>的图层上</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code>  <span class="c1">// Group</span>
+  <span class="k">let</span> <span class="nv">groupAnimation</span> <span class="o">=</span> <span class="kt">CAAnimationGroup</span><span class="p">()</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">animations</span> <span class="o">=</span> <span class="p">[</span><span class="n">strokeEndAnimation</span><span class="p">,</span> <span class="n">transformAnimation</span><span class="p">]</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="kt">Float</span><span class="o">.</span><span class="n">infinity</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">beginTime</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">timeOffset</span> <span class="o">=</span> <span class="n">startTimeOffset</span>
+ 
+  <span class="n">circleLayer</span><span class="o">.</span><span class="nf">addAnimation</span><span class="p">(</span><span class="n">groupAnimation</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"looping"</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>这个<code class="highlighter-rouge">CAAnimationGroup</code>有两个重要属性需要注意：<code class="highlighter-rouge">beginTime</code> 与 <code class="highlighter-rouge">timeOffset</code>。如果你对这两个属性不太熟悉，可以查看<a href="http://ronnqvi.st/controlling-animation-timing/">这篇文章</a>。</p>
+
+<p>这个组合动画的<code class="highlighter-rouge">beginTime</code>被设置为了父视图的动画开始时间。
+因为这个动画第一次运行时的成像不是从0开始的，所以<code class="highlighter-rouge">timeOffset</code>也被设置了。
+你可以尝试改变<code class="highlighter-rouge">startTimeOffset</code>的值。观察改变后所带来的效果。</p>
+
+<p>把<code class="highlighter-rouge">groupAnimation</code>赋值给<code class="highlighter-rouge">circleLayer</code>后，运行查看效果，应该与这个一样：</p>
+
+<p><img src="/img/posts/UberSplash/CircleIn-Animation.gif" alt="" /></p>
+
+<blockquote>
+  <p>提示： 你可以尝试去除中间的任何一个动画，来查看另一个动画的效果。尝试去改变他们的属性，你会有所启发。下面的所有组合动画你都可以这样去观察它们。</p>
+</blockquote>
+
+<h2 id="section-3">直线动画</h2>
+<p>现在可以尝试把<code class="highlighter-rouge">lineLayer</code>的动画添加进去了。 还是在<code class="highlighter-rouge">AnimatedULogoView.swift</code>的<code class="highlighter-rouge"> startAnimating() </code>方法里面去除<code class="highlighter-rouge">animateLineLayer()</code>的注释。同时把其他的动画注释掉。</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">startAnimating</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">beginTime</span> <span class="o">=</span> <span class="kt">CACurrentMediaTime</span><span class="p">()</span>
+  <span class="n">layer</span><span class="o">.</span><span class="n">anchorPoint</span> <span class="o">=</span> <span class="kt">CGPointZero</span>
+ 
+<span class="c1">//  animateMaskLayer()</span>
+<span class="c1">//  animateCircleLayer()</span>
+  <span class="nf">animateLineLayer</span><span class="p">()</span>
+<span class="c1">//  animateSquareLayer()</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+<p>在<code class="highlighter-rouge">init(frame:)</code>方法里，把里面的代码改为只有<code class="highlighter-rouge">circleLayer </code>与<code class="highlighter-rouge">lineLayer</code>图层显示</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="k">override</span> <span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="n">frame</span><span class="p">)</span>
+ 
+  <span class="n">circleLayer</span> <span class="o">=</span> <span class="nf">generateCircleLayer</span><span class="p">()</span>
+  <span class="n">lineLayer</span> <span class="o">=</span> <span class="nf">generateLineLayer</span><span class="p">()</span>
+  <span class="n">squareLayer</span> <span class="o">=</span> <span class="nf">generateSquareLayer</span><span class="p">()</span>
+  <span class="n">maskLayer</span> <span class="o">=</span> <span class="nf">generateMaskLayer</span><span class="p">()</span>
+ 
+<span class="c1">//  layer.mask = maskLayer</span>
+  <span class="n">layer</span><span class="o">.</span><span class="nf">addSublayer</span><span class="p">(</span><span class="n">circleLayer</span><span class="p">)</span>
+  <span class="n">layer</span><span class="o">.</span><span class="nf">addSublayer</span><span class="p">(</span><span class="n">lineLayer</span><span class="p">)</span>
+<span class="c1">//  layer.addSublayer(squareLayer)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>找到<code class="highlighter-rouge">animateLineLayer()</code>方法，输入下个组合动画：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code>  <span class="c1">// lineWidth</span>
+  <span class="k">let</span> <span class="nv">lineWidthAnimation</span> <span class="o">=</span> <span class="kt">CAKeyframeAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"lineWidth"</span><span class="p">)</span>
+  <span class="n">lineWidthAnimation</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+  <span class="n">lineWidthAnimation</span><span class="o">.</span><span class="n">timingFunctions</span> <span class="o">=</span> <span class="p">[</span><span class="n">strokeEndTimingFunction</span><span class="p">,</span> <span class="n">circleLayerTimingFunction</span><span class="p">]</span>
+  <span class="n">lineWidthAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span>
+  <span class="n">lineWidthAnimation</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">kAnimationDurationDelay</span><span class="o">/</span><span class="n">kAnimationDuration</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+</code></pre>
+</div>
+<p>这组动画会增加粗线的宽再变细线的宽。</p>
+
+<p>继续添加下一组动画：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="c1">// transform</span>
+  <span class="k">let</span> <span class="nv">transformAnimation</span> <span class="o">=</span> <span class="kt">CAKeyframeAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"transform"</span><span class="p">)</span>
+  <span class="n">transformAnimation</span><span class="o">.</span><span class="n">timingFunctions</span> <span class="o">=</span> <span class="p">[</span><span class="n">strokeEndTimingFunction</span><span class="p">,</span> <span class="n">circleLayerTimingFunction</span><span class="p">]</span>
+  <span class="n">transformAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span>
+  <span class="n">transformAnimation</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">kAnimationDurationDelay</span><span class="o">/</span><span class="n">kAnimationDuration</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+ 
+  <span class="k">var</span> <span class="nv">transform</span> <span class="o">=</span> <span class="kt">CATransform3DMakeRotation</span><span class="p">(</span><span class="o">-</span><span class="kt">CGFloat</span><span class="p">(</span><span class="kt">M_PI_4</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+  <span class="n">transform</span> <span class="o">=</span> <span class="kt">CATransform3DScale</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+  <span class="n">transformAnimation</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="kt">NSValue</span><span class="p">(</span><span class="kt">CATransform3D</span><span class="p">:</span> <span class="n">transform</span><span class="p">),</span>
+                               <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CATransform3D</span><span class="p">:</span> <span class="kt">CATransform3DIdentity</span><span class="p">),</span>
+                               <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CATransform3D</span><span class="p">:</span> <span class="kt">CATransform3DMakeScale</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))]</span>
+
+</code></pre>
+</div>
+<p>就像<code class="highlighter-rouge">circleLayer</code>的动画一样，这里你也会在z轴上旋转他，并改变他的大小。 但是在这个视图里面， 你先把他缩到小原比例的25%，再马上把他回放到原来的尺寸。最后再把他缩小到原比例15%大小。</p>
+
+<p>把这两组动画放进<code class="highlighter-rouge">CAAnimationGroup</code>里面赋值给<code class="highlighter-rouge">lineLayer</code>:</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code>  <span class="c1">// Group</span>
+  <span class="k">let</span> <span class="nv">groupAnimation</span> <span class="o">=</span> <span class="kt">CAAnimationGroup</span><span class="p">()</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="kt">Float</span><span class="o">.</span><span class="n">infinity</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">removedOnCompletion</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">beginTime</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">animations</span> <span class="o">=</span> <span class="p">[</span><span class="n">lineWidthAnimation</span><span class="p">,</span> <span class="n">transformAnimation</span><span class="p">]</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">timeOffset</span> <span class="o">=</span> <span class="n">startTimeOffset</span>
+ 
+  <span class="n">lineLayer</span><span class="o">.</span><span class="nf">addAnimation</span><span class="p">(</span><span class="n">groupAnimation</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"looping"</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>运行，查看他的效果</p>
+
+<p><img src="/img/posts/UberSplash/Knockoutline-Animation.gif" alt="" /></p>
+
+<p>这里的起始旋转位置与<code class="highlighter-rouge">circleLayer</code>的起始旋转位置一致<code class="highlighter-rouge">-M_PI_4</code>。同时把关键帧时间<code class="highlighter-rouge">keyTimes</code>设置为<code class="highlighter-rouge">[0.0, 1.0-kAnimationDurationDelay/kAnimationDuration, 1.0]</code>。这个组数的起始与结束值非常明显为0.0与1.0，开始与结束。这个中间值是圆形绘制完成，转换为缩小的关键时间点。用<code class="highlighter-rouge">kAnimationDurationDelay</code>除以<code class="highlighter-rouge">kAnimationDuration</code>得到延迟的百分比。然后在用1减去这个百分比，来获取圆形图层的真实动画时间百分比。</p>
+
+<p>现在可以移动到下一个正方形的动画上了。</p>
+
+<h2 id="section-4">正方形动画的实现</h2>
+
+<p>和上面的步奏类似，找到<code class="highlighter-rouge">startAnimating()</code>方法，注释掉除了<code class="highlighter-rouge">animateSquareLayer()</code>以外的其他动画。同时在<code class="highlighter-rouge">init(frame:)</code>里面改变代码为：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="k">override</span> <span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="n">frame</span><span class="p">)</span>
+ 
+  <span class="n">circleLayer</span> <span class="o">=</span> <span class="nf">generateCircleLayer</span><span class="p">()</span>
+  <span class="n">lineLayer</span> <span class="o">=</span> <span class="nf">generateLineLayer</span><span class="p">()</span>
+  <span class="n">squareLayer</span> <span class="o">=</span> <span class="nf">generateSquareLayer</span><span class="p">()</span>
+  <span class="n">maskLayer</span> <span class="o">=</span> <span class="nf">generateMaskLayer</span><span class="p">()</span>
+ 
+<span class="c1">//  layer.mask = maskLayer</span>
+  <span class="n">layer</span><span class="o">.</span><span class="nf">addSublayer</span><span class="p">(</span><span class="n">circleLayer</span><span class="p">)</span>
+<span class="c1">//  layer.addSublayer(lineLayer)</span>
+  <span class="n">layer</span><span class="o">.</span><span class="nf">addSublayer</span><span class="p">(</span><span class="n">squareLayer</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>跳到<code class="highlighter-rouge">animateSquareLayer()</code>方法，添加下面动画：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="c1">// bounds</span>
+  <span class="k">let</span> <span class="nv">b1</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CGRect</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nv">width</span><span class="p">:</span> <span class="mf">2.0</span><span class="o">/</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">squareLayerLength</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="mf">2.0</span><span class="o">/</span><span class="mf">3.0</span>  <span class="o">*</span> <span class="n">squareLayerLength</span><span class="p">))</span>
+  <span class="k">let</span> <span class="nv">b2</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CGRect</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nv">width</span><span class="p">:</span> <span class="n">squareLayerLength</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="n">squareLayerLength</span><span class="p">))</span>
+  <span class="k">let</span> <span class="nv">b3</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CGRect</span><span class="p">:</span> <span class="kt">CGRectZero</span><span class="p">)</span>
+ 
+  <span class="k">let</span> <span class="nv">boundsAnimation</span> <span class="o">=</span> <span class="kt">CAKeyframeAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"bounds"</span><span class="p">)</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">b3</span><span class="p">]</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">timingFunctions</span> <span class="o">=</span> <span class="p">[</span><span class="n">fadeInSquareTimingFunction</span><span class="p">,</span> <span class="n">squareLayerTimingFunction</span><span class="p">]</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">kAnimationDurationDelay</span><span class="o">/</span><span class="n">kAnimationDuration</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+
+</code></pre>
+</div>
+<p>这部分动画改变<code class="highlighter-rouge">CALayer</code>的<code class="highlighter-rouge">bounds</code>属性。 图形的边框长度从2/3变化到1，再变化到0。</p>
+
+<p>接着 改变图形的背景颜色：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="c1">// backgroundColor</span>
+  <span class="k">let</span> <span class="nv">backgroundColorAnimation</span> <span class="o">=</span> <span class="kt">CABasicAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"backgroundColor"</span><span class="p">)</span>
+  <span class="n">backgroundColorAnimation</span><span class="o">.</span><span class="n">fromValue</span> <span class="o">=</span> <span class="kt">UIColor</span><span class="o">.</span><span class="nf">whiteColor</span><span class="p">()</span><span class="o">.</span><span class="kt">CGColor</span>
+  <span class="n">backgroundColorAnimation</span><span class="o">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="kt">UIColor</span><span class="o">.</span><span class="nf">fuberBlue</span><span class="p">()</span><span class="o">.</span><span class="kt">CGColor</span>
+  <span class="n">backgroundColorAnimation</span><span class="o">.</span><span class="n">timingFunction</span> <span class="o">=</span> <span class="n">squareLayerTimingFunction</span>
+  <span class="n">backgroundColorAnimation</span><span class="o">.</span><span class="n">fillMode</span> <span class="o">=</span> <span class="n">kCAFillModeBoth</span>
+  <span class="n">backgroundColorAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">kAnimationDurationDelay</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">kAnimationDuration</span>
+  <span class="n">backgroundColorAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span> <span class="o">/</span> <span class="p">(</span><span class="n">kAnimationDuration</span> <span class="o">-</span> <span class="n">kAnimationDurationDelay</span><span class="p">)</span>
+
+</code></pre>
+</div>
+<p>注意<code class="highlighter-rouge">fillMode</code>属性。因为<code class="highlighter-rouge">beginTime</code>不是0，在动画开始与结速的时候<code class="highlighter-rouge">CGColor</code>可能会没有值。当这个动画添加到父类的组合动画时，为了不会有闪烁的不良体验，我们需要把属性赋值为<code class="highlighter-rouge">kCAFillModeBoth</code>，</p>
+
+<p>接着添加进组合动画</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="c1">// Group</span>
+  <span class="k">let</span> <span class="nv">groupAnimation</span> <span class="o">=</span> <span class="kt">CAAnimationGroup</span><span class="p">()</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">animations</span> <span class="o">=</span> <span class="p">[</span><span class="n">boundsAnimation</span><span class="p">,</span> <span class="n">backgroundColorAnimation</span><span class="p">]</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="kt">Float</span><span class="o">.</span><span class="n">infinity</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">removedOnCompletion</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">beginTime</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">timeOffset</span> <span class="o">=</span> <span class="n">startTimeOffset</span>
+  <span class="n">squareLayer</span><span class="o">.</span><span class="nf">addAnimation</span><span class="p">(</span><span class="n">groupAnimation</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"looping"</span><span class="p">)</span>
+
+</code></pre>
+</div>
+<p>运行并且查看效果:</p>
+
+<p><img src="/img/posts/UberSplash/KnockoutSquare-Animation.gif" alt="" /></p>
+
+<blockquote>
+  <p>注意：运行动画在模拟器上可能会有一些不一样，因为你的电脑在模拟一个iOS设备的GPU。 如果你的动画效果真的不一样，尝试切换到一个小屏幕的模拟器上，或者切换到真机上</p>
+</blockquote>
+
+<h2 id="section-5">遮挡图层</h2>
+
+<p>现在是时候把上面所有的动画组合起来了。去除掉所有在<code class="highlighter-rouge">init(frame:)</code>与<code class="highlighter-rouge">startAnimating()</code>的注释。 然后运行：</p>
+
+<p><img src="/img/posts/UberSplash/PreMask-Animation.gif" alt="" /></p>
+
+<p>看起来还是有一点不一样。动画有一个突然的图框<code class="highlighter-rouge">bounds</code>改变的效果，并不是渐变的，因为<code class="highlighter-rouge">circleLayer</code>的<code class="highlighter-rouge">bounds</code>突然缩小到了0。 我们可以用一个<code class="highlighter-rouge">masklayer</code>来弥补这一切。一次性缩小所有子图层</p>
+
+<p>找到<code class="highlighter-rouge">animateMaskLayer()</code>添加代码</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="c1">// bounds</span>
+  <span class="k">let</span> <span class="nv">boundsAnimation</span> <span class="o">=</span> <span class="kt">CABasicAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"bounds"</span><span class="p">)</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">fromValue</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CGRect</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nv">width</span><span class="p">:</span> <span class="n">radius</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CGRect</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nv">width</span><span class="p">:</span> <span class="mf">2.0</span><span class="o">/</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">squareLayerLength</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="mf">2.0</span><span class="o">/</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">squareLayerLength</span><span class="p">))</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDurationDelay</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">kAnimationDuration</span> <span class="o">-</span> <span class="n">kAnimationDurationDelay</span>
+  <span class="n">boundsAnimation</span><span class="o">.</span><span class="n">timingFunction</span> <span class="o">=</span> <span class="n">circleLayerTimingFunction</span>
+</code></pre>
+</div>
+<p>这些代码改变边框大小。 当边框大小改变时，整个<code class="highlighter-rouge">AnimatedULogoView</code>会慢慢消失，因为这个图层是所有子图层的遮挡图层。</p>
+
+<p>添加圆角给这个图层：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code>  <span class="c1">// cornerRadius</span>
+  <span class="k">let</span> <span class="nv">cornerRadiusAnimation</span> <span class="o">=</span> <span class="kt">CABasicAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"cornerRadius"</span><span class="p">)</span>
+  <span class="n">cornerRadiusAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">kAnimationDuration</span> <span class="o">-</span> <span class="n">kAnimationDurationDelay</span>
+  <span class="n">cornerRadiusAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDurationDelay</span>
+  <span class="n">cornerRadiusAnimation</span><span class="o">.</span><span class="n">fromValue</span> <span class="o">=</span> <span class="n">radius</span>
+  <span class="n">cornerRadiusAnimation</span><span class="o">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="n">cornerRadiusAnimation</span><span class="o">.</span><span class="n">timingFunction</span> <span class="o">=</span> <span class="n">circleLayerTimingFunction</span>
+</code></pre>
+</div>
+<p>把动画组合在一个<code class="highlighter-rouge">CAAnimationGroup</code>里面</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code>  <span class="c1">// Group</span>
+  <span class="k">let</span> <span class="nv">groupAnimation</span> <span class="o">=</span> <span class="kt">CAAnimationGroup</span><span class="p">()</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">removedOnCompletion</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">fillMode</span> <span class="o">=</span> <span class="n">kCAFillModeBoth</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">beginTime</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="kt">Float</span><span class="o">.</span><span class="n">infinity</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">animations</span> <span class="o">=</span> <span class="p">[</span><span class="n">boundsAnimation</span><span class="p">,</span> <span class="n">cornerRadiusAnimation</span><span class="p">]</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">timeOffset</span> <span class="o">=</span> <span class="n">startTimeOffset</span>
+  <span class="n">maskLayer</span><span class="o">.</span><span class="nf">addAnimation</span><span class="p">(</span><span class="n">groupAnimation</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"looping"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>再次运行:</p>
+
+<p><img src="/img/posts/UberSplash/RiderIconView-Animation.gif" alt="" /></p>
+
+<h2 id="section-6">网视图</h2>
+
+<p><code class="highlighter-rouge">TileGridView</code>背景网状图包含了一系列的<code class="highlighter-rouge">TileViews</code>。在<code class="highlighter-rouge">TileView.swift</code>里面找到<code class="highlighter-rouge">init(frame:)</code>方法，然后添加下面的代码:</p>
+
+<pre><code class="language-switf">layer.borderWidth = 2.0
+</code></pre>
+<p>运行后查看效果：</p>
+
+<p><img src="/img/posts/UberSplash/Fuber-Grid-View-180x320.png" alt="" /></p>
+
+<p>你可以看见，<code class="highlighter-rouge">TileView</code>是被平铺像网格一样的布局在父视图上的。在<code class="highlighter-rouge">TileGridView.swift</code>的<code class="highlighter-rouge"> renderTileViews()</code>方法里面找到这个网格的创建逻辑。这个逻辑已经创建好了，我们只需要关注如何实现我们的动画。</p>
+
+<h2 id="section-7">网视图动画</h2>
+
+<p><code class="highlighter-rouge">TileGridView</code>只有一个子视图叫<code class="highlighter-rouge">containerView</code>。它包含了所有的<code class="highlighter-rouge">TileView</code>。同时，还有一个属性叫<code class="highlighter-rouge">titleViewRow</code>，它是一个二维的数组包含了所有的<code class="highlighter-rouge">TileView</code>。</p>
+
+<p>在<code class="highlighter-rouge">TileView</code>的<code class="highlighter-rouge">init(frame:)</code>方法里，删掉掉刚刚添加的边宽代码。然后去除掉给<code class="highlighter-rouge">layer.coents</code>添加<code class="highlighter-rouge">chimeSplashImage</code>图片的注释：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="k">override</span> <span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">super</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="n">frame</span><span class="p">)</span>
+  <span class="n">layer</span><span class="o">.</span><span class="n">contents</span> <span class="o">=</span> <span class="kt">TileView</span><span class="o">.</span><span class="n">chimesSplashImage</span><span class="o">.</span><span class="kt">CGImage</span>
+  <span class="n">layer</span><span class="o">.</span><span class="n">shouldRasterize</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>运行查看效果：</p>
+
+<p><img src="/img/posts/UberSplash/Grid-Starting.gif" alt="" /></p>
+
+<p>已经小有样子了</p>
+
+<p><code class="highlighter-rouge">TileGridView</code>与它所有的<code class="highlighter-rouge">TileViews</code>还需要一些动画。在<code class="highlighter-rouge">TileView.swift</code>中找到<code class="highlighter-rouge">startAnimatingWithDuration(_:beginTime:rippleDelay:rippleOffset:)</code>方法，然后输入下面的代码：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="k">let</span> <span class="nv">timingFunction</span> <span class="o">=</span> <span class="kt">CAMediaTimingFunction</span><span class="p">(</span><span class="nv">controlPoints</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="k">let</span> <span class="nv">linearFunction</span> <span class="o">=</span> <span class="kt">CAMediaTimingFunction</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="n">kCAMediaTimingFunctionLinear</span><span class="p">)</span>
+  <span class="k">let</span> <span class="nv">easeOutFunction</span> <span class="o">=</span> <span class="kt">CAMediaTimingFunction</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="n">kCAMediaTimingFunctionEaseOut</span><span class="p">)</span>
+  <span class="k">let</span> <span class="nv">easeInOutTimingFunction</span> <span class="o">=</span> <span class="kt">CAMediaTimingFunction</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">)</span>
+  <span class="k">let</span> <span class="nv">zeroPointValue</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CGPoint</span><span class="p">:</span> <span class="kt">CGPointZero</span><span class="p">)</span>
+ 
+  <span class="k">var</span> <span class="nv">animations</span> <span class="o">=</span> <span class="p">[</span><span class="kt">CAAnimation</span><span class="p">]()</span>
+</code></pre>
+</div>
+<p>这段代码声明了一些时间曲线，将在下面的代码中用到:</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code>  <span class="k">if</span> <span class="n">shouldEnableRipple</span> <span class="p">{</span>
+    <span class="c1">// Transform.scale</span>
+    <span class="k">let</span> <span class="nv">scaleAnimation</span> <span class="o">=</span> <span class="kt">CAKeyframeAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"transform.scale"</span><span class="p">)</span>
+    <span class="n">scaleAnimation</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">scaleAnimation</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="kt">TileView</span><span class="o">.</span><span class="n">rippleAnimationKeyTimes</span>
+    <span class="n">scaleAnimation</span><span class="o">.</span><span class="n">timingFunctions</span> <span class="o">=</span> <span class="p">[</span><span class="n">linearFunction</span><span class="p">,</span> <span class="n">timingFunction</span><span class="p">,</span> <span class="n">timingFunction</span><span class="p">,</span> <span class="n">linearFunction</span><span class="p">]</span>
+    <span class="n">scaleAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">scaleAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
+    <span class="n">animations</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">scaleAnimation</span><span class="p">)</span>
+ 
+    <span class="c1">// Position</span>
+    <span class="k">let</span> <span class="nv">positionAnimation</span> <span class="o">=</span> <span class="kt">CAKeyframeAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"position"</span><span class="p">)</span>
+    <span class="n">positionAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
+    <span class="n">positionAnimation</span><span class="o">.</span><span class="n">timingFunctions</span> <span class="o">=</span> <span class="p">[</span><span class="n">linearFunction</span><span class="p">,</span> <span class="n">timingFunction</span><span class="p">,</span> <span class="n">timingFunction</span><span class="p">,</span> <span class="n">linearFunction</span><span class="p">]</span>
+    <span class="n">positionAnimation</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="kt">TileView</span><span class="o">.</span><span class="n">rippleAnimationKeyTimes</span>
+    <span class="n">positionAnimation</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">zeroPointValue</span><span class="p">,</span> <span class="n">zeroPointValue</span><span class="p">,</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CGPoint</span><span class="p">:</span><span class="n">rippleOffset</span><span class="p">),</span> <span class="n">zeroPointValue</span><span class="p">,</span> <span class="n">zeroPointValue</span><span class="p">]</span>
+    <span class="n">positionAnimation</span><span class="o">.</span><span class="n">additive</span> <span class="o">=</span> <span class="kc">true</span>
+ 
+    <span class="n">animations</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">positionAnimation</span><span class="p">)</span>
+  <span class="p">}</span>
+</code></pre>
+</div>
+<p><code class="highlighter-rouge">shouldEnableRipple</code>是一个布尔值，用来控制是否需要添加形状与位置的变化到动画里面。在之前提到的<code class="highlighter-rouge">renderTileViews()</code>方法里面，这个值已经被设置为了<code class="highlighter-rouge">true</code>。</p>
+
+<p>透明度的动画：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="c1">// Opacity</span>
+  <span class="k">let</span> <span class="nv">opacityAnimation</span> <span class="o">=</span> <span class="kt">CAKeyframeAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"opacity"</span><span class="p">)</span>
+  <span class="n">opacityAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
+  <span class="n">opacityAnimation</span><span class="o">.</span><span class="n">timingFunctions</span> <span class="o">=</span> <span class="p">[</span><span class="n">easeInOutTimingFunction</span><span class="p">,</span> <span class="n">timingFunction</span><span class="p">,</span> <span class="n">timingFunction</span><span class="p">,</span> <span class="n">easeOutFunction</span><span class="p">,</span> <span class="n">linearFunction</span><span class="p">]</span>
+  <span class="n">opacityAnimation</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.61</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.767</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+  <span class="n">opacityAnimation</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+  <span class="n">animations</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">opacityAnimation</span><span class="p">)</span>
+
+</code></pre>
+</div>
+<p>这段代码非常直接了当的设置了不同的透明度在不同的关键帧上<code class="highlighter-rouge">keyTimes</code></p>
+
+<p>把这些动画组合起来：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="c1">// Group</span>
+  <span class="k">let</span> <span class="nv">groupAnimation</span> <span class="o">=</span> <span class="kt">CAAnimationGroup</span><span class="p">()</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="kt">Float</span><span class="o">.</span><span class="n">infinity</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">fillMode</span> <span class="o">=</span> <span class="n">kCAFillModeBackwards</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">beginTime</span> <span class="o">+</span> <span class="n">rippleDelay</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">removedOnCompletion</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">animations</span> <span class="o">=</span> <span class="n">animations</span>
+  <span class="n">groupAnimation</span><span class="o">.</span><span class="n">timeOffset</span> <span class="o">=</span> <span class="n">kAnimationTimeOffset</span>
+ 
+  <span class="n">layer</span><span class="o">.</span><span class="nf">addAnimation</span><span class="p">(</span><span class="n">groupAnimation</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"ripple"</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>把这个动画组赋值给<code class="highlighter-rouge">TileView</code>。根据<code class="highlighter-rouge">shouldEnableRipple</code>的值，这个动画组合可能有一个或者三个动画。</p>
+
+<p>在<code class="highlighter-rouge">TileGridView</code>中调用每个子视图<code class="highlighter-rouge">TileView</code>来开启这段动画。找到<code class="highlighter-rouge">TileGridView.swift</code>的<code class="highlighter-rouge">startAnimatingWithBeginTime(_:):
+</code>方法写入：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">startAnimatingWithBeginTime</span><span class="p">(</span><span class="nv">beginTime</span><span class="p">:</span> <span class="kt">NSTimeInterval</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="n">tileRows</span> <span class="k">in</span> <span class="n">tileViewRows</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="n">view</span> <span class="k">in</span> <span class="n">tileRows</span> <span class="p">{</span>
+      <span class="n">view</span><span class="o">.</span><span class="nf">startAnimatingWithDuration</span><span class="p">(</span><span class="n">kAnimationDuration</span><span class="p">,</span> <span class="nv">beginTime</span><span class="p">:</span> <span class="n">beginTime</span><span class="p">,</span> <span class="nv">rippleDelay</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">rippleOffset</span><span class="p">:</span> <span class="kt">CGPointZero</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+<p>然后运行：</p>
+
+<p><img src="/img/posts/UberSplash/Grid-1.gif" alt="" /></p>
+
+<p>但是这个时候<code class="highlighter-rouge">AnimatedULogoView</code>还需要一个波浪式的外推的效果。我们需要给每一个<code class="highlighter-rouge">TileView</code>设置一个延迟值。这个值将会根据他们距离中心图层的位置来设定，最后再乘一个常量：</p>
+
+<p>在靠近<code class="highlighter-rouge">startAnimatingWithBeginTime(_:)</code>的地方，添加一个段新函数：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">distanceFromCenterViewWithView</span><span class="p">(</span><span class="nv">view</span><span class="p">:</span> <span class="kt">UIView</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">CGFloat</span> <span class="p">{</span>
+  <span class="k">guard</span> <span class="k">let</span> <span class="nv">centerTileView</span> <span class="o">=</span> <span class="n">centerTileView</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="mf">0.0</span> <span class="p">}</span>
+ 
+  <span class="k">let</span> <span class="nv">normalizedX</span> <span class="o">=</span> <span class="p">(</span><span class="n">view</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">centerTileView</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+  <span class="k">let</span> <span class="nv">normalizedY</span> <span class="o">=</span> <span class="p">(</span><span class="n">view</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">centerTileView</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+  <span class="k">return</span> <span class="nf">sqrt</span><span class="p">(</span><span class="n">normalizedX</span> <span class="o">*</span> <span class="n">normalizedX</span> <span class="o">+</span> <span class="n">normalizedY</span> <span class="o">*</span> <span class="n">normalizedY</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>一个简单计算距离的方法</p>
+
+<p>回到<code class="highlighter-rouge">startAnimatingWithBeginTime(_:)</code>写入下面的代码：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code>  <span class="k">for</span> <span class="n">tileRows</span> <span class="k">in</span> <span class="n">tileViewRows</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="n">view</span> <span class="k">in</span> <span class="n">tileRows</span> <span class="p">{</span>
+      <span class="k">let</span> <span class="nv">distance</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">distanceFromCenterViewWithView</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+ 
+      <span class="n">view</span><span class="o">.</span><span class="nf">startAnimatingWithDuration</span><span class="p">(</span><span class="n">kAnimationDuration</span><span class="p">,</span> <span class="nv">beginTime</span><span class="p">:</span> <span class="n">beginTime</span><span class="p">,</span> <span class="nv">rippleDelay</span><span class="p">:</span> <span class="n">kRippleDelayMultiplier</span> <span class="o">*</span> <span class="kt">NSTimeInterval</span><span class="p">(</span><span class="n">distance</span><span class="p">),</span> <span class="nv">rippleOffset</span><span class="p">:</span> <span class="kt">CGPointZero</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre>
+</div>
+<p>这段代码调用<code class="highlighter-rouge">distanceFromCenterViewWithView(_:)</code>后再计算相应的每个视图的延迟时间</p>
+
+<p>运行：</p>
+
+<p><img src="/img/posts/UberSplash/Grid-2.gif" alt="" /></p>
+
+<p>越来接近我们想要的效果了。但还是缺失了点什么。那就是矢量性质的移动。每一个<code class="highlighter-rouge">TileView</code>需要根据波浪的向外推动原理，设置一个矢量性的移动(大小与方向)。</p>
+
+<p>回想起我们的高中数学（希望ta没有挂的很早😂）， 我们可以根据每个一个<code class="highlighter-rouge">TileView</code>距离中心图层的位置来获取一个标准化的矢量。</p>
+
+<p>在<code class="highlighter-rouge"> distanceFromCenterViewWithView(_:):</code>附近，添加一个新的函数：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">normalizedVectorFromCenterViewToView</span><span class="p">(</span><span class="nv">view</span><span class="p">:</span> <span class="kt">UIView</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">CGPoint</span> <span class="p">{</span>
+  <span class="k">let</span> <span class="nv">length</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">distanceFromCenterViewWithView</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+  <span class="k">guard</span> <span class="k">let</span> <span class="nv">centerTileView</span> <span class="o">=</span> <span class="n">centerTileView</span> <span class="k">where</span> <span class="n">length</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="kt">CGPointZero</span> <span class="p">}</span>
+ 
+  <span class="k">let</span> <span class="nv">deltaX</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">centerTileView</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">x</span>
+  <span class="k">let</span> <span class="nv">deltaY</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">centerTileView</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">y</span>
+  <span class="k">return</span> <span class="kt">CGPoint</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="n">deltaX</span> <span class="o">/</span> <span class="n">length</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="n">deltaY</span> <span class="o">/</span> <span class="n">length</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>然后回到<code class="highlighter-rouge">startAnimatingWithBeginTime(_:)</code>，修改之前的代码为：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">startAnimatingWithBeginTime</span><span class="p">(</span><span class="nv">beginTime</span><span class="p">:</span> <span class="kt">NSTimeInterval</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="n">tileRows</span> <span class="k">in</span> <span class="n">tileViewRows</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="n">view</span> <span class="k">in</span> <span class="n">tileRows</span> <span class="p">{</span>
+ 
+      <span class="k">let</span> <span class="nv">distance</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">distanceFromCenterViewWithView</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+      <span class="k">var</span> <span class="nv">vector</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">normalizedVectorFromCenterViewToView</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+ 
+      <span class="n">vector</span> <span class="o">=</span> <span class="kt">CGPoint</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="n">vector</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">kRippleMagnitudeMultiplier</span> <span class="o">*</span> <span class="n">distance</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="n">vector</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">kRippleMagnitudeMultiplier</span> <span class="o">*</span> <span class="n">distance</span><span class="p">)</span>
+ 
+      <span class="n">view</span><span class="o">.</span><span class="nf">startAnimatingWithDuration</span><span class="p">(</span><span class="n">kAnimationDuration</span><span class="p">,</span> <span class="nv">beginTime</span><span class="p">:</span> <span class="n">beginTime</span><span class="p">,</span> <span class="nv">rippleDelay</span><span class="p">:</span> <span class="n">kRippleDelayMultiplier</span> <span class="o">*</span> <span class="kt">NSTimeInterval</span><span class="p">(</span><span class="n">distance</span><span class="p">),</span> <span class="nv">rippleOffset</span><span class="p">:</span> <span class="n">vector</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>这段代码计算每个子图层所需要的偏差矢量，然后带入到动画调用中。</p>
+
+<p>运行查看一下：
+<img src="/img/posts/UberSplash/Grid-3.gif" alt="" /></p>
+
+<p>酷炫！？最后一步，是让用户有一种代入感！我们可以在动画开始之前做一个拉伸的效果！</p>
+
+<p>找到<code class="highlighter-rouge">startAnimatingWithBeginTime(_:)</code>方法， 添加下面的代码：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="k">let</span> <span class="nv">linearTimingFunction</span> <span class="o">=</span> <span class="kt">CAMediaTimingFunction</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="n">kCAMediaTimingFunctionLinear</span><span class="p">)</span>
+ 
+  <span class="k">let</span> <span class="nv">keyframe</span> <span class="o">=</span> <span class="kt">CAKeyframeAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"transform.scale"</span><span class="p">)</span>
+  <span class="n">keyframe</span><span class="o">.</span><span class="n">timingFunctions</span> <span class="o">=</span> <span class="p">[</span><span class="n">linearTimingFunction</span><span class="p">,</span> <span class="kt">CAMediaTimingFunction</span><span class="p">(</span><span class="nv">controlPoints</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">linearTimingFunction</span><span class="p">]</span>
+  <span class="n">keyframe</span><span class="o">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="kt">Float</span><span class="o">.</span><span class="n">infinity</span><span class="p">;</span>
+  <span class="n">keyframe</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">kAnimationDuration</span>
+  <span class="n">keyframe</span><span class="o">.</span><span class="n">removedOnCompletion</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="n">keyframe</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.887</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+  <span class="n">keyframe</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+  <span class="n">keyframe</span><span class="o">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">beginTime</span>
+  <span class="n">keyframe</span><span class="o">.</span><span class="n">timeOffset</span> <span class="o">=</span> <span class="n">kAnimationTimeOffset</span>
+ 
+  <span class="n">containerView</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="nf">addAnimation</span><span class="p">(</span><span class="n">keyframe</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"scale"</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>运行：</p>
+
+<p><img src="/img/posts/UberSplash/FuberFinal.gif" alt="" /></p>
+
+<p>有没有很有感觉！你已经实现了一个激动人心的，专业级别的动画。</p>
+
+<blockquote>
+  <p>你可以去尝试改变<code class="highlighter-rouge">kRippleMagnitudeMultiplier </code>与<code class="highlighter-rouge">kRippleDelayMultiplier</code>的值，看看会带来什么样的奇妙化学反应。</p>
+</blockquote>
+
+<p>最后，回到<code class="highlighter-rouge">RootContainerViewController.swift.</code>的<code class="highlighter-rouge">viewDidLoad() </code>方法。把我们之前的<code class="highlighter-rouge">showSplashViewControllerNoPing()</code>调用改为<code class="highlighter-rouge">showSplashViewController()</code>。</p>
+
+<p>再次运行：</p>
+
+<p><img src="/img/posts/UberSplash/Fuber-Animation.gif" alt="" /></p>
+
+<p>一个酷炫的开屏动画就这样被创建了出来。有没有感到热血沸腾呢！</p>
+
+<h2 id="section-8">其他</h2>
+<p>你可以在这里<a href="">下载完整项目</a></p>
+
+<p>如果你想学到更多动画的<code class="highlighter-rouge">姿势</code>！请<a href="https://www.raywenderlich.com/store/ios-animations-by-tutorials">戳这里</a></p>
+
+<p><code class="highlighter-rouge">Have Fun!</code></p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2016/08/30/uberSplashScreen-translation"
+                    data-title="一步步实现优步开屏动画"
+                    data-url="http://hyyy.me/2016/08/30/uberSplashScreen-translation/"
+                    data-images="http://hyyy.me/img/bg/20160830-UberSplashScreen2.jpg"
+                    data-content="
+  原作者：Derek Selander 2016/08/01 原文
+
+  翻译: yuan 2016/08/30
+
+
+经常在App启动时，App会疯狂... | 我的成长| Yuan's Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/08/16/RollingBanner2/" data-toggle="tooltip" data-placement="top" title="UIScrollView视差滑动轮播图（二） 优化">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2016/08/30/uberSplashScreen-translation"
+                        data-title="一步步实现优步开屏动画"
+                        data-url="http://hyyy.me/2016/08/30/uberSplashScreen-translation/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+                				<a href="/tags/#iOS" title="iOS" rel="5">
+                                    iOS
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#前端开发" title="前端开发" rel="3">
+                                    前端开发
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#JavaScript" title="JavaScript" rel="3">
+                                    JavaScript
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#翻译" title="翻译" rel="3">
+                                    翻译
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Swift" title="Swift" rel="2">
+                                    Swift
+                                </a>
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#Objective-C" title="Objective-C" rel="2">
+                                    Objective-C
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UIKit" title="UIKit" rel="2">
+                                    UIKit
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UIScrollView" title="UIScrollView" rel="2">
+                                    UIScrollView
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UX" title="UX" rel="3">
+                                    UX
+                                </a>
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://hyyy.me">Yuan's Blog</a></li>
+                    
+                        <li><a href="http://zhoulingyu.com/">小鱼周凌宇</a></li>
+                    
+                        <li><a href="#">Bar</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'hyyy';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/qingd120t@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/5452295038">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/arbalest313">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Yuan's Blog 2016
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-82531112-1';
+    var _gaDomain = 'hyyy.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'e6e8a05da61ccb5abdc137919e660c90';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

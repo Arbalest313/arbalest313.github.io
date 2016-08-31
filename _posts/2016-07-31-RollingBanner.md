@@ -4,7 +4,7 @@ title:      "UIScrollView视差滑动轮播图"
 subtitle:   "iOS仿格瓦拉 轮播图 Parallax Rolling Banner"
 date:       2016-08-15
 author:     "yuan"
-header-img: "img/bg/20160815-RollingBanner-Paging.jpg"
+header-img: "img/bg/20160815-RollingBanner-Paging2.jpg"
 tags:
     - Objective-C
     - iOS
