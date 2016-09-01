@@ -51,6 +51,10 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="">
 
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" hidden = "true"/>
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
     <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container-fluid">
@@ -123,6 +127,8 @@
 </script>
 
 
+
+
     <!-- Page Header -->
 <header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
     <div class="container">
@@ -170,11 +176,9 @@
   翻译: yuan 2016/08/30
 
 
-经常在App启动时，App会疯狂的向服务器请求一些必要的数据用来启动程序。这个时候，开屏动画需要扮演一个重要的角色：在等待程序启动时，不让用户感到乏味。
+经常App需要一些必要的数据用来启动程序。这时App就会向服务器发起请求并等待这些数据的返回。这个时候，开屏动画就需要扮演一个重要的角色：在等待程序完全启动时，不让用户感到乏味。
 
-16年的上半年，Uber决定重新设立品牌形象。其中就包含了一个重新设计的炫酷的开屏动画。
-
-这篇文章将会尝试复现一个...
+16年的上半年，Uber决定重新设立品牌形象与Logo。其中就包含了一个重新设计的炫酷的开...
         </div>
     </a>
     <p class="post-meta">
@@ -512,7 +516,7 @@ Yuan 的 Blog 就这么开通了。
                     <hr><h5><a href="/about/">ABOUT ME</a></h5>
                     <div class="short-about">
                         
-                            <img src="/img/avatar-yuan.jpg" />
+                            <img src="/img/avatar-yuan2.jpg" />
                         
                         
                             <p>写写代码，聊聊设计，看看产品。世界那么大，你总会爱上他</p>
@@ -530,15 +534,6 @@ Yuan 的 Blog 就这么开通了。
                             </li>
                             
                             
-                            
-                            <li>
-                                <a target="_blank" href="https://www.zhihu.com/people/qingd120t@163.com">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
-                                    </span>
-                                </a>
-                            </li>
                             
                             
                             <li>
@@ -603,15 +598,6 @@ Yuan 的 Blog 就这么开通了。
                     
 
                     <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
-                    
-                    <li>
-                        <a target="_blank" href="https://www.zhihu.com/people/qingd120t@163.com">
-                            <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa  fa-stack-1x fa-inverse">知</i>
-                            </span>
-                        </a>
-                    </li>
                     
                     
                     <li>
@@ -749,9 +735,6 @@ Yuan 的 Blog 就这么开通了。
 
 
 
-<!-- Image to hack wechat -->
-<img src="/img/icon_wechat.png" width="0" height="0" />
-<!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
 

@@ -5,8 +5,8 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 31 Aug 2016 15:40:31 +0800</pubDate>
-    <lastBuildDate>Wed, 31 Aug 2016 15:40:31 +0800</lastBuildDate>
+    <pubDate>Thu, 01 Sep 2016 10:24:57 +0800</pubDate>
+    <lastBuildDate>Thu, 01 Sep 2016 10:24:57 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -17,32 +17,32 @@
   &lt;p&gt;翻译: &lt;a href=&quot;http://hyyy.me&quot;&gt;yuan&lt;/a&gt; 2016/08/30&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;经常在App启动时，App会疯狂的向服务器请求一些必要的数据用来启动程序。这个时候，开屏动画需要扮演一个重要的角色：在等待程序启动时，不让用户感到乏味。&lt;/p&gt;
+&lt;p&gt;经常App需要一些必要的数据用来启动程序。这时App就会向服务器发起请求并等待这些数据的返回。这个时候，开屏动画就需要扮演一个重要的角色：在等待程序完全启动时，不让用户感到乏味。&lt;/p&gt;
 
-&lt;p&gt;16年的上半年，&lt;a href=&quot;http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/&quot;&gt;Uber决定重新设立品牌形象&lt;/a&gt;。其中就包含了一个重新设计的炫酷的开屏动画。&lt;/p&gt;
+&lt;p&gt;16年的上半年，&lt;a href=&quot;http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/&quot;&gt;Uber决定重新设立品牌形象与Logo&lt;/a&gt;。其中就包含了一个重新设计的炫酷的开屏动画。&lt;/p&gt;
 
-&lt;p&gt;这篇文章将会尝试复现一个与Uber开屏动画非常相近的效果。其中可能会用&lt;code class=&quot;highlighter-rouge&quot;&gt;CALayers&lt;/code&gt;与&lt;code class=&quot;highlighter-rouge&quot;&gt;CAAnimations&lt;/code&gt;的一些类。这篇文章将会更侧重实现，其中包含的一些动画的概念，可以在点击订阅&lt;a href=&quot;https://www.raywenderlich.com/u/icanzilb&quot;&gt; Marin Todorov’s Intermediate iOS Animation video series.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这篇文章将会尝试复现一个与Uber开屏动画非常相近的效果。其中会用到&lt;code class=&quot;highlighter-rouge&quot;&gt;CALayers&lt;/code&gt;与&lt;code class=&quot;highlighter-rouge&quot;&gt;CAAnimations&lt;/code&gt;相关一些类。这篇文章将会更侧重实现，其中包含的一些动画的概念，可以在点击订阅&lt;a href=&quot;https://www.raywenderlich.com/u/icanzilb&quot;&gt; Marin Todorov’s Intermediate iOS Animation video series.&lt;/a&gt;来了解详情。&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;初始&lt;/h2&gt;
 
 &lt;p&gt;在这篇文章中你将会用到非常多的动画，你可能需要一个已经创建好&lt;code class=&quot;highlighter-rouge&quot;&gt;CALayer&lt;/code&gt;的&lt;a href=&quot;https://cdn2.raywenderlich.com/wp-content/uploads/2016/06/Fuber-starter.zip&quot;&gt;起始项目&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;这个项目被命名为&lt;code class=&quot;highlighter-rouge&quot;&gt;Fuber&lt;/code&gt;，Fuber是一个共享出行理念的App。用户可以发起一个&lt;a href=&quot;https://en.wikipedia.org/wiki/Segway_PT&quot;&gt;平衡车&lt;/a&gt;需求给平衡车司机，同时要求司机把你从一个地方送到另外一个地方。&lt;code class=&quot;highlighter-rouge&quot;&gt;Fuber&lt;/code&gt;正在快速的增长并且已经渗入了60多个国家。 但&lt;code class=&quot;highlighter-rouge&quot;&gt;Fuber&lt;/code&gt;遭遇到了一些当地政府与平衡车工会的抵制。&lt;/p&gt;
+&lt;p&gt;这个项目被命名为&lt;code class=&quot;highlighter-rouge&quot;&gt;Fuber&lt;/code&gt;，Fuber是一个共享出行理念的App。用户可以发起一个&lt;a href=&quot;https://en.wikipedia.org/wiki/Segway_PT&quot;&gt;平衡车&lt;/a&gt;分享需求给平衡车司机，同时要求司机把你从一个地方送到另外一个地方。&lt;code class=&quot;highlighter-rouge&quot;&gt;Fuber&lt;/code&gt;正在快速的增长并且已经渗入了60多个国家。 但&lt;code class=&quot;highlighter-rouge&quot;&gt;Fuber&lt;/code&gt;遭遇到了一些当地政府与平衡车工会的抵制。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/posts/UberSplash/fuber_logo.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;在这篇文章的结束， 你将会实现一个这样开屏动画:&lt;/p&gt;
+&lt;p&gt;在这篇文章的结束， 你将会实现一个这样的开屏动画:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/posts/UberSplash/Fuber-Animation.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;尝试运行的起始项目&lt;/p&gt;
 
-&lt;p&gt;项目最开始会调起&lt;code class=&quot;highlighter-rouge&quot;&gt;RootContainerViewController&lt;/code&gt;。同时&lt;code class=&quot;highlighter-rouge&quot;&gt;RootContainerViewController &lt;/code&gt;调起子控制器&lt;code class=&quot;highlighter-rouge&quot;&gt;SplashViewController&lt;/code&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;RootContainerViewController&lt;/code&gt;会一直展示开屏动画直到App已经准备好启动。这就像我们的App在与服务器进行数据请求交互时一样。在这次的项目里，开屏动画将会有自己的结束逻辑。&lt;/p&gt;
+&lt;p&gt;项目最开始会调起&lt;code class=&quot;highlighter-rouge&quot;&gt;RootContainerViewController&lt;/code&gt;。同时&lt;code class=&quot;highlighter-rouge&quot;&gt;RootContainerViewController &lt;/code&gt;调起子控制器&lt;code class=&quot;highlighter-rouge&quot;&gt;SplashViewController&lt;/code&gt;。&lt;code class=&quot;highlighter-rouge&quot;&gt;RootContainerViewController&lt;/code&gt;会一直展示开屏动画直到App已经准备好启动。这就像我们的App在与服务器进行数据请求时的交互一样。在这次的项目里，开屏动画将会有自己的结束逻辑。&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;RootContainerViewController&lt;/code&gt;主要实现了两个方法 &lt;code class=&quot;highlighter-rouge&quot;&gt;showSplashViewController()&lt;/code&gt;与&lt;code class=&quot;highlighter-rouge&quot;&gt;showSplashViewControllerNoPing()&lt;/code&gt;。为了方便观察，我们将会使用&lt;code class=&quot;highlighter-rouge&quot;&gt;showSplashViewControllerNoPing()&lt;/code&gt;来创建一个无限循环的开屏动画。在完成这篇教程后，你可以尝试使用&lt;code class=&quot;highlighter-rouge&quot;&gt;showSplashViewController()&lt;/code&gt;来模拟真实的API请求。&lt;/p&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;开屏动画视图与图层结构&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SplashViewController&lt;/code&gt;的视图包含了两个子视图。第一个子视图包含了&lt;code class=&quot;highlighter-rouge&quot;&gt;TileGridView&lt;/code&gt;波浪形网视图的背景。这个网状视图其实是一个网格式的布局类似&lt;code class=&quot;highlighter-rouge&quot;&gt;UICollectionView&lt;/code&gt;，每一个网格里包含了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;TileView&lt;/code&gt;。另外一个子视图是&lt;code class=&quot;highlighter-rouge&quot;&gt;AnimatedULogoView &lt;/code&gt;,一个‘U’形的动画层。&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SplashViewController&lt;/code&gt;的视图包含了两个子视图。第一个子视图包含了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;TileGridView&lt;/code&gt;波浪形网视图的背景。这个网状视图其实是一个网格式的布局，类似&lt;code class=&quot;highlighter-rouge&quot;&gt;UICollectionView&lt;/code&gt;，每一个网格里包含了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;TileView&lt;/code&gt;。另外一个子视图是&lt;code class=&quot;highlighter-rouge&quot;&gt;AnimatedULogoView &lt;/code&gt;,一个‘U’形的动画层。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/posts/UberSplash/Fuber-View-Hierarchy-1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
@@ -61,7 +61,7 @@
 
 &lt;p&gt;现在你已经知道你所需要的组合视图结构，可以去尝试让他们动起来了。&lt;/p&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;实现圆圈的动画&lt;/h2&gt;
+&lt;h2 id=&quot;section-2&quot;&gt;圆圈动画&lt;/h2&gt;
 
 &lt;p&gt;为了方便观察动画的效果，我们可以把其他不需要的图层注释掉。在&lt;code class=&quot;highlighter-rouge&quot;&gt;AnimatedULogoView.swift &lt;/code&gt;文件里找到&lt;code class=&quot;highlighter-rouge&quot;&gt;init(frame:)&lt;/code&gt;方法，把除了&lt;code class=&quot;highlighter-rouge&quot;&gt;circleLayer &lt;/code&gt;的其他的三个图层全部注释掉。之后我们再慢慢一步一步把他们还原回来。代码：&lt;/p&gt;
 
@@ -204,7 +204,7 @@
 
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;就像&lt;code class=&quot;highlighter-rouge&quot;&gt;circleLayer&lt;/code&gt;的动画一样，这里你也会在z轴上旋转他，并改变他的大小。 但是在这个视图里面， 你先把他缩到小原比例的25%，再马上把他回放到原来的尺寸。最后再把他缩小到原比例15%大小。&lt;/p&gt;
+&lt;p&gt;就像&lt;code class=&quot;highlighter-rouge&quot;&gt;circleLayer&lt;/code&gt;的动画一样，这里你也会在z轴上旋转他，并改变他的大小。 但是在这个视图里面， 你先把他缩小到原比例的25%，再马上把他回放到原来的尺寸。最后再把他缩小到原比例的15%大小。&lt;/p&gt;
 
 &lt;p&gt;把这两组动画放进&lt;code class=&quot;highlighter-rouge&quot;&gt;CAAnimationGroup&lt;/code&gt;里面赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;lineLayer&lt;/code&gt;:&lt;/p&gt;
 
@@ -535,8 +535,9 @@
 &lt;/div&gt;
 &lt;p&gt;这段代码计算每个子图层所需要的偏差矢量，然后带入到动画调用中。&lt;/p&gt;
 
-&lt;p&gt;运行查看一下：
-&lt;img src=&quot;/img/posts/UberSplash/Grid-3.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;运行查看一下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/posts/UberSplash/Grid-3.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;酷炫！？最后一步，是让用户有一种代入感！我们可以在动画开始之前做一个拉伸的效果！&lt;/p&gt;
 

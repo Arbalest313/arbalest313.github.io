@@ -51,6 +51,10 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="">
 
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" hidden = "true"/>
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
     <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container-fluid">
@@ -121,6 +125,8 @@
         }
     }
 </script>
+
+
 
 
     <!-- Image to hack wechat -->
@@ -586,15 +592,6 @@
 
                     <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
                     
-                    <li>
-                        <a target="_blank" href="https://www.zhihu.com/people/qingd120t@163.com">
-                            <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa  fa-stack-1x fa-inverse">知</i>
-                            </span>
-                        </a>
-                    </li>
-                    
                     
                     <li>
                         <a target="_blank" href="http://weibo.com/5452295038">
@@ -731,9 +728,6 @@
 
 
 
-<!-- Image to hack wechat -->
-<img src="/img/icon_wechat.png" width="0" height="0" />
-<!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
 
