@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "一步步实现优步开屏动画"
-subtitle:   "iOS Swift Uber 优步 Logo 翻译 "
+title:      "一步步实现Uber/优步开屏动画"
+subtitle:   "iOS Uber/优步开屏动画 Swift Logo 翻译 "
 date:       2016-08-30
 author:     "yuan"
 header-img: "img/bg/20160830-UberSplashScreen2.jpg"
