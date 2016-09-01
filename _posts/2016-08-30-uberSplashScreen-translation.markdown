@@ -16,7 +16,7 @@ tags:
  >
  > 翻译: [yuan](http://hyyy.me) 2016/08/30
  
-通常，App启动时会需要一些必要的数据。所以App会向服务器发起请求并等待这些数据的返回。这时，一个完美的开屏动画，可以让用户在等待时保持一个愉悦的心情。
+通常，App启动时会需要一些必要的初始化数据。所以App会向服务器发起请求并等待这些数据的返回。这时，一个完美的开屏动画，可以让用户在等待时保持一个愉悦的心情。
 
 16年的上半年，[Uber决定重新设立品牌形象与Logo](http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/)。其中就包含了一个重新设计的炫酷的开屏动画。
 
@@ -112,7 +112,7 @@ layer.path = UIBezierPath(arcCenter: CGPointZero, radius: radius/2, startAngle: 
   transformAnimation.fromValue = NSValue(CATransform3D: startingTransform)
   transformAnimation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
 ```
-这组动画包含了等比放大缩小与z轴的旋转。`circleLayer`图层慢慢变大，同时伴随顺时针45度的旋转。这个旋转的动画需要与`lineLayer`的旋转动画保持一直。
+这组动画包含了等比放大缩小与z轴的旋转。`circleLayer`图层慢慢变大，同时伴随顺时针45度的旋转。这个旋转的动画需要与`lineLayer`的旋转动画保持同步。
 
 最后，添加一个`CAAnimationGroup`。这个动画包含了上面的两组动画，这样我们就只需要添加一个动画在`circleLayer`的图层上
 
@@ -181,7 +181,7 @@ override init(frame: CGRect) {
   lineWidthAnimation.duration = kAnimationDuration
   lineWidthAnimation.keyTimes = [0.0, 1.0-kAnimationDurationDelay/kAnimationDuration, 1.0]
 ```
-这组动画会增加粗线的宽再变细线的宽。
+这组动画会把线宽变粗再把线宽变细。
 
 继续添加下一组动画：
 
