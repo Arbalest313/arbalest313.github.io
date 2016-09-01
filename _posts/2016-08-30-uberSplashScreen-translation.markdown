@@ -315,7 +315,7 @@ override init(frame: CGRect) {
 ```
 这些代码改变边框大小。 当边框大小改变时，整个`AnimatedULogoView`会慢慢消失，因为这个图层是所有子图层的遮挡图层。
 
-添加圆角给这个图层：
+给这个图层添加圆角：
 
 
 ```swift
@@ -429,7 +429,7 @@ override init(frame: CGRect) {
 ```
 这段代码非常直接了当的设置了不同的透明度在不同的关键帧上`keyTimes`
 
-把这些动画组合起来：
+把这些动画组合起来赋值给`TileView`
 
 ```swift
  // Group
@@ -444,7 +444,7 @@ override init(frame: CGRect) {
  
   layer.addAnimation(groupAnimation, forKey: "ripple")
 ```
-把这个动画组赋值给`TileView`。根据`shouldEnableRipple`的值，这个动画组合可能有一个或者三个动画。
+根据`shouldEnableRipple`的值，这个动画组合可能有一个或者三个动画。
 
 在`TileGridView`中调用每个子视图`TileView`来开启这段动画。找到`TileGridView.swift`的`startAnimatingWithBeginTime(_:):
 `方法写入：
