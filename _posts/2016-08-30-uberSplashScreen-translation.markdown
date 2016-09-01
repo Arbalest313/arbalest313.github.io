@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "一步步实现Uber/优步开屏动画"
+title:      "一步步实现Uber/优步启动动画"
 subtitle:   "iOS Uber/优步开屏动画 Swift Logo 翻译 "
 date:       2016-08-30
 author:     "yuan"
@@ -16,7 +16,7 @@ tags:
  >
  > 翻译: [yuan](http://hyyy.me) 2016/08/30
  
-很多App都需要一些必要的数据来启动程序。在启动时，App就会向服务器发起请求并等待这些数据的返回。所以开屏动画就需要扮演一个重要的角色：在等待程序完全启动时，不让用户感到乏味。
+很多App都需要一些必要的数据来启动程序。在启动时，App就会向服务器发起请求并等待这些数据的返回。所以启动动画就需要扮演一个重要的角色：在等待程序完全启动时，不让用户感到乏味。
 
 16年的上半年，[Uber决定重新设立品牌形象与Logo](http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/)。其中就包含了一个重新设计的炫酷的开屏动画。
 
