@@ -92,11 +92,17 @@ friends: [
         title: "Yuan's Blog",
         href: "http://hyyy.me"
     },{
+        title: "casatwy",
+        href: "http://casatwy.com/"
+    },{
+        title: "刘坤的技术博客",
+        href: "http://blog.cnbluebox.com/"
+    },{
+        title: "draveness",
+        href: "http://draveness.me/"
+    },{
         title: "小鱼周凌宇",
         href: "http://zhoulingyu.com/"
-    },{
-        title: "Bar",
-        href: "#"
     }
     # },{
     #     title: "Example Friends",
