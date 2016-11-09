@@ -10,10 +10,10 @@ tags:
     - iOS
 ---
  
-<center>
+
 # A Wallpaper I have created as `Swift` and `Objective-C` block reminder 
-</center>
-![](../img/posts/WallPaper/hYDev.jpg)
+
+![](/img/posts/WallPaper/hYDev.jpg)
 
 <br>
 
