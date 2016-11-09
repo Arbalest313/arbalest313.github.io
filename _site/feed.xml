@@ -5,19 +5,45 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 01 Sep 2016 10:33:23 +0800</pubDate>
-    <lastBuildDate>Thu, 01 Sep 2016 10:33:23 +0800</lastBuildDate>
+    <pubDate>Wed, 09 Nov 2016 14:39:30 +0800</pubDate>
+    <lastBuildDate>Wed, 09 Nov 2016 14:39:30 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>一步步实现优步开屏动画</title>
+        <title>Wallpaper - Swift/OC Closures/Block</title>
+        <description>&lt;center&gt;
+# A Wallpaper I have created as `Swift` and `Objective-C` block reminder 
+&lt;/center&gt;
+&lt;p&gt;&lt;img src=&quot;../img/posts/WallPaper/hYDev.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Reference:&lt;br /&gt;
+[1] &lt;a href=&quot;http://fuckingblocksyntax.com/&quot;&gt;Swift closures and functions&lt;/a&gt;&lt;br /&gt;
+[2] &lt;a href=&quot;http://fuckingblocksyntax.com/&quot;&gt;How Do I Declare A Block in Objective-C?&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Wed, 09 Nov 2016 00:00:00 +0800</pubDate>
+        <link>http://hyyy.me/2016/11/09/WallPaper/</link>
+        <guid isPermaLink="true">http://hyyy.me/2016/11/09/WallPaper/</guid>
+        
+        <category>Swift</category>
+        
+        <category>iOS</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>一步步实现Uber/优步启动动画</title>
         <description>&lt;blockquote&gt;
   &lt;p&gt;原作者：&lt;a href=&quot;https://www.raywenderlich.com/u/lolgrep&quot;&gt;Derek Selander&lt;/a&gt; 2016/08/01 &lt;a href=&quot;https://www.raywenderlich.com/133224/how-to-create-an-uber-splash-screen&quot;&gt;原文&lt;/a&gt;&lt;/p&gt;
 
   &lt;p&gt;翻译: &lt;a href=&quot;http://hyyy.me&quot;&gt;yuan&lt;/a&gt; 2016/08/30&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;经常App需要一些必要的数据用来启动程序。这时App就会向服务器发起请求并等待这些数据的返回。这个时候，开屏动画就需要扮演一个重要的角色：在等待程序完全启动时，不让用户感到乏味。&lt;/p&gt;
+&lt;p&gt;通常，App启动时会需要一些必要的初始化数据。所以App会向服务器发起请求并等待这些数据的返回。这时，一个完美的开屏动画，可以让用户在等待时保持一个愉悦的心情。&lt;/p&gt;
 
 &lt;p&gt;16年的上半年，&lt;a href=&quot;http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/&quot;&gt;Uber决定重新设立品牌形象与Logo&lt;/a&gt;。其中就包含了一个重新设计的炫酷的开屏动画。&lt;/p&gt;
 
@@ -115,7 +141,7 @@
   &lt;span class=&quot;n&quot;&gt;transformAnimation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NSValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;CATransform3D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CATransform3DIdentity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;这组动画包含了等比放大缩小与z轴的旋转。&lt;code class=&quot;highlighter-rouge&quot;&gt;circleLayer&lt;/code&gt;图层慢慢变大，同时伴随顺时针45度的旋转。这个旋转的动画需要与&lt;code class=&quot;highlighter-rouge&quot;&gt;lineLayer&lt;/code&gt;的旋转动画保持一直。&lt;/p&gt;
+&lt;p&gt;这组动画包含了等比放大缩小与z轴的旋转。&lt;code class=&quot;highlighter-rouge&quot;&gt;circleLayer&lt;/code&gt;图层慢慢变大，同时伴随顺时针45度的旋转。这个旋转的动画需要与&lt;code class=&quot;highlighter-rouge&quot;&gt;lineLayer&lt;/code&gt;的旋转动画保持同步。&lt;/p&gt;
 
 &lt;p&gt;最后，添加一个&lt;code class=&quot;highlighter-rouge&quot;&gt;CAAnimationGroup&lt;/code&gt;。这个动画包含了上面的两组动画，这样我们就只需要添加一个动画在&lt;code class=&quot;highlighter-rouge&quot;&gt;circleLayer&lt;/code&gt;的图层上&lt;/p&gt;
 
@@ -186,7 +212,7 @@
   &lt;span class=&quot;n&quot;&gt;lineWidthAnimation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keyTimes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kAnimationDurationDelay&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kAnimationDuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;这组动画会增加粗线的宽再变细线的宽。&lt;/p&gt;
+&lt;p&gt;这组动画会把线宽变粗再把线宽变细。&lt;/p&gt;
 
 &lt;p&gt;继续添加下一组动画：&lt;/p&gt;
 
@@ -322,7 +348,7 @@
 &lt;/div&gt;
 &lt;p&gt;这些代码改变边框大小。 当边框大小改变时，整个&lt;code class=&quot;highlighter-rouge&quot;&gt;AnimatedULogoView&lt;/code&gt;会慢慢消失，因为这个图层是所有子图层的遮挡图层。&lt;/p&gt;
 
-&lt;p&gt;添加圆角给这个图层：&lt;/p&gt;
+&lt;p&gt;给这个图层添加圆角：&lt;/p&gt;
 
 &lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;c1&quot;&gt;// cornerRadius&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;cornerRadiusAnimation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CABasicAnimation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;keyPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;cornerRadius&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -434,7 +460,7 @@
 &lt;/div&gt;
 &lt;p&gt;这段代码非常直接了当的设置了不同的透明度在不同的关键帧上&lt;code class=&quot;highlighter-rouge&quot;&gt;keyTimes&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;把这些动画组合起来：&lt;/p&gt;
+&lt;p&gt;把这些动画组合起来赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;TileView&lt;/code&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-swift highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;c1&quot;&gt;// Group&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;groupAnimation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CAAnimationGroup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
@@ -449,7 +475,7 @@
   &lt;span class=&quot;n&quot;&gt;layer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;addAnimation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupAnimation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;forKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ripple&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;把这个动画组赋值给&lt;code class=&quot;highlighter-rouge&quot;&gt;TileView&lt;/code&gt;。根据&lt;code class=&quot;highlighter-rouge&quot;&gt;shouldEnableRipple&lt;/code&gt;的值，这个动画组合可能有一个或者三个动画。&lt;/p&gt;
+&lt;p&gt;根据&lt;code class=&quot;highlighter-rouge&quot;&gt;shouldEnableRipple&lt;/code&gt;的值，这个动画组合可能有一个或者三个动画。&lt;/p&gt;
 
 &lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;TileGridView&lt;/code&gt;中调用每个子视图&lt;code class=&quot;highlighter-rouge&quot;&gt;TileView&lt;/code&gt;来开启这段动画。找到&lt;code class=&quot;highlighter-rouge&quot;&gt;TileGridView.swift&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;startAnimatingWithBeginTime(_:):
 &lt;/code&gt;方法写入：&lt;/p&gt;
@@ -877,7 +903,7 @@
   &lt;p&gt;由于RunLoop的缘故，&lt;code class=&quot;highlighter-rouge&quot;&gt;ScrollView&lt;/code&gt;代理对&lt;code class=&quot;highlighter-rouge&quot;&gt;contentoffset&lt;/code&gt;记录的会非常不精确。&lt;code class=&quot;highlighter-rouge&quot;&gt;scrollViewDidScroll()&lt;/code&gt;可能会重复调用&lt;code class=&quot;highlighter-rouge&quot;&gt;completedHandler()&lt;/code&gt;。这里记录lastMoveX是因为我们想确保：当moveX大于一张图片宽度时，&lt;code class=&quot;highlighter-rouge&quot;&gt;completedHandler()&lt;/code&gt;只被调起一次。当&lt;code class=&quot;highlighter-rouge&quot;&gt;lastMoveX&lt;/code&gt;已经大于一张图片宽度时，说明&lt;code class=&quot;highlighter-rouge&quot;&gt;completedHandler()&lt;/code&gt;已被调用，不需要再重复调用。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;completedHandler()&lt;/code&gt;里面，我们需要做的是每当一张图片被完整显示在屏幕上时，不管他是&lt;code class=&quot;highlighter-rouge&quot;&gt;letfImage&lt;/code&gt;还是&lt;code class=&quot;highlighter-rouge&quot;&gt;rightImage&lt;/code&gt;,我们需要把这张图片重新赋值到&lt;code class=&quot;highlighter-rouge&quot;&gt;midContainer&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;midImage&lt;/code&gt;上面，并根据这个图片的&lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt;计算出新的&lt;code class=&quot;highlighter-rouge&quot;&gt;leftImage&lt;/code&gt;与&lt;code class=&quot;highlighter-rouge&quot;&gt;rightImage&lt;/code&gt;，并欺骗用户。调用&lt;code class=&quot;highlighter-rouge&quot;&gt;resetSubViews()&lt;/code&gt;,把&lt;code class=&quot;highlighter-rouge&quot;&gt;scrollView&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;offset&lt;/code&gt;重新设置为初始值(显示中间视图)：&lt;/p&gt;
+&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;completedHandler()&lt;/code&gt;里面，我们需要做的是每当一张新图片被完整显示在屏幕上时，不管他是&lt;code class=&quot;highlighter-rouge&quot;&gt;letfImage&lt;/code&gt;还是&lt;code class=&quot;highlighter-rouge&quot;&gt;rightImage&lt;/code&gt;,我们需要把这张图片重新赋值到&lt;code class=&quot;highlighter-rouge&quot;&gt;midContainer&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;midImage&lt;/code&gt;上面，并根据这个图片的&lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt;计算出新的&lt;code class=&quot;highlighter-rouge&quot;&gt;leftImage&lt;/code&gt;与&lt;code class=&quot;highlighter-rouge&quot;&gt;rightImage&lt;/code&gt;。同时欺骗用户,调用&lt;code class=&quot;highlighter-rouge&quot;&gt;resetSubViews()&lt;/code&gt;,把&lt;code class=&quot;highlighter-rouge&quot;&gt;scrollView&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;offset&lt;/code&gt;重新设置为初始值(显示中间视图)：&lt;/p&gt;
 
 &lt;div class=&quot;language-objc highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//重新计算letimage, midImage,rightImage的index
 &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;completedHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;

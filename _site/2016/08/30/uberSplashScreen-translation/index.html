@@ -10,7 +10,7 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>一步步实现优步开屏动画 - 我的成长| Yuan's Blog</title>
+    <title>一步步实现Uber/优步启动动画 - 我的成长| Yuan's Blog</title>
 
     <link rel="canonical" href="http://hyyy.me/2016/08/30/uberSplashScreen-translation/">
 
@@ -159,10 +159,10 @@
                         <a class="tag" href="/tags/#翻译" title="翻译">翻译</a>
                         
                     </div>
-                    <h1>一步步实现优步开屏动画</h1>
+                    <h1>一步步实现Uber/优步启动动画</h1>
                     
                     
-                    <h2 class="subheading">iOS Swift Uber 优步 Logo 翻译 </h2>
+                    <h2 class="subheading">iOS Uber/优步开屏动画 Swift Logo 翻译 </h2>
                     
                     <span class="meta">Posted by yuan on August 30, 2016</span>
                 </div>
@@ -188,7 +188,7 @@
   <p>翻译: <a href="http://hyyy.me">yuan</a> 2016/08/30</p>
 </blockquote>
 
-<p>经常App需要一些必要的数据用来启动程序。这时App就会向服务器发起请求并等待这些数据的返回。这个时候，开屏动画就需要扮演一个重要的角色：在等待程序完全启动时，不让用户感到乏味。</p>
+<p>通常，App启动时会需要一些必要的初始化数据。所以App会向服务器发起请求并等待这些数据的返回。这时，一个完美的开屏动画，可以让用户在等待时保持一个愉悦的心情。</p>
 
 <p>16年的上半年，<a href="http://www.wired.com/2016/02/the-inside-story-behind-ubers-colorful-redesign/">Uber决定重新设立品牌形象与Logo</a>。其中就包含了一个重新设计的炫酷的开屏动画。</p>
 
@@ -286,7 +286,7 @@
   <span class="n">transformAnimation</span><span class="o">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="kt">NSValue</span><span class="p">(</span><span class="kt">CATransform3D</span><span class="p">:</span> <span class="kt">CATransform3DIdentity</span><span class="p">)</span>
 </code></pre>
 </div>
-<p>这组动画包含了等比放大缩小与z轴的旋转。<code class="highlighter-rouge">circleLayer</code>图层慢慢变大，同时伴随顺时针45度的旋转。这个旋转的动画需要与<code class="highlighter-rouge">lineLayer</code>的旋转动画保持一直。</p>
+<p>这组动画包含了等比放大缩小与z轴的旋转。<code class="highlighter-rouge">circleLayer</code>图层慢慢变大，同时伴随顺时针45度的旋转。这个旋转的动画需要与<code class="highlighter-rouge">lineLayer</code>的旋转动画保持同步。</p>
 
 <p>最后，添加一个<code class="highlighter-rouge">CAAnimationGroup</code>。这个动画包含了上面的两组动画，这样我们就只需要添加一个动画在<code class="highlighter-rouge">circleLayer</code>的图层上</p>
 
@@ -357,7 +357,7 @@
   <span class="n">lineWidthAnimation</span><span class="o">.</span><span class="n">keyTimes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">kAnimationDurationDelay</span><span class="o">/</span><span class="n">kAnimationDuration</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
 </code></pre>
 </div>
-<p>这组动画会增加粗线的宽再变细线的宽。</p>
+<p>这组动画会把线宽变粗再把线宽变细。</p>
 
 <p>继续添加下一组动画：</p>
 
@@ -493,7 +493,7 @@
 </div>
 <p>这些代码改变边框大小。 当边框大小改变时，整个<code class="highlighter-rouge">AnimatedULogoView</code>会慢慢消失，因为这个图层是所有子图层的遮挡图层。</p>
 
-<p>添加圆角给这个图层：</p>
+<p>给这个图层添加圆角：</p>
 
 <div class="language-swift highlighter-rouge"><pre class="highlight"><code>  <span class="c1">// cornerRadius</span>
   <span class="k">let</span> <span class="nv">cornerRadiusAnimation</span> <span class="o">=</span> <span class="kt">CABasicAnimation</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="s">"cornerRadius"</span><span class="p">)</span>
@@ -605,7 +605,7 @@
 </div>
 <p>这段代码非常直接了当的设置了不同的透明度在不同的关键帧上<code class="highlighter-rouge">keyTimes</code></p>
 
-<p>把这些动画组合起来：</p>
+<p>把这些动画组合起来赋值给<code class="highlighter-rouge">TileView</code></p>
 
 <div class="language-swift highlighter-rouge"><pre class="highlight"><code> <span class="c1">// Group</span>
   <span class="k">let</span> <span class="nv">groupAnimation</span> <span class="o">=</span> <span class="kt">CAAnimationGroup</span><span class="p">()</span>
@@ -620,7 +620,7 @@
   <span class="n">layer</span><span class="o">.</span><span class="nf">addAnimation</span><span class="p">(</span><span class="n">groupAnimation</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"ripple"</span><span class="p">)</span>
 </code></pre>
 </div>
-<p>把这个动画组赋值给<code class="highlighter-rouge">TileView</code>。根据<code class="highlighter-rouge">shouldEnableRipple</code>的值，这个动画组合可能有一个或者三个动画。</p>
+<p>根据<code class="highlighter-rouge">shouldEnableRipple</code>的值，这个动画组合可能有一个或者三个动画。</p>
 
 <p>在<code class="highlighter-rouge">TileGridView</code>中调用每个子视图<code class="highlighter-rouge">TileView</code>来开启这段动画。找到<code class="highlighter-rouge">TileGridView.swift</code>的<code class="highlighter-rouge">startAnimatingWithBeginTime(_:):
 </code>方法写入：</p>
@@ -763,7 +763,7 @@
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2016/08/30/uberSplashScreen-translation"
-                    data-title="一步步实现优步开屏动画"
+                    data-title="一步步实现Uber/优步启动动画"
                     data-url="http://hyyy.me/2016/08/30/uberSplashScreen-translation/"
                     data-images="http://hyyy.me/img/bg/20160830-UberSplashScreen2.jpg"
                     data-content="
@@ -772,7 +772,7 @@
   翻译: yuan 2016/08/30
 
 
-经常App需要一些必要的数据用来... | 我的成长| Yuan's Blog " >
+通常，App启动时会需要一些必要... | 我的成长| Yuan's Blog " >
                     <div class="ds-share-inline">
                       <ul  class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -796,6 +796,10 @@
                     </li>
                     
                     
+                    <li class="next">
+                        <a href="/2016/11/09/WallPaper/" data-toggle="tooltip" data-placement="top" title="Wallpaper - Swift/OC Closures/Block">Next Post &rarr;</a>
+                    </li>
+                    
                 </ul>
 
 
@@ -804,7 +808,7 @@
                 <div class="comment">
                     <div class="ds-thread"
                         data-thread-key="/2016/08/30/uberSplashScreen-translation"
-                        data-title="一步步实现优步开屏动画"
+                        data-title="一步步实现Uber/优步启动动画"
                         data-url="http://hyyy.me/2016/08/30/uberSplashScreen-translation/" >
                     </div>
                 </div>
@@ -831,7 +835,7 @@
                             
         				
                             
-                				<a href="/tags/#iOS" title="iOS" rel="5">
+                				<a href="/tags/#iOS" title="iOS" rel="6">
                                     iOS
                                 </a>
                             
@@ -861,7 +865,7 @@
                             
         				
                             
-                				<a href="/tags/#Swift" title="Swift" rel="2">
+                				<a href="/tags/#Swift" title="Swift" rel="3">
                                     Swift
                                 </a>
                             
