@@ -20,4 +20,5 @@ tags:
 
 >Reference:<br>
 >[1] [Swift closures and functions](http://fuckingblocksyntax.com/)<br>
->[2] [How Do I Declare A Block in Objective-C?](http://fuckingblocksyntax.com/)
+>[2] [How Do I Declare A Block in Objective-C?](http://fuckingblocksyntax.com/)<br>
+>[3] [Fuckingclosuresyntax.com](http://fuckingclosuresyntax.com/)
