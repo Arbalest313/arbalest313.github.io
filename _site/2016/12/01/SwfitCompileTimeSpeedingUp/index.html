@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="我的成长">
+    <meta name="keyword"  content="">
+    <meta name="baidu-site-verification" content="eU2Cdj5Bmy" />
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+
+    <title>有效提升Swift编译速度 - 我的成长| Yuan's Blog</title>
+
+    <link rel="canonical" href="http://hyyy.me/2016/12/01/SwfitCompileTimeSpeedingUp/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+<!-- Image to hack wechat -->
+<div style='margin:0 auto;width:0px;height:0px;overflow:hidden;'>
+<img src="/img/icon_wechat.png" width="0" height="0"/>
+</div>
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Yuan's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
+                        
+                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
+                        
+                    </div>
+                    <h1>有效提升Swift编译速度</h1>
+                    
+                    
+                    <h2 class="subheading">Swift编译太慢, 提升编译速度, Swift Compile time long</h2>
+                    
+                    <span class="meta">Posted by yuan on December 1, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h2 id="section">前言</h2>
+<hr />
+
+<p>Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的社区环境。于是乎大家都开始慢慢尝试在项目中使用Swift。在我们的项目中也开始慢慢使用，但是过慢的编译时间真的是killing us。 完整的编译一次可能需要15到20分钟，完全不能忍。</p>
+
+<p>先说结果，在我的电脑MacPro上，项目编译时间直接从以前<code class="highlighter-rouge">20m41s</code>缩短了<code class="highlighter-rouge">10m16s</code>。
+而这10分钟仅仅只是从的代码层面带来的效果</p>
+
+<h2 id="section-1">定位问题</h2>
+<hr />
+
+<p>国外友人Robert已经为我们写好了一个Swift编译时间定位的工具【<a href="https://github.com/RobertGummesson/BuildTimeAnalyzer-for-Xcode">请戳这里</a>】。 方便好用，可以立竿见影的找到问题代码。</p>
+
+<blockquote>
+  <p>ps：以前也用XCTOOL但是xocde8已经不再支持build了，非常可惜。</p>
+</blockquote>
+
+<h2 id="section-2">代码优化</h2>
+<hr />
+
+<h3 id="section-3">指定类型与拒绝泛型</h3>
+<p>原码：</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="k">var</span> <span class="nv">model</span> <span class="p">:</span> <span class="kt">UILabel</span><span class="p">?</span>
+<span class="k">var</span> <span class="nv">cat</span> <span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+<span class="k">var</span> <span class="nv">name</span> <span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+<span class="k">var</span> <span class="nv">number</span> <span class="p">:</span> <span class="kt">Int</span><span class="p">?</span>
+<span class="c1">//build tiem : 8740.3ms</span>
+<span class="kd">func</span> <span class="nf">sendData</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">parameter</span> <span class="o">=</span> <span class="p">[</span><span class="s">"model"</span> <span class="p">:</span> <span class="n">model</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+                     <span class="s">"cat"</span> <span class="p">:</span> <span class="n">cat</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+                     <span class="s">"name"</span> <span class="p">:</span> <span class="n">name</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+                     <span class="s">"number"</span> <span class="p">:</span> <span class="n">number</span> <span class="p">??</span> <span class="mi">0</span><span class="p">,</span>
+                     <span class="s">"dog"</span> <span class="p">:</span> <span class="s">"dog"</span><span class="p">]</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"send request with parameter:</span><span class="se">\(</span><span class="n">parameter</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+<p>这段代码所需要的编译时间是<code class="highlighter-rouge">8740.3ms</code>，就这么一个字典定义，我们竟然浪费了8秒！</p>
+
+<p><strong>指定类型</strong>之后我们再来看看</p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="c1">//build time: 3235.4ms</span>
+<span class="k">let</span> <span class="nv">parameter</span> <span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">"model"</span> <span class="p">:</span> <span class="n">model</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+		                       <span class="s">"cat"</span> <span class="p">:</span> <span class="n">cat</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+		                       <span class="s">"name"</span> <span class="p">:</span> <span class="n">name</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+		                       <span class="s">"number"</span> <span class="p">:</span> <span class="n">number</span> <span class="p">??</span> <span class="mi">0</span><span class="p">,</span>
+		                       <span class="s">"dog"</span> <span class="p">:</span> <span class="s">"dog"</span><span class="p">]</span>
+</code></pre>
+</div>
+<p>这次所需要的编译时间就已经缩短为了<code class="highlighter-rouge">3235.4ms</code>，通过手动指定类型，我们缩短了<code class="highlighter-rouge">5s</code>以上的时间让费</p>
+
+<p>再紧接，我们继续观察，这个parameter的字典其实可以全部为String，根本用不到AnyObject。</p>
+
+<p><strong>指定特定的类型</strong></p>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="c1">//build time: 200.3ms</span>
+<span class="k">let</span> <span class="nv">parameter</span> <span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">"model"</span> <span class="p">:</span> <span class="n">model</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+					<span class="s">"cat"</span> <span class="p">:</span> <span class="n">cat</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+					<span class="s">"name"</span> <span class="p">:</span> <span class="n">name</span> <span class="p">??</span> <span class="s">""</span><span class="p">,</span>
+					<span class="s">"number"</span> <span class="p">:</span> <span class="s">"</span><span class="se">\(</span><span class="n">number</span> <span class="p">??</span> <span class="mi">0</span><span class="se">)</span><span class="s">"</span><span class="p">,</span>
+					<span class="s">"dog"</span> <span class="p">:</span> <span class="s">"dog"</span><span class="p">]</span>
+</code></pre>
+</div>
+<p>这次所需要的编译时间就已经缩短为了<code class="highlighter-rouge">200.3ms</code>，把AnyObject -&gt;String ，我们缩短了<code class="highlighter-rouge">2s</code>以上的时间让费!!</p>
+
+<p>所以如果你可以一种类型搞定，请千万别写<code class="highlighter-rouge">AnyObject</code>！！！</p>
+
+<p>通过<strong>指定正确的类型</strong>我们从<code class="highlighter-rouge">8740ms</code>的编译时间缩短到了<code class="highlighter-rouge">200ms</code>！！！！</p>
+
+<h3 id="nil">运算时<code class="highlighter-rouge">nil</code>保护抽离</h3>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="c1">//build time : 9804ms</span>
+<span class="kd">func</span> <span class="nf">calculateSize</span><span class="p">(</span><span class="nv">view</span> <span class="p">:</span> <span class="kt">UIView</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">CGSize</span><span class="p">{</span>
+    <span class="k">return</span> <span class="kt">CGSize</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">view</span><span class="p">?</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">width</span> <span class="p">??</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">view</span><span class="p">?</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">height</span> <span class="p">??</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">22</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="mi">20</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">//build time : 172ms</span>
+<span class="kd">func</span> <span class="nf">calculateSize</span><span class="p">(</span><span class="nv">view</span> <span class="p">:</span> <span class="kt">UIView</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">CGSize</span><span class="p">{</span>
+    <span class="k">let</span> <span class="nv">width</span> <span class="o">=</span> <span class="n">view</span><span class="p">?</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">width</span> <span class="p">??</span> <span class="mi">0</span>
+    <span class="k">let</span> <span class="nv">height</span> <span class="o">=</span> <span class="n">view</span><span class="p">?</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">height</span> <span class="p">??</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="kt">CGSize</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">width</span> <span class="o">+</span> <span class="n">height</span> <span class="o">+</span> <span class="mi">22</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="mi">20</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+
+<p>这段代码编译了<code class="highlighter-rouge">9804ms</code>,只是因为我们在运算的时候一并加入nil的保护。如果我们拆离nil保护，编译时间缩短了<code class="highlighter-rouge">98.3%</code></p>
+
+<blockquote>
+  <ul>
+    <li>使用三目运算(Bool ? a : b)时也非常耗时，但还没有到非常严重的程度，一个三目可能需要额外的 <code class="highlighter-rouge">100ms</code> 到 <code class="highlighter-rouge">200ms</code>编译时间</li>
+    <li>当你在字典中使用nil保护时，也可能造成极长的编译时间，有时候甚至会长达<code class="highlighter-rouge">20s</code>.但不是每次都出现。我理项目时就通过<a href="https://github.com/RobertGummesson/BuildTimeAnalyzer-for-Xcode">BuildTimeAnalyzer</a>发现了很多这样的问题。比如:<code class="highlighter-rouge">["model" : model?.text ?? ""]</code>. 在通过把他们强制转化成想要的类型<code class="highlighter-rouge">String</code>后得到解决:<code class="highlighter-rouge">["model" : (model?.text ?? ""）as String]</code>。 暂时还不知道为什么。 猜测是因为 <code class="highlighter-rouge">model?.text</code> 的text属性是一个可选型， compiler花费了很长的时间来确定到底是<code class="highlighter-rouge">Optional(String)</code>还是<code class="highlighter-rouge">String</code>.但又不是每次都出现，非常奇怪。</li>
+  </ul>
+</blockquote>
+
+<h3 id="section-4">少用<code class="highlighter-rouge">+</code>、<code class="highlighter-rouge">+=</code>运算符</h3>
+
+<div class="language-swift highlighter-rouge"><pre class="highlight"><code><span class="c1">//build time 1400.6ms</span>
+<span class="kd">func</span> <span class="nf">arrPlusOperatos</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">arr1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">let</span> <span class="nv">arr2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="n">arr1</span> <span class="o">+</span> <span class="n">arr2</span> <span class="o">+</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="c1">//build time 8.6ms</span>
+<span class="kd">func</span> <span class="nf">arrPlusOperatos</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">arr1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">let</span> <span class="nv">arr2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">result</span><span class="o">.</span><span class="nf">appendContentsOf</span><span class="p">(</span><span class="n">arr1</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="nf">appendContentsOf</span><span class="p">(</span><span class="n">arr2</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="nf">appendContentsOf</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>尽量少的使用<code class="highlighter-rouge">+</code>、<code class="highlighter-rouge">+=</code>号来合并参数， 在项目中有一些array的合并编译时间高达<code class="highlighter-rouge">5000ms</code>。
+&gt; 对于<code class="highlighter-rouge">String</code>也是一样的,<code class="highlighter-rouge">String</code> 使用<code class="highlighter-rouge">\(value)</code>来合并值，或API给的append.</p>
+
+<h2 id="section-5">总结</h2>
+<hr />
+
+<p>上面的几个问题是在整理项目(Swift2.3)中，特别明显影响编译速度的点：</p>
+
+<ul>
+  <li>指定类型、拒绝泛型</li>
+  <li>运算时nil保护抽离、少用三目运算</li>
+  <li>少用+、+=运算符
+缩短了我们接近50%的Swift编译时间。</li>
+</ul>
+
+<p>具体大家可以用<a href="https://github.com/RobertGummesson/BuildTimeAnalyzer-for-Xcode">BuildTimeAnalyzer</a>来查看项目哪些<code class="highlighter-rouge">func</code>存在严重的编译过长问题。</p>
+
+<p>更多：</p>
+
+<ol>
+  <li><a href="https://medium.com/@RobertGummesson/regarding-swift-build-time-optimizations-fc92cdd91e31#.gv3w93fct">regarding-swift-build-time-optimizations</a></li>
+  <li><a href="https://engineering.circle.com/swift-compiler-performance-tips-and-tricks-e86a53a5b42a#.9e9576b0k">swift-compiler-performance-tips-and-tricks</a></li>
+  <li><a href="http://stackoverflow.com/questions/25537614/why-is-swift-compile-time-so-slow">why-is-swift-compile-time-so-slow</a></li>
+</ol>
+
+<h2 id="section-6">后续</h2>
+<hr />
+
+<p><strong>框架</strong>上的提高编译性能：</p>
+
+<ul>
+  <li>模块化代码，使用私有Cocoapods repository. 让不同模块以Framework或则.a文件的形式在项目里使用。如此每次编译的时候就只需要编译自己模块下的代码。其他模块的代码将会被编译后缓存，不需要重复编译。</li>
+</ul>
+
+<p>其他一些优化包括：</p>
+
+<ul>
+  <li>Find Implicit Dependencies Off <a href="https://forums.developer.apple.com/message/89962#89962">[1]</a></li>
+  <li>Build Active Architecture Only Yes On Debug <a href="http://useyourloaf.com/blog/2010/04/21/xcode-build-active-architecture-only.html">[2]</a></li>
+  <li>Precompile Prefix Header set to YES <a href="http://blog.csdn.net/qq_25131687/article/details/52194034">[3]</a></li>
+  <li>RAM Disk <a href="http://nszzy.me/2016/03/20/reduce-xcode-build-times/">[4]</a><code class="highlighter-rouge">没有尝试过，有机会可以试一下</code></li>
+</ul>
+
+<p>另外还有一个些文章说可以提高Xcode的<code class="highlighter-rouge">编译线程</code>数量，但通过查看defaults，并有找到相关的设置还需要继续探索。</p>
+
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2016/12/01/SwfitCompileTimeSpeedingUp"
+                    data-title="有效提升Swift编译速度"
+                    data-url="http://hyyy.me/2016/12/01/SwfitCompileTimeSpeedingUp/"
+                    data-images="http://hyyy.me/img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg"
+                    data-content="前言
+
+
+Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的社区环境。于是乎大家都开始慢慢尝试在项目中使用Swift。在我们的项目中... | 我的成长| Yuan's Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/11/09/WallPaper/" data-toggle="tooltip" data-placement="top" title="Wallpaper - Swift/OC Closures/Block">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2016/12/01/SwfitCompileTimeSpeedingUp"
+                        data-title="有效提升Swift编译速度"
+                        data-url="http://hyyy.me/2016/12/01/SwfitCompileTimeSpeedingUp/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+                				<a href="/tags/#iOS" title="iOS" rel="7">
+                                    iOS
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#前端开发" title="前端开发" rel="3">
+                                    前端开发
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#JavaScript" title="JavaScript" rel="3">
+                                    JavaScript
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#翻译" title="翻译" rel="3">
+                                    翻译
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Swift" title="Swift" rel="4">
+                                    Swift
+                                </a>
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#Objective-C" title="Objective-C" rel="2">
+                                    Objective-C
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UIKit" title="UIKit" rel="2">
+                                    UIKit
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UIScrollView" title="UIScrollView" rel="2">
+                                    UIScrollView
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UX" title="UX" rel="3">
+                                    UX
+                                </a>
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://hyyy.me">Yuan</a></li>
+                    
+                        <li><a href="http://casatwy.com/">casatwy</a></li>
+                    
+                        <li><a href="http://blog.cnbluebox.com/">刘坤的技术博客</a></li>
+                    
+                        <li><a href="http://draveness.me/">draveness</a></li>
+                    
+                        <li><a href="http://zhoulingyu.com/">小鱼周凌宇</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'hyyy';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/5452295038">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/arbalest313">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Yuan's Blog 2016
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-82531112-1';
+    var _gaDomain = 'hyyy.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'e6e8a05da61ccb5abdc137919e660c90';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
