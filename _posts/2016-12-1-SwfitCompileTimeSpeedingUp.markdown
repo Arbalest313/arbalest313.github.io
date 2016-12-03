@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "有效提升Swift编译速度"
-subtitle:   "Swift编译太慢, 提升编译速度, Swift Compile time long"
+subtitle:   "Swift编译太慢, 提升编译速度, Swift Long Compile time"
 date:       2016-12-1
 author:     "yuan"
 header-img: "img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg"
@@ -72,7 +72,7 @@ let parameter : [String : String] = ["model" : model?.text ?? "",
 					"number" : "\(number ?? 0)",
 					"dog" : "dog"]
 ```
-这次所需要的编译时间就已经缩短为了`200.3ms`，把AnyObject ->String ，我们缩短了`2s`以上的时间让费!! 
+这次所需要的编译时间就已经缩短为了`200.3ms`，把AnyObject ->String ，我们缩短了`2s`以上的时间让费！！
 
 所以如果你可以一种类型搞定，请千万别写`AnyObject`！！！
 
@@ -120,7 +120,8 @@ func arrPlusOperatos() {
     result.appendContentsOf([10])
 }
 ```
-尽量少的使用`+`、`+=`号来合并参数， 在项目中有一些array的合并编译时间高达`5000ms`。
+尽量少的使用`+`、`+=`号来合并参数， 在项目中有一些array的合并编译时间高达`5000ms`.
+
 > 对于`String`也是一样的,`String` 使用`\(value)`来合并值，或API给的append.
 
 ## 总结
