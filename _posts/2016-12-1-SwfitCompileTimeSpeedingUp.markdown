@@ -154,10 +154,9 @@ func arrPlusOperatos() {
 * Find Implicit Dependencies Off [[1]](https://forums.developer.apple.com/message/89962#89962)
 * Build Active Architecture Only Yes On Debug [[2]](http://useyourloaf.com/blog/2010/04/21/xcode-build-active-architecture-only.html)
 * Precompile Prefix Header set to YES [[3]](http://blog.csdn.net/qq_25131687/article/details/52194034)
-* RAM Disk [[4]](http://nszzy.me/2016/03/20/reduce-xcode-build-times/)`没有尝试过，有机会可以试一下`
+* defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 4 [[4]](http://stackoverflow.com/a/6892902/596219)
+* RAM Disk [[5]](http://nszzy.me/2016/03/20/reduce-xcode-build-times/)`没有尝试过，有机会可以试一下`
 
-
-另外还有一个些文章说可以提高Xcode的`编译线程`数量，但通过查看defaults，并有找到相关的设置还需要继续探索。
 
 
 
