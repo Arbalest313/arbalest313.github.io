@@ -22,6 +22,10 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/hux-blog.min.css">
 
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hY-blog.css">
+
+
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
 
@@ -271,8 +275,29 @@
                 <!-- 多说 Share end-->
                 
 
+                <section class="read-more">
+                   
+                   
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">最近文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="/2016/07/10/healthKit-translation/" title="link to 如何运用HealthKit的睡眠分析">如何运用HealthKit的睡眠分析</a></h3>
+                       <p class="excerpt">  “It’s oooooooooooonnnnnnnnn. ”如何运用HealthKit的睡眠分析 Swift今天，睡眠革命正在掀起一道旋风。 人们从没像今天这样关心他们睡眠的时间与睡眠的数据，并以数据作为自己睡眠状态的趋势标识。而这种分析通过硬件与软件的发展已经达到了一个新的高度。Appl...&hellip;</p>
+                       <div class="post-list__meta"><time datetime="2016-07-10 00:00:00 +0800" class="post-list__meta--date date">2016-07-10</time> &#8226; <span class="post-list__meta--tags tags">Swift</span><a class="btn-border-small" href=/2016/07/10/healthKit-translation/>继续阅读</a></div>
+                   </div>
+                   
+                   
+                   
+                   
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">更早文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="/2015/07/09/js-module-7day/" title="link to Example Post using Keynote Layout">Example Post using Keynote Layout</a></h3>
+                       <p class="excerpt">  下滑这里查看更多内容7月9日，我在公司内部进行了名为「JavaScript 模块化七日谈」分享，并将该 Slides 分享到了微博上。出乎意料地，这篇微博先后被 @JS小组 @尤小右 @寸志 等近 200 人转发，阅读达到 10w，获得了还不错的评价。于是，我决定将它重新发到我的博客上，并...&hellip;</p>
+                       <div class="post-list__meta"><time datetime="2015-07-09 00:00:00 +0800" class="post-list__meta--date date">2015-07-09</time> &#8226; <span class="post-list__meta--tags tags">前端开发</span><a class="btn-border-small" href=/2015/07/09/js-module-7day/>继续阅读</a></div>
+                   </div>
+                   
+                </section>
 
-                <ul class="pager">
+<!--                 <ul class="pager">
                     
                     <li class="previous">
                         <a href="/2015/07/09/js-module-7day/" data-toggle="tooltip" data-placement="top" title="Example Post using Keynote Layout">&larr; Previous Post</a>
@@ -284,7 +309,14 @@
                     </li>
                     
                 </ul>
-
+ -->
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
                 
                 <!-- 多说评论框 start -->
@@ -297,9 +329,6 @@
                 </div>
                 <!-- 多说评论框 end -->
                 
-
-                
-
             </div>
 
     <!-- Sidebar Container -->
@@ -408,6 +437,19 @@
     </div>
 </article>
 
+<script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.getJSON('http://freegeoip.net/json/', function(result) {
+            if (result.country_code == 'CN')
+                $('.disqus_thread').hide();
+            else
+                $('.ds-thread').hide();
+        });
+    });
+</script>
+
+
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -429,6 +471,21 @@
 
 
 
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hyyy";
+    var disqus_identifier = "/2015/09/22/js-version";
+    var disqus_url = "http://hyyy.me/2015/09/22/js-version/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
 

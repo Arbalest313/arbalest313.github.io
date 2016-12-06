@@ -22,6 +22,10 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/hux-blog.min.css">
 
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hY-blog.css">
+
+
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
 
@@ -158,7 +162,7 @@
                     <h1>有效提升Swift编译速度</h1>
                     
                     
-                    <h2 class="subheading">Swift编译太慢, 提升编译速度, Swift Compile time long</h2>
+                    <h2 class="subheading">Swift编译太慢, 提升编译速度, Swift Long Compile time</h2>
                     
                     <span class="meta">Posted by yuan on December 1, 2016</span>
                 </div>
@@ -243,7 +247,7 @@
 					<span class="s">"dog"</span> <span class="p">:</span> <span class="s">"dog"</span><span class="p">]</span>
 </code></pre>
 </div>
-<p>这次所需要的编译时间就已经缩短为了<code class="highlighter-rouge">200.3ms</code>，把AnyObject -&gt;String ，我们缩短了<code class="highlighter-rouge">2s</code>以上的时间让费!!</p>
+<p>这次所需要的编译时间就已经缩短为了<code class="highlighter-rouge">200.3ms</code>，把AnyObject -&gt;String ，我们缩短了<code class="highlighter-rouge">2s</code>以上的时间让费！！</p>
 
 <p>所以如果你可以一种类型搞定，请千万别写<code class="highlighter-rouge">AnyObject</code>！！！</p>
 
@@ -293,8 +297,11 @@
 <span class="p">}</span>
 </code></pre>
 </div>
-<p>尽量少的使用<code class="highlighter-rouge">+</code>、<code class="highlighter-rouge">+=</code>号来合并参数， 在项目中有一些array的合并编译时间高达<code class="highlighter-rouge">5000ms</code>。
-&gt; 对于<code class="highlighter-rouge">String</code>也是一样的,<code class="highlighter-rouge">String</code> 使用<code class="highlighter-rouge">\(value)</code>来合并值，或API给的append.</p>
+<p>尽量少的使用<code class="highlighter-rouge">+</code>、<code class="highlighter-rouge">+=</code>号来合并参数， 在项目中有一些array的合并编译时间高达<code class="highlighter-rouge">5000ms</code>.</p>
+
+<blockquote>
+  <p>对于<code class="highlighter-rouge">String</code>也是一样的,<code class="highlighter-rouge">String</code> 使用<code class="highlighter-rouge">\(value)</code>来合并值，或API给的append.</p>
+</blockquote>
 
 <h2 id="section-5">总结</h2>
 <hr />
@@ -333,10 +340,9 @@
   <li>Find Implicit Dependencies Off <a href="https://forums.developer.apple.com/message/89962#89962">[1]</a></li>
   <li>Build Active Architecture Only Yes On Debug <a href="http://useyourloaf.com/blog/2010/04/21/xcode-build-active-architecture-only.html">[2]</a></li>
   <li>Precompile Prefix Header set to YES <a href="http://blog.csdn.net/qq_25131687/article/details/52194034">[3]</a></li>
-  <li>RAM Disk <a href="http://nszzy.me/2016/03/20/reduce-xcode-build-times/">[4]</a><code class="highlighter-rouge">没有尝试过，有机会可以试一下</code></li>
+  <li>defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 4 <a href="http://stackoverflow.com/a/6892902/596219">[4]</a></li>
+  <li>RAM Disk <a href="http://nszzy.me/2016/03/20/reduce-xcode-build-times/">[5]</a><code class="highlighter-rouge">没有尝试过，有机会可以试一下</code></li>
 </ul>
-
-<p>另外还有一个些文章说可以提高Xcode的<code class="highlighter-rouge">编译线程</code>数量，但通过查看defaults，并有找到相关的设置还需要继续探索。</p>
 
 
 
@@ -370,8 +376,21 @@ Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的�
                 <!-- 多说 Share end-->
                 
 
+                <section class="read-more">
+                   
+                   
+                   
+                   
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">更早文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="/2016/11/09/WallPaper/" title="link to Wallpaper - Swift/OC Closures/Block">Wallpaper - Swift/OC Closures/Block</a></h3>
+                       <p class="excerpt">A Wallpaper I have created as Swift and Objective-C block reminder  Reference:[1] Swift closures and functions[2] How Do I Declare A Block in Objec...&hellip;</p>
+                       <div class="post-list__meta"><time datetime="2016-11-09 00:00:00 +0800" class="post-list__meta--date date">2016-11-09</time> &#8226; <span class="post-list__meta--tags tags">Swift</span><a class="btn-border-small" href=/2016/11/09/WallPaper/>继续阅读</a></div>
+                   </div>
+                   
+                </section>
 
-                <ul class="pager">
+<!--                 <ul class="pager">
                     
                     <li class="previous">
                         <a href="/2016/11/09/WallPaper/" data-toggle="tooltip" data-placement="top" title="Wallpaper - Swift/OC Closures/Block">&larr; Previous Post</a>
@@ -379,7 +398,14 @@ Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的�
                     
                     
                 </ul>
-
+ -->
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
                 
                 <!-- 多说评论框 start -->
@@ -392,9 +418,6 @@ Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的�
                 </div>
                 <!-- 多说评论框 end -->
                 
-
-                
-
             </div>
 
     <!-- Sidebar Container -->
@@ -503,6 +526,19 @@ Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的�
     </div>
 </article>
 
+<script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.getJSON('http://freegeoip.net/json/', function(result) {
+            if (result.country_code == 'CN')
+                $('.disqus_thread').hide();
+            else
+                $('.ds-thread').hide();
+        });
+    });
+</script>
+
+
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -524,6 +560,21 @@ Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的�
 
 
 
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hyyy";
+    var disqus_identifier = "/2016/12/01/SwfitCompileTimeSpeedingUp";
+    var disqus_url = "http://hyyy.me/2016/12/01/SwfitCompileTimeSpeedingUp/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
 

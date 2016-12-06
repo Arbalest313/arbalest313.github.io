@@ -5,8 +5,8 @@
     <description>我的成长</description>
     <link>http://hyyy.me/</link>
     <atom:link href="http://hyyy.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 02 Dec 2016 22:58:36 +0800</pubDate>
-    <lastBuildDate>Fri, 02 Dec 2016 22:58:36 +0800</lastBuildDate>
+    <pubDate>Tue, 06 Dec 2016 13:42:13 +0800</pubDate>
+    <lastBuildDate>Tue, 06 Dec 2016 13:42:13 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -76,7 +76,7 @@
 					&lt;span class=&quot;s&quot;&gt;&quot;dog&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;dog&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;这次所需要的编译时间就已经缩短为了&lt;code class=&quot;highlighter-rouge&quot;&gt;200.3ms&lt;/code&gt;，把AnyObject -&amp;gt;String ，我们缩短了&lt;code class=&quot;highlighter-rouge&quot;&gt;2s&lt;/code&gt;以上的时间让费!!&lt;/p&gt;
+&lt;p&gt;这次所需要的编译时间就已经缩短为了&lt;code class=&quot;highlighter-rouge&quot;&gt;200.3ms&lt;/code&gt;，把AnyObject -&amp;gt;String ，我们缩短了&lt;code class=&quot;highlighter-rouge&quot;&gt;2s&lt;/code&gt;以上的时间让费！！&lt;/p&gt;
 
 &lt;p&gt;所以如果你可以一种类型搞定，请千万别写&lt;code class=&quot;highlighter-rouge&quot;&gt;AnyObject&lt;/code&gt;！！！&lt;/p&gt;
 
@@ -126,8 +126,11 @@
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;尽量少的使用&lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;+=&lt;/code&gt;号来合并参数， 在项目中有一些array的合并编译时间高达&lt;code class=&quot;highlighter-rouge&quot;&gt;5000ms&lt;/code&gt;。
-&amp;gt; 对于&lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt;也是一样的,&lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt; 使用&lt;code class=&quot;highlighter-rouge&quot;&gt;\(value)&lt;/code&gt;来合并值，或API给的append.&lt;/p&gt;
+&lt;p&gt;尽量少的使用&lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;+=&lt;/code&gt;号来合并参数， 在项目中有一些array的合并编译时间高达&lt;code class=&quot;highlighter-rouge&quot;&gt;5000ms&lt;/code&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;对于&lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt;也是一样的,&lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt; 使用&lt;code class=&quot;highlighter-rouge&quot;&gt;\(value)&lt;/code&gt;来合并值，或API给的append.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;h2 id=&quot;section-5&quot;&gt;总结&lt;/h2&gt;
 &lt;hr /&gt;
@@ -166,10 +169,9 @@
   &lt;li&gt;Find Implicit Dependencies Off &lt;a href=&quot;https://forums.developer.apple.com/message/89962#89962&quot;&gt;[1]&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Build Active Architecture Only Yes On Debug &lt;a href=&quot;http://useyourloaf.com/blog/2010/04/21/xcode-build-active-architecture-only.html&quot;&gt;[2]&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Precompile Prefix Header set to YES &lt;a href=&quot;http://blog.csdn.net/qq_25131687/article/details/52194034&quot;&gt;[3]&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;RAM Disk &lt;a href=&quot;http://nszzy.me/2016/03/20/reduce-xcode-build-times/&quot;&gt;[4]&lt;/a&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;没有尝试过，有机会可以试一下&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 4 &lt;a href=&quot;http://stackoverflow.com/a/6892902/596219&quot;&gt;[4]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;RAM Disk &lt;a href=&quot;http://nszzy.me/2016/03/20/reduce-xcode-build-times/&quot;&gt;[5]&lt;/a&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;没有尝试过，有机会可以试一下&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;另外还有一个些文章说可以提高Xcode的&lt;code class=&quot;highlighter-rouge&quot;&gt;编译线程&lt;/code&gt;数量，但通过查看defaults，并有找到相关的设置还需要继续探索。&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 01 Dec 2016 00:00:00 +0800</pubDate>

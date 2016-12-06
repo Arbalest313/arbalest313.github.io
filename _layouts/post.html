@@ -76,8 +76,29 @@ layout: default
                 <!-- 多说 Share end-->
                 {% endif %}
 
+                <section class="read-more">
+                   {% if page.next %}
+                   {% assign current = page.next %}
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">最近文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="{{ current.url }}" title="link to {{ current.title }}">{{ current.title | markdownify | strip_html | strip_newlines}}</a></h3>
+                       <p class="excerpt">{{ current.content | markdownify | strip_html | strip_newlines | truncate: 150 }}&hellip;</p>
+                       <div class="post-list__meta"><time datetime="{{current.date | date: date_to_xmlschema}}" class="post-list__meta--date date">{{current.date | date: "%F"}}</time> &#8226; <span class="post-list__meta--tags tags">{{current.tags.first}}</span><a class="btn-border-small" href={{current.url}}>继续阅读</a></div>
+                   </div>
+                   {% endif %}
+                   
+                   {% if page.previous %}
+                   {% assign current = page.previous %}
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">更早文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="{{ current.url }}" title="link to {{ current.title }}">{{ current.title | markdownify | strip_html | strip_newlines}}</a></h3>
+                       <p class="excerpt">{{ current.content | markdownify | strip_html | strip_newlines | truncate: 150 }}&hellip;</p>
+                       <div class="post-list__meta"><time datetime="{{current.date | date: date_to_xmlschema}}" class="post-list__meta--date date">{{current.date | date: "%F"}}</time> &#8226; <span class="post-list__meta--tags tags">{{current.tags.first}}</span><a class="btn-border-small" href={{current.url}}>继续阅读</a></div>
+                   </div>
+                   {% endif %}
+                </section>
 
-                <ul class="pager">
+<!--                 <ul class="pager">
                     {% if page.previous.url %}
                     <li class="previous">
                         <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">&larr; Previous Post</a>
@@ -89,7 +110,14 @@ layout: default
                     </li>
                     {% endif %}
                 </ul>
-
+ -->
+                {% if site.disqus_username %}
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                {% endif %}
 
                 {% if site.duoshuo_username %}
                 <!-- 多说评论框 start -->
@@ -102,15 +130,6 @@ layout: default
                 </div>
                 <!-- 多说评论框 end -->
                 {% endif %}
-
-                {% if site.disqus_username %}
-                <!-- disqus 评论框 start -->
-                <div class="comment">
-                    <div id="disqus_thread" class="disqus-thread"></div>
-                </div>
-                <!-- disqus 评论框 end -->
-                {% endif %}
-
             </div>
 
     <!-- Sidebar Container -->
@@ -150,6 +169,19 @@ layout: default
         </div>
     </div>
 </article>
+
+<script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.getJSON('http://freegeoip.net/json/', function(result) {
+            if (result.country_code == 'CN')
+                $('.disqus_thread').hide();
+            else
+                $('.ds-thread').hide();
+        });
+    });
+</script>
+
 
 {% if site.duoshuo_username %}
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->

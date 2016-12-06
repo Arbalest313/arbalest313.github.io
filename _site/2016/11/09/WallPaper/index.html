@@ -22,6 +22,10 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/hux-blog.min.css">
 
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hY-blog.css">
+
+
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
 
@@ -228,8 +232,29 @@
                 <!-- 多说 Share end-->
                 
 
+                <section class="read-more">
+                   
+                   
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">最近文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="/2016/12/01/SwfitCompileTimeSpeedingUp/" title="link to 有效提升Swift编译速度">有效提升Swift编译速度</a></h3>
+                       <p class="excerpt">前言Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的社区环境。于是乎大家都开始慢慢尝试在项目中使用Swift。在我们的项目中也开始慢慢使用，但是过慢的编译时间真的是killing us。 完整的编译一次可能需要15到20分钟，完全不能忍。先说结果，在我的电脑MacPro...&hellip;</p>
+                       <div class="post-list__meta"><time datetime="2016-12-01 00:00:00 +0800" class="post-list__meta--date date">2016-12-01</time> &#8226; <span class="post-list__meta--tags tags">iOS</span><a class="btn-border-small" href=/2016/12/01/SwfitCompileTimeSpeedingUp/>继续阅读</a></div>
+                   </div>
+                   
+                   
+                   
+                   
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">更早文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="/2016/08/30/uberSplashScreen-translation/" title="link to 一步步实现Uber/优步启动动画">一步步实现Uber/优步启动动画</a></h3>
+                       <p class="excerpt">  原作者：Derek Selander 2016/08/01 原文  翻译: yuan 2016/08/30通常，App启动时会需要一些必要的初始化数据。所以App会向服务器发起请求并等待这些数据的返回。这时，一个完美的开屏动画，可以让用户在等待时保持一个愉悦的心情。16年的上半年，Uber...&hellip;</p>
+                       <div class="post-list__meta"><time datetime="2016-08-30 00:00:00 +0800" class="post-list__meta--date date">2016-08-30</time> &#8226; <span class="post-list__meta--tags tags">Swift</span><a class="btn-border-small" href=/2016/08/30/uberSplashScreen-translation/>继续阅读</a></div>
+                   </div>
+                   
+                </section>
 
-                <ul class="pager">
+<!--                 <ul class="pager">
                     
                     <li class="previous">
                         <a href="/2016/08/30/uberSplashScreen-translation/" data-toggle="tooltip" data-placement="top" title="一步步实现Uber/优步启动动画">&larr; Previous Post</a>
@@ -241,7 +266,14 @@
                     </li>
                     
                 </ul>
-
+ -->
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
                 
                 <!-- 多说评论框 start -->
@@ -254,9 +286,6 @@
                 </div>
                 <!-- 多说评论框 end -->
                 
-
-                
-
             </div>
 
     <!-- Sidebar Container -->
@@ -365,6 +394,19 @@
     </div>
 </article>
 
+<script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.getJSON('http://freegeoip.net/json/', function(result) {
+            if (result.country_code == 'CN')
+                $('.disqus_thread').hide();
+            else
+                $('.ds-thread').hide();
+        });
+    });
+</script>
+
+
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -386,6 +428,21 @@
 
 
 
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hyyy";
+    var disqus_identifier = "/2016/11/09/WallPaper";
+    var disqus_url = "http://hyyy.me/2016/11/09/WallPaper/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
 

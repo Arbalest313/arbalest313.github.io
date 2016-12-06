@@ -22,6 +22,10 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/hux-blog.min.css">
 
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hY-blog.css">
+
+
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
 
@@ -492,8 +496,29 @@ Catagory
                 <!-- 多说 Share end-->
                 
 
+                <section class="read-more">
+                   
+                   
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">最近文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="/2015/05/25/js-module-loader/" title="link to Example Post with Code Highlight">Example Post with Code Highlight</a></h3>
+                       <p class="excerpt">Foreword  Here comes Module!随着网站逐渐变成「互联网应用程序」，嵌入网页的 JavaScript 代码越来越庞大，越来越复杂。网页越来越像桌面程序，需要一个团队分工协作、进度管理、单元测试……我们不得不使用软件工程的方法，来管理网页的业务逻辑。于是，JavaScri...&hellip;</p>
+                       <div class="post-list__meta"><time datetime="2015-05-25 00:00:00 +0800" class="post-list__meta--date date">2015-05-25</time> &#8226; <span class="post-list__meta--tags tags">前端开发</span><a class="btn-border-small" href=/2015/05/25/js-module-loader/>继续阅读</a></div>
+                   </div>
+                   
+                   
+                   
+                   
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">更早文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="/2015/01/29/hello-2015/" title="link to Welcome to Yuan Blog">Welcome to Yuan Blog</a></h3>
+                       <p class="excerpt">  “Yeah It’s on. ”前言Yuan 的 Blog 就这么开通了。跳过废话，直接看技术实现 2015 年，Yuan 总算有个地方可以好好写点东西了。作为一个程序员， Blog 这种轮子要是挂在大众博客程序上就太没意思了。一是觉得大部分 Blog 服务都太丑，二是觉得不能随便定制不好...&hellip;</p>
+                       <div class="post-list__meta"><time datetime="2015-01-29 20:00:00 +0800" class="post-list__meta--date date">2015-01-29</time> &#8226; <span class="post-list__meta--tags tags">生活</span><a class="btn-border-small" href=/2015/01/29/hello-2015/>继续阅读</a></div>
+                   </div>
+                   
+                </section>
 
-                <ul class="pager">
+<!--                 <ul class="pager">
                     
                     <li class="previous">
                         <a href="/2015/01/29/hello-2015/" data-toggle="tooltip" data-placement="top" title="Welcome to Yuan Blog">&larr; Previous Post</a>
@@ -505,7 +530,14 @@ Catagory
                     </li>
                     
                 </ul>
-
+ -->
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
                 
                 <!-- 多说评论框 start -->
@@ -518,9 +550,6 @@ Catagory
                 </div>
                 <!-- 多说评论框 end -->
                 
-
-                
-
             </div>
 
     <!-- Sidebar Container -->
@@ -629,6 +658,19 @@ Catagory
     </div>
 </article>
 
+<script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.getJSON('http://freegeoip.net/json/', function(result) {
+            if (result.country_code == 'CN')
+                $('.disqus_thread').hide();
+            else
+                $('.ds-thread').hide();
+        });
+    });
+</script>
+
+
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -650,6 +692,21 @@ Catagory
 
 
 
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hyyy";
+    var disqus_identifier = "/2015/04/14/unix-linux-note";
+    var disqus_url = "http://hyyy.me/2015/04/14/unix-linux-note/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
 
