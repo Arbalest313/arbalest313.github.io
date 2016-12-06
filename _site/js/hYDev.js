@@ -9,4 +9,4 @@ $(window).scroll(function() {
 	hYDev()
 });
 
-// $(document).ready(hYDev());
+$(document).ready(hYDev());
