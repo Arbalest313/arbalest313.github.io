@@ -4,7 +4,7 @@ title:      "重定义你的XCode Console"
 subtitle:   "iOS10 XCode8 Console Color Log 重定向Log"
 date:       2017-01-16
 author:     "yuan"
-header-img: "img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg"
+header-img: "img/bg/2017-01-17-RemoteConsole2.jpg"
 tags:
     - iOS
     - Objective-C
