@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="我的成长">
+    <meta name="keyword"  content="">
+    <meta name="baidu-site-verification" content="eU2Cdj5Bmy" />
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+
+    <title>重定义你的XCode Console - 我的成长| Yuan's Blog</title>
+
+    <link rel="canonical" href="http://hyyy.me/2017/01/16/RemoteConsole/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hY-blog.css">
+
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+<!-- Image to hack wechat -->
+<div style='margin:0 auto;width:0px;height:0px;overflow:hidden;'>
+<img src="/img/icon_wechat.png" width="0" height="0"/>
+</div>
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Yuan's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
+                        
+                        <a class="tag" href="/tags/#Objective-C" title="Objective-C">Objective-C</a>
+                        
+                        <a class="tag" href="/tags/#XCode8" title="XCode8">XCode8</a>
+                        
+                    </div>
+                    <h1>重定义你的XCode Console</h1>
+                    
+                    
+                    <h2 class="subheading">iOS10 XCode8 Console Color Log 重定向Log</h2>
+                    
+                    <span class="meta">Posted by yuan on January 16, 2017</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h2 id="section">前言</h2>
+<hr />
+<p>自从<code class="highlighter-rouge">Xcode8</code>之后, 再也不能像以前一样愉快的使用插件了。之前赖以生存Console插件<a href="https://github.com/robbiehanson/XcodeColors">XcodeColors</a> 也随之失效。我们再一次回到了原生只有黑白信息的Console上面。虽然可以用一些Formatting的Log来弥补，但依旧不是很直观。</p>
+
+<p>每一次当测试机同事的手机器上有什么BUG需要查看日志的时候，可能还需要使用中间层代理来破解HTTPS查看请求，或者直接来找开发在Xcode里面查看Log。 过程还需要打包，查找，定位信息，繁琐无比。</p>
+
+<p>作为一个攻城狮，完全不能忍。于是乎，一个远程查看Log与自定义的展现形式的Console的需求孕育而生:<br /></p>
+
+<blockquote>
+  <p>首先第一点，就是要抓取到所有的Log的同时还需要无任何的<code class="highlighter-rouge">侵入</code>性。 不可能因为这个需求把项目里面之前的各种Log重新写一遍。<br /></p>
+</blockquote>
+
+<blockquote>
+  <p>其次第二点，就是我们的Console的展现要我们可以自己根据自己的需求来定义Console。并且可以远程查看。</p>
+</blockquote>
+
+<p>先看效果：<br />
+<img src="https://github.com/Arbalest313/gitRecord/blob/master/RemoteConsole/RemoteConsole.gif?raw=true" alt="" /></p>
+
+<p>着急看的同学可以直接下<a href="https://github.com/Arbalest313/RemoteConsole">Github源码</a></p>
+
+<h2 id="section-1">可行性调研</h2>
+<hr />
+
+<h4 id="log">抓取所有LOG</h4>
+<p>第一步查看NSLog的描述，发现他其实是使用<code class="highlighter-rouge">STDERR_FILENO</code>的文件描述符(File Descriptor)来写入的。若果你全局搜索<code class="highlighter-rouge">STDERR_FILENO </code>，iOS下面已经定义好的文件描述符：</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code> <span class="cp">#define STDIN_FILENO 0 </span><span class="cm">/* standard input file descriptor */</span><span class="cp">
+</span> <span class="cp">#define STDOUT_FILENO 1 </span><span class="cm">/* standard output file descriptor */</span><span class="cp">
+</span> <span class="cp">#define STDERR_FILENO 2 </span><span class="cm">/* standard error file descriptor */</span><span class="cp">
+</span></code></pre>
+</div>
+<p>方案一 ALS 读取Log<br />
+苹果已经提供了读取Log的ALS API,在<code class="highlighter-rouge">asl.h</code>头文件里面，而且在StackOverFlow里面其实已经有人提过相应的问题并且贴出了<a href="http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console">代码</a>. 可以通过设置参数来查询你想要的东西asl_search。 
+但是在iOS10下 ALS被弃用了，使用新的OS.LOG系统。 所以他们只能被使用在iOS10之前的系统。</p>
+
+<p>方案二 重定向文件描述符<br />
+我们已经知道Log是写在STDERR_FILENO的文件描述符里面的， 那么我们可以再重新定向这个文件文件描述符到别的描述符里面，比如写到NSPipe中去：</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="n">fildes</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="n">pipe</span><span class="p">(</span><span class="n">fildes</span><span class="p">);</span>  <span class="c1">// [0] is read end of pipe while [1] is write end
+</span><span class="n">dup2</span><span class="p">(</span><span class="n">fildes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">STDERR_FILENO</span><span class="p">);</span>  <span class="c1">// Duplicate write end of pipe "onto" fd (this closes fd)
+</span><span class="n">close</span><span class="p">(</span><span class="n">fildes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>  <span class="c1">// Close original write end of pipe
+</span><span class="n">fd</span> <span class="o">=</span> <span class="n">fildes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>  <span class="c1">// We can now monitor the read end of the pipe
+</span></code></pre>
+</div>
+<blockquote>
+  <p>其实也可以写到File里面去，但是磁盘的读写监听成本太高了。具体可以看这位同学写的<a href="https://github.com/DarielChen/DCLog">DCLog</a>。</p>
+</blockquote>
+
+<p>使用NSPipe配合Dispatch我们可以很轻易监听Pipe的read end事件：</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code>	<span class="kt">int</span> <span class="n">readEnd</span> <span class="o">=</span> <span class="n">fildes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+	<span class="kt">int</span> <span class="n">writeEnd</span> <span class="o">=</span> <span class="n">fildes</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+	
+	<span class="c1">//定义监听事件参数与线程
+</span>    <span class="n">dispatch_source_t</span> <span class="n">source</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_READ</span><span class="p">,</span> <span class="n">readEnd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_HIGH</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+    
+    <span class="n">dispatch_source_set_cancel_handler</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+    	<span class="c1">///取消时，回复原来的文件描述符
+</span>    <span class="p">});</span>
+    <span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+    	<span class="c1">///有新的readEnd 监听获取内容
+</span>    <span class="p">}</span><span class="err">）</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>到这里我们就可以无痛的抓取到所有的Log了，并且获得与Console一样的实时更新信的回掉</p>
+
+<h4 id="console">远程Console与样式</h4>
+<p>既然Xcode不能实现远程的Console与展现形式的自定义，那么我们为什么不换个地方呢？第一个想到的就是网页。我们可以在本地或者远程创建一个简单的<code class="highlighter-rouge">HTML5</code>静态页面。在程序内置一个小的WebSocket的服务器，用设备的ip做为连接标识。在获取监听Log的回掉里向<code class="highlighter-rouge">HTML5</code>发送内容。 而展现形式由<code class="highlighter-rouge">HTML5</code>自己去定义。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">//XcodeConsole.html</span>
+    <span class="kd">var</span> <span class="nx">ipAddress</span> <span class="o">=</span> <span class="nx">getUrlParameter</span><span class="p">(</span><span class="s1">'ip'</span><span class="p">);</span> <span class="c1">//获取模拟器或者真机的ip地址</span>
+    <span class="kd">var</span> <span class="nx">wsUri</span> <span class="o">=</span><span class="s2">"ws://"</span> <span class="o">+</span> <span class="nx">ipAddress</span> <span class="o">+</span> <span class="s2">":8081"</span><span class="p">;</span> <span class="c1">//拼接uri与端口 模拟器应该是ip=0:0:0:0</span>
+    <span class="c1">//绑定webSocket端口</span>
+    <span class="kd">function</span> <span class="nx">testWebSocket</span><span class="p">()</span> <span class="p">{</span>
+	    <span class="kd">var</span> <span class="nx">websocket</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">wsUri</span><span class="p">);</span> 
+	    <span class="nx">websocket</span><span class="p">.</span><span class="nx">onopen</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span> 
+	        <span class="nx">onOpen</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> 
+	    <span class="p">};</span> 
+	    <span class="nx">websocket</span><span class="p">.</span><span class="nx">onclose</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span> 
+	        <span class="nx">onClose</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> 
+	    <span class="p">};</span> 
+	    <span class="nx">websocket</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span> 
+	        <span class="nx">onMessage</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> 
+	    <span class="p">};</span> 
+	    <span class="nx">websocket</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span> 
+	        <span class="nx">onError</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> 
+	    <span class="p">};</span> 
+	<span class="p">}</span>  
+	<span class="kd">function</span> <span class="nx">onOpen</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="nx">writeToScreen</span><span class="p">(</span><span class="s2">"CONNECTED"</span><span class="p">);</span> 
+    <span class="p">}</span>  
+ 
+    <span class="kd">function</span> <span class="nx">onClose</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="nx">writeToScreen</span><span class="p">(</span><span class="s2">"DISCONNECTED"</span><span class="p">);</span> 
+    <span class="p">}</span>  
+ 
+    <span class="kd">function</span> <span class="nx">onMessage</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="nx">writeToScreen</span><span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span> 
+    <span class="p">}</span>  
+</code></pre>
+</div>
+<p><img src="/img/posts/RemoteConsole/html.jpg" alt="" /></p>
+
+<h2 id="remoteconsole">RemoteConsole</h2>
+<hr />
+
+<p>接下来就是简单的把他们组合起来创建一个RemoteConsole,</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="cp">#import "RemoteConsole.h"
+#import "PSWebSocketServer.h"
+</span><span class="k">@interface</span> <span class="nc">RemoteConsole</span> <span class="p">()</span> <span class="o">&lt;</span><span class="n">PSWebSocketServerDelegate</span><span class="o">&gt;</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">PSWebSocketServer</span> <span class="o">*</span><span class="n">server</span><span class="p">;</span><span class="c1">//tiny webSocketServer
+</span><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span><span class="n">PSWebSocket</span> <span class="o">*</span> <span class="n">webSocket</span><span class="p">;</span><span class="c1">//the webSocket
+</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span><span class="n">assign</span><span class="p">)</span> <span class="kt">int</span> <span class="n">originalStdHandle</span><span class="p">;</span><span class="c1">//original file descriptor
+</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span><span class="n">strong</span><span class="p">)</span> <span class="n">dispatch_source_t</span> <span class="n">sourt_t</span><span class="p">;</span><span class="c1">//file descriptor mointor
+</span>
+<span class="k">@end</span>
+</code></pre>
+</div>
+<p>在开始与结束的时候分别重写与重置STDERR_FILENO的文件描述符</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="cp">#pragma mark - PSWebSocketServerDelegate
+</span><span class="n">_server</span> <span class="o">=</span> <span class="p">[</span><span class="n">PSWebSocketServer</span> <span class="nf">serverWithHost</span><span class="p">:</span><span class="nb">nil</span> <span class="nf">port</span><span class="p">:</span><span class="mi">8080</span><span class="p">];</span><span class="c1">//指定端口为8080
+</span><span class="n">_server</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">serverDidStart</span><span class="p">:(</span><span class="n">PSWebSocketServer</span> <span class="o">*</span><span class="p">)</span><span class="nv">server</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Server did start…"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">_sourt_t</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">dispatch_cancel</span><span class="p">(</span><span class="n">_sourt_t</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">_sourt_t</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">startCapturingLogFrom</span><span class="p">:</span><span class="n">STDERR_FILENO</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">serverDidStop</span><span class="p">:(</span><span class="n">PSWebSocketServer</span> <span class="o">*</span><span class="p">)</span><span class="nv">server</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Server did stop…"</span><span class="p">);</span>
+    <span class="n">dispatch_cancel</span><span class="p">(</span><span class="n">_sourt_t</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>抓取Log与重置Log</p>
+
+<div class="language-objc highlighter-rouge"><pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="n">dispatch_source_t</span><span class="p">)</span><span class="nf">startCapturingLogFrom</span><span class="p">:(</span><span class="kt">int</span><span class="p">)</span><span class="nv">fd</span>  <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">origianlFD</span> <span class="o">=</span> <span class="n">fd</span><span class="p">;</span>
+    <span class="n">_originalStdHandle</span> <span class="o">=</span> <span class="n">dup</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="c1">//save the original for reset proporse
+</span>    <span class="kt">int</span> <span class="n">fildes</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="n">pipe</span><span class="p">(</span><span class="n">fildes</span><span class="p">);</span>  <span class="c1">// [0] is read end of pipe while [1] is write end
+</span>    <span class="n">dup2</span><span class="p">(</span><span class="n">fildes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fd</span><span class="p">);</span>  <span class="c1">// Duplicate write end of pipe "onto" fd (this closes fd)
+</span>    <span class="n">close</span><span class="p">(</span><span class="n">fildes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>  <span class="c1">// Close original write end of pipe
+</span>    <span class="n">fd</span> <span class="o">=</span> <span class="n">fildes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>  <span class="c1">// We can now monitor the read end of the pipe
+</span>    
+    <span class="n">NSMutableData</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableData</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">init</span><span class="p">];</span>
+    <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">O_NONBLOCK</span><span class="p">);</span><span class="c1">// set the reading of this file descriptor without delay
+</span>    <span class="n">__weak</span> <span class="n">typeof</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="n">wkSelf</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+    <span class="n">dispatch_source_t</span> <span class="n">source</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_READ</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_HIGH</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+    
+    <span class="kt">int</span> <span class="n">writeEnd</span> <span class="o">=</span> <span class="n">fildes</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">dispatch_source_set_cancel_handler</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">writeEnd</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">wkSelf</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">dup2</span><span class="p">(</span><span class="n">wkSelf</span><span class="p">.</span><span class="n">originalStdHandle</span><span class="p">,</span> <span class="n">origianlFD</span><span class="p">);</span><span class="c1">//reset the original file descriptor
+</span>        <span class="p">}</span>
+    <span class="p">});</span>
+    
+    <span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="err">@autoreleasepool</span> <span class="p">{</span>
+            <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">10</span><span class="p">];</span>
+            <span class="kt">ssize_t</span> <span class="n">size</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">buffer</span><span class="p">,</span> <span class="p">(</span><span class="kt">size_t</span><span class="p">)(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">)));</span>
+            <span class="p">[</span><span class="n">data</span> <span class="nf">setLength</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+            <span class="p">[</span><span class="n">data</span> <span class="nf">appendBytes</span><span class="p">:</span><span class="n">buffer</span> <span class="nf">length</span><span class="p">:</span><span class="n">size</span><span class="p">];</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">aString</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithData</span><span class="p">:</span><span class="n">data</span> <span class="nf">encoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+            <span class="p">[</span><span class="n">wkSelf</span><span class="p">.</span><span class="n">webSocket</span> <span class="nf">send</span><span class="p">:</span><span class="n">aString</span><span class="p">];</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,[</span><span class="n">aString</span> <span class="nf">UTF8String</span><span class="p">]);</span> <span class="c1">//print on STDOUT_FILENO，so that logs can show on xcode console as well
+</span>        <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="n">dispatch_resume</span><span class="p">(</span><span class="n">source</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">source</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>然后在适时的时候开启server即可。这样手机端就完成了，接下来就是远程的Console</p>
+
+<h4 id="xcodeconsolehtml">XcodeConsole.html</h4>
+
+<p>之前我们已经获取了IP，并且建立了Socket的连接了，并且可以接受到数据。接下来就是我们要如何展示了：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">//XcodeConsole.html</span>
+<span class="kd">function</span> <span class="nx">writeToScreen</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="kd">var</span> <span class="nx">tr</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">);</span>   
+      <span class="kd">var</span> <span class="nx">pre</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'pre'</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">td1</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'td'</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">text1</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+      <span class="nx">pre</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">text1</span><span class="p">)</span>
+      <span class="nx">td1</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">pre</span><span class="p">);</span>
+      <span class="nx">tr</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">td1</span><span class="p">);</span>
+
+      <span class="kd">var</span> <span class="nx">lowerM</span> <span class="o">=</span> <span class="nx">message</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">lowerM</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"code = 0"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">lowerM</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"error"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">||</span>  <span class="nx">lowerM</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"exception"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">tr</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="s2">"#E97E60"</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">lowerM</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"warning"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">tr</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="s2">"#FACC9A"</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">lowerM</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"-- response"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">tr</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="s2">"#5BBB7B"</span>
+      <span class="p">}</span>
+      
+      <span class="nx">output</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">tr</span><span class="p">);</span>
+      <span class="nx">footerElement</span><span class="p">.</span><span class="nx">scrollIntoView</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+      <span class="nx">updateTimestamp</span><span class="p">();</span>
+
+    <span class="p">}</span>  
+
+</code></pre>
+</div>
+<p>当我们的log里面包含了不同的关键字时，我们赋予字体与背景不同的颜色，然后添加到页面的output元素中<br /></p>
+
+<p>现在你就只需要把这个文件放入浏览器里面然后跟上你想要的<code class="highlighter-rouge">ip</code>参数就可以访问了<code class="highlighter-rouge">/XcodeConsole.html?ip=0.0.0.0</code></p>
+
+<p><img src="https://github.com/Arbalest313/gitRecord/blob/master/RemoteConsole/RemoteConsole.gif?raw=true" alt="" /></p>
+
+<h2 id="section-2">后续</h2>
+<hr />
+<p>到这里一个远程的Console Log就完成了。你所需要的就是修改ip所跟随的设备地址模拟器为0:0:0:0,真机可以去WIFI里面查看设比地址。
+下一步可以把这个静态页面布置在测试服务器的内网上， 让所有人在内网都可以访问。再也不需要设置代理，或者xCode特意去查看了。</p>
+
+<p>我把这个静态页面放在了<a href="[http://dev.hyyy.me/iOS/Console?ip=xxx]">http://dev.hyyy.me/iOS/Console?ip=xxx</a> 下不过端口是在9001.需要的同学可以自行修改端口。</p>
+
+<p>最后<a href="https://github.com/Arbalest313/RemoteConsole">Github源码</a></p>
+
+<p>Reference：<br />
+* <a href="https://forums.developer.apple.com/message/89962#89962">WWDC2017</a><br />
+* <a href="https://linux.die.net/man/2/dup">dup&amp;dup2</a><br />
+* <a href="http://www.jianshu.com/p/94b96ac1932b">Dari在杭州</a><br />
+* <a href="http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console">Stack Overflow</a><br />
+* <a href="https://yohunl.com/iosri-zhi-huo-qu-he-shi-shi-liu-lan-qi-xian-shi-ri-zhi/">yohunl’s </a><br />
+* <a href="https://github.com/zwopple/PocketSocket">PocketSocket</a><br /></p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2017/01/16/RemoteConsole"
+                    data-title="重定义你的XCode Console"
+                    data-url="http://hyyy.me/2017/01/16/RemoteConsole/"
+                    data-images="http://hyyy.me/img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg"
+                    data-content="前言
+
+自从Xcode8之后, 再也不能像以前一样愉快的使用插件了。之前赖以生存Console插件XcodeColors 也随之失效。我们再一次回到了原生... | 我的成长| Yuan's Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <section class="read-more">
+                   
+                   
+                   
+                   
+                   <div class="read-more-item">
+                       <span class="read-more-item-dim">更早文章</span>
+                       <h3 class="post-list__post-title post-title"><a href="/2016/12/01/SwfitCompileTimeSpeedingUp/" title="link to 有效提升Swift编译速度">有效提升Swift编译速度</a></h3>
+                       <p class="excerpt">前言Swift作为一个新兴的语言，有着苹果Dad(dy???)的支持与良好的社区环境。于是乎大家都开始慢慢尝试在项目中使用Swift。在我们的项目中也开始慢慢使用，但是过慢的编译时间真的是killing us。 完整的编译一次可能需要15到20分钟，完全不能忍。先说结果，在我的电脑MacPro...&hellip;</p>
+                       <div class="post-list__meta"><time datetime="2016-12-01 00:00:00 +0800" class="post-list__meta--date date">2016-12-01</time> &#8226; <span class="post-list__meta--tags tags">iOS</span><a class="btn-border-small" href=/2016/12/01/SwfitCompileTimeSpeedingUp/>继续阅读</a></div>
+                   </div>
+                   
+                </section>
+
+<!--                 <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/12/01/SwfitCompileTimeSpeedingUp/" data-toggle="tooltip" data-placement="top" title="有效提升Swift编译速度">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+ -->
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread" ></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2017/01/16/RemoteConsole"
+                        data-title="重定义你的XCode Console"
+                        data-url="http://hyyy.me/2017/01/16/RemoteConsole/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+            </div>
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+                				<a href="/tags/#iOS" title="iOS" rel="8">
+                                    iOS
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#前端开发" title="前端开发" rel="3">
+                                    前端开发
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#JavaScript" title="JavaScript" rel="3">
+                                    JavaScript
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#翻译" title="翻译" rel="3">
+                                    翻译
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Swift" title="Swift" rel="4">
+                                    Swift
+                                </a>
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#Objective-C" title="Objective-C" rel="3">
+                                    Objective-C
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UIKit" title="UIKit" rel="2">
+                                    UIKit
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UIScrollView" title="UIScrollView" rel="2">
+                                    UIScrollView
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#UX" title="UX" rel="3">
+                                    UX
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://hyyy.me">Yuan</a></li>
+                    
+                        <li><a href="http://casatwy.com/">casatwy</a></li>
+                    
+                        <li><a href="http://blog.cnbluebox.com/">刘坤的技术博客</a></li>
+                    
+                        <li><a href="http://draveness.me/">draveness</a></li>
+                    
+                        <li><a href="http://zhoulingyu.com/">小鱼周凌宇</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+<script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.getJSON('http://freegeoip.net/json/', function(result) {
+            if (result.country_code == 'CN')
+                $('.disqus_thread').hide();
+            else
+                $('.ds-thread').hide();
+        });
+    });
+</script>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'hyyy';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hyyy";
+    var disqus_identifier = "/2017/01/16/RemoteConsole";
+    var disqus_url = "http://hyyy.me/2017/01/16/RemoteConsole/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/5452295038">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/arbalest313">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Yuan's Blog 2017
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hYDev.js "></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-82531112-1';
+    var _gaDomain = 'hyyy.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'e6e8a05da61ccb5abdc137919e660c90';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
