@@ -10,6 +10,7 @@ tags:
     - Objective-C
     - XCode8
 ---
+
 ## 前言
 ----
 自从`Xcode8`之后, 再也不能像以前一样愉快的使用插件了。之前赖以生存Console插件[XcodeColors](https://github.com/robbiehanson/XcodeColors) 也随之失效。我们再一次回到了原生只有黑白信息的Console上面。虽然可以用一些Formatting的Log来弥补，但依旧不是很直观。
