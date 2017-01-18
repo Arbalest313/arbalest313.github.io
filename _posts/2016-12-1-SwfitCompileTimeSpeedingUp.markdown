@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "有效提升Swift编译速度"
-subtitle:   "Swift编译太慢, 提升编译速度, Swift Long Compile time"
+subtitle:   "Swift编译太慢, 提升编译速度, Swift Long Compile Time"
 date:       2016-12-1
 author:     "yuan"
 header-img: "img/bg/2016-12-1-SwfitCompileTimeSpeedingUp.jpg"
