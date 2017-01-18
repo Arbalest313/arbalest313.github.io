@@ -40,8 +40,8 @@ tags:
  #define STDOUT_FILENO 1 /* standard output file descriptor */
  #define STDERR_FILENO 2 /* standard error file descriptor */
 ```
-方案一 ALS 读取Log<br>
-苹果已经提供了读取Log的ALS API,在`asl.h`头文件里面，而且在StackOverFlow里面其实已经有人提过相应的问题并且贴出了[代码](http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console). 可以通过`asl_search`并设置参数来查询你想要的东西。 
+方案一 ASL 读取Log<br>
+苹果已经提供了读取Log的ASL API,在`asl.h`头文件里面，而且在StackOverFlow里面其实已经有人提过相应的问题并且贴出了[代码](http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console). 可以通过`asl_search`并设置参数来查询你想要的东西。 
 但是在iOS10下 ALS被弃用了，使用新的OS.LOG系统。而新系统还没有API对应原来的`asl_search`([WWDC2016-Session721](https://developer.apple.com/videos/play/wwdc2016/721/))，所以他们只能被使用在iOS10之前的系统。
 
 方案二 重定向文件描述符<br>
