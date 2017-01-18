@@ -81,7 +81,7 @@ fd = fildes[0];  // We can now monitor the read end of the pipe
 ```javascript
 //XcodeConsole.html
     var ipAddress = getUrlParameter('ip'); //获取模拟器或者真机的ip地址
-    var wsUri ="ws://" + ipAddress + ":8081"; //拼接uri与端口 模拟器应该是ip=0:0:0:0
+    var wsUri ="ws://" + ipAddress + ":8080"; //拼接uri与端口 模拟器应该是ip=0:0:0:0
     //绑定webSocket端口
     function testWebSocket() {
 	    var websocket = new WebSocket(wsUri); 
