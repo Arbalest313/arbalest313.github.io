@@ -234,7 +234,7 @@ function writeToScreen(message) {
 
 ## 后续
 ----
-到这里一个远程的Console Log就完成了。你所需要的就是修改ip所跟随的设备地址模拟器为0:0:0:0,真机可以去WIFI里面查看设比地址。
+到这里一个远程的Console Log就完成了。你所需要的就是修改ip所跟随的设备地址。模拟器为0:0:0:0,真机可以去WIFI里面查看设比地址。
 下一步可以把这个静态页面布置在测试服务器的内网上， 让所有人在内网都可以访问。再也不需要设置代理，或者xCode特意去查看了。
 
 我把这个静态页面放在了[http://dev.hyyy.me/iOS/Console?ip=xxx]([http://dev.hyyy.me/iOS/Console?ip=xxx]) 下不过端口是在9001.需要的同学可以自行修改端口。
