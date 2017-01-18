@@ -35,6 +35,8 @@ anchorjs: true                          # if you want to customize anchor. check
 gems: [jekyll-paginate]
 
 
+timezone: Asia/Shanghai 
+future: true 
 
 # Markdown settings
 # replace redcarpet to kramdown,
