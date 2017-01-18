@@ -41,8 +41,8 @@ tags:
  #define STDERR_FILENO 2 /* standard error file descriptor */
 ```
 方案一 ALS 读取Log<br>
-苹果已经提供了读取Log的ALS API,在`asl.h`头文件里面，而且在StackOverFlow里面其实已经有人提过相应的问题并且贴出了[代码](http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console). 可以通过设置参数来查询你想要的东西asl_search。 
-但是在iOS10下 ALS被弃用了，使用新的OS.LOG系统。苹果还未开放新系统对应原来asl_search的API，[WWDC2017](https://forums.developer.apple.com/message/89962#89962)，所以他们只能被使用在iOS10之前的系统。
+苹果已经提供了读取Log的ALS API,在`asl.h`头文件里面，而且在StackOverFlow里面其实已经有人提过相应的问题并且贴出了[代码](http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console). 可以通过`asl_search`并设置参数来查询你想要的东西。 
+但是在iOS10下 ALS被弃用了，使用新的OS.LOG系统。苹果还未开放新系统对应原来`asl_search`的API，[WWDC2017](https://forums.developer.apple.com/message/89962#89962)，所以他们只能被使用在iOS10之前的系统。
 
 方案二 重定向文件描述符<br>
 我们已经知道Log是写在STDERR_FILENO的文件描述符里面的， 那么我们可以再重新定向这个文件文件描述符到别的描述符里面，比如写到NSPipe中去：
