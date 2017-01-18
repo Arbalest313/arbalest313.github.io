@@ -42,7 +42,7 @@ tags:
 ```
 方案一 ALS 读取Log<br>
 苹果已经提供了读取Log的ALS API,在`asl.h`头文件里面，而且在StackOverFlow里面其实已经有人提过相应的问题并且贴出了[代码](http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console). 可以通过`asl_search`并设置参数来查询你想要的东西。 
-但是在iOS10下 ALS被弃用了，使用新的OS.LOG系统。而新系统还没有API对应原来`asl_search`，[WWDC2017](https://forums.developer.apple.com/message/89962#89962)，所以他们只能被使用在iOS10之前的系统。
+但是在iOS10下 ALS被弃用了，使用新的OS.LOG系统。而新系统还没有API对应原来的`asl_search`([WWDC2016-Session721](https://developer.apple.com/videos/play/wwdc2016/721/))，所以他们只能被使用在iOS10之前的系统。
 
 方案二 重定向文件描述符<br>
 我们已经知道Log是写在STDERR_FILENO的文件描述符里面的， 那么我们可以再重新定向这个文件文件描述符到别的描述符里面，比如写到NSPipe中去：
@@ -242,7 +242,7 @@ function writeToScreen(message) {
 最后[Github源码](https://github.com/Arbalest313/RemoteConsole)
 
 Reference：<br>
-* [WWDC2017](https://forums.developer.apple.com/message/89962#89962)<br>
+* [WWDC2016-Session721](https://developer.apple.com/videos/play/wwdc2016/721/)br>
 * [dup&dup2](https://linux.die.net/man/2/dup)<br>
 * [Dari在杭州](http://www.jianshu.com/p/94b96ac1932b)<br>
 * [Stack Overflow](http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console)<br>
