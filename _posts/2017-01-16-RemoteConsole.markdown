@@ -242,7 +242,7 @@ function writeToScreen(message) {
 最后[Github源码](https://github.com/Arbalest313/RemoteConsole)
 
 Reference：<br>
-* [WWDC2016-Session721](https://developer.apple.com/videos/play/wwdc2016/721/)br>
+* [WWDC2016-Session721](https://developer.apple.com/videos/play/wwdc2016/721/)<br>
 * [dup&dup2](https://linux.die.net/man/2/dup)<br>
 * [Dari在杭州](http://www.jianshu.com/p/94b96ac1932b)<br>
 * [Stack Overflow](http://stackoverflow.com/questions/6144347/using-objective-c-to-read-log-messages-posted-to-the-device-console)<br>
